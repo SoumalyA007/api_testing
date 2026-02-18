@@ -39,7 +39,7 @@ public class BaseClass {
 
         return new ResponseSpecBuilder()
                 .expectStatusCode(200)
-                .expectHeader("Content-Type","application/json")
+                .expectHeader("Content-Type","application/json; charset=utf-8")
                 .build();
 
     }
@@ -47,7 +47,7 @@ public class BaseClass {
     public static ResponseSpecification success201(){
         return new ResponseSpecBuilder()
                 .expectStatusCode(201)
-                .expectHeader("Content-Type","application/json")
+                .expectHeader("Content-Type","application/json; charset=utf-8")
                 .build();
 
 

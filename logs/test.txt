@@ -1,0 +1,246 @@
+📦 FakeStoreAPI – Complete Test Coverage
+🔹 1. Products Module (/products)
+✅ Positive Test Cases
+
+Get all products – status 200  ✅
+
+Verify product list is not empty ✅
+
+Verify product fields: id, title, price, description, category, image
+
+Get single product by valid ID
+
+Create a new product with valid payload
+
+Update product with valid ID
+
+Delete product with valid ID
+
+Verify price is numeric
+
+Verify category value exists
+
+Verify image URL format
+
+❌ Negative Test Cases
+
+Get product with invalid ID (string)
+
+Get product with non-existing ID
+
+Create product with missing required fields
+
+Create product with invalid price (string/negative)
+
+Update product with invalid ID
+
+Delete product with invalid ID
+
+🔹 2. Categories Module (/products/categories)
+✅ Positive Test Cases
+
+Get all categories – status 200
+
+Verify categories list is not empty
+
+Verify category names are strings
+
+Verify no duplicate categories
+
+Verify expected categories exist (electronics, jewelry, etc.)
+
+❌ Negative Test Cases
+
+Call invalid category endpoint
+
+Call categories with unsupported HTTP method (POST/PUT)
+
+Verify response format remains consistent
+
+🔹 3. Category-Wise Products (/products/category/{category})
+✅ Positive Test Cases
+
+Get products by valid category
+
+Verify each product belongs to requested category
+
+Verify response is a list
+
+Verify product count > 0
+
+❌ Negative Test Cases
+
+Get products for invalid category
+
+Get products with numeric category
+
+Verify empty list for unknown category
+
+🔹 4. Users Module (/users)
+✅ Positive Test Cases
+
+Get all users – status 200
+
+Verify user list is not empty
+
+Verify user fields: id, email, username, address
+
+Create user with valid payload
+
+Update user with valid ID
+
+Delete user with valid ID
+
+Verify email format
+
+Verify username uniqueness (if applicable)
+
+❌ Negative Test Cases
+
+Create user with missing fields
+
+Create user with invalid email format
+
+Get user with invalid ID
+
+Update user with invalid ID
+
+Delete user with invalid ID
+
+🔹 5. Authentication Module (/auth/login)
+✅ Positive Test Cases
+
+Login with valid username and password
+
+Verify token is generated
+
+Verify token is not null
+
+Verify token format (JWT-like string)
+
+❌ Negative Test Cases
+
+Login with invalid username
+
+Login with invalid password
+
+Login with empty payload
+
+Login with missing fields
+
+Verify proper error message
+
+Verify status code for invalid login
+
+🔹 6. Carts Module (/carts)
+✅ Positive Test Cases
+
+Get all carts
+
+Get cart by valid ID
+
+Get carts by user ID
+
+Create cart with valid payload
+
+Update cart with valid ID
+
+Delete cart with valid ID
+
+Verify products array is present
+
+Verify product quantities are positive
+
+❌ Negative Test Cases
+
+Create cart with invalid user ID
+
+Create cart with empty products array
+
+Update cart with invalid ID
+
+Delete cart with invalid ID
+
+🔹 7. Query Parameters & Filtering
+✅ Test Cases
+
+Limit products using ?limit=5
+
+Verify product count matches limit
+
+Sort products ascending
+
+Sort products descending
+
+Combine limit + sort
+
+❌ Negative Test Cases
+
+Use invalid query parameter
+
+Use negative limit value
+
+Use string value for numeric query
+
+🔹 8. Schema Validation (Very Important for Enterprise)
+Test Cases
+
+Validate product response schema
+
+Validate user response schema
+
+Validate cart response schema
+
+Validate error response schema
+
+🔹 9. HTTP Headers Validation
+Test Cases
+
+Verify Content-Type is application/json
+
+Verify response headers exist
+
+Verify no sensitive headers exposed
+
+🔹 10. Performance & Stability (Basic)
+Test Cases
+
+Verify response time < 2 seconds
+
+Verify API handles multiple requests
+
+Verify no 5xx errors under load
+
+🔹 11. Security & Negative Testing
+Test Cases
+
+SQL injection in fields
+
+Script injection in inputs
+
+Invalid content type
+
+Large payload handling
+
+Missing authentication (if applicable)
+
+🏗️ How This Looks on Your Resume
+
+✔ Designed and implemented 100+ REST API test cases
+✔ Covered positive, negative, schema, security, and performance testing
+✔ Built scalable RestAssured + TestNG framework
+✔ Used POJOs, deserialization, filters, and specs
+
+✅ Pro Tip (VERY IMPORTANT)
+
+Group tests as:
+
+Smoke
+
+Regression
+
+Negative
+
+Security
+
+This makes your project interview-ready.

@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PostPOJO {
+public class ProductsPOJO {
 
     private int id;
     private String title;

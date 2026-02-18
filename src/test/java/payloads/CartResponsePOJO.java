@@ -6,14 +6,15 @@ import lombok.Data;
 
 import java.util.List;
 
-@Data
 @Builder
+@Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CartPOJO {
-
+public class CartResponsePOJO {
 
     private int id;
     private int userId;
     private List<ProductsPOJO> products;
+
+
 
 }

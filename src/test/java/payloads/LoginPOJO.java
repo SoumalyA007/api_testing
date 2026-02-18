@@ -4,16 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
-
-@Data
 @Builder
+@Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CartPOJO {
+public class LoginPOJO {
 
-
-    private int id;
-    private int userId;
-    private List<ProductsPOJO> products;
+    private String username;
+    private String password;
 
 }

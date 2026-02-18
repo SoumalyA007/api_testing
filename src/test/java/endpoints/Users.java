@@ -1,73 +1,70 @@
 package endpoints;
+
 import io.restassured.response.Response;
-import payloads.ProductsPOJO;
+import payloads.UserPOJO;
 import testBase.BaseClass;
 
 import static io.restassured.RestAssured.given;
 
-public class Products {
+public class Users {
 
-
-
-    public static Response get_all_products(){
-
+    public static Response getUsers(){
         Response resp = given()
                 .spec(BaseClass.get())
-                .basePath("/products")
+                .basePath("/users")
                 .when()
                 .get();
 
         return resp;
-
     }
 
-    public static Response add_new_product(ProductsPOJO post_body){
+    public static Response createUser(UserPOJO user){
         Response resp = given()
                 .spec(BaseClass.get())
-                .basePath("/products")
-                .body(post_body)
+                .basePath("/users")
+                .body(user)
                 .when()
                 .post();
-        return resp;
 
+        return resp;
     }
 
-    public static Response get_single_product(int id){
+    public static Response getSingleUser(int id){
         Response resp = given()
                 .spec(BaseClass.get())
-                .basePath("/products/{id}")
+                .basePath("/users/{id}")
                 .pathParam("id",id)
                 .when()
                 .get();
+
         return resp;
 
     }
 
-    public static Response update_product(int id, ProductsPOJO update_body){
+    public static Response updateSingleUser(int id , UserPOJO user){
         Response resp = given()
                 .spec(BaseClass.get())
-                .basePath("/products/{id}")
+                .basePath("/users/{id}")
                 .pathParam("id",id)
-                .body(update_body)
+                .body(user)
                 .when()
                 .put();
+
         return resp;
 
     }
 
-    public static Response delete_product(int id){
+    public static Response deleteSingleUser(int id){
         Response resp = given()
                 .spec(BaseClass.get())
-                .basePath("/products/{id}")
+                .basePath("/users/{id}")
                 .pathParam("id",id)
                 .when()
                 .delete();
+
         return resp;
 
     }
-
-
-
 
 
 
