@@ -6,11 +6,11 @@ Get all products – status 200  ✅
 
 Verify product list is not empty ✅
 
-Verify product fields: id, title, price, description, category, image
+Verify product fields: id, title, price, description, category, image ✅
 
-Get single product by valid ID
+Get single product by valid ID  ✅
 
-Create a new product with valid payload
+Create a new product with valid payload ✅
 
 Update product with valid ID
 

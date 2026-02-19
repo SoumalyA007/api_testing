@@ -9,7 +9,7 @@ public class Products {
 
 
 
-    public static Response get_all_products(){
+    public static Response getProducts(){
 
         Response resp = given()
                 .spec(BaseClass.get())
@@ -21,7 +21,7 @@ public class Products {
 
     }
 
-    public static Response add_new_product(ProductsPOJO post_body){
+    public static Response createProduct(ProductsPOJO post_body){
         Response resp = given()
                 .spec(BaseClass.get())
                 .basePath("/products")
@@ -32,7 +32,7 @@ public class Products {
 
     }
 
-    public static Response get_single_product(int id){
+    public static Response getProduct(int id){
         Response resp = given()
                 .spec(BaseClass.get())
                 .basePath("/products/{id}")
@@ -43,7 +43,7 @@ public class Products {
 
     }
 
-    public static Response update_product(int id, ProductsPOJO update_body){
+    public static Response updateProduct(int id, ProductsPOJO update_body){
         Response resp = given()
                 .spec(BaseClass.get())
                 .basePath("/products/{id}")
@@ -55,7 +55,7 @@ public class Products {
 
     }
 
-    public static Response delete_product(int id){
+    public static Response deleteProduct(int id){
         Response resp = given()
                 .spec(BaseClass.get())
                 .basePath("/products/{id}")
