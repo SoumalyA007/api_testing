@@ -12,15 +12,15 @@ Get single product by valid ID  ✅
 
 Create a new product with valid payload ✅
 
-Update product with valid ID
+Update product with valid ID ✅
 
-Delete product with valid ID
+Delete product with valid ID ✅
 
-Verify price is numeric
+Verify price is numeric ✅
 
-Verify category value exists
+Verify category value exists ✅
 
-Verify image URL format
+Verify image URL format ✅
 
 ❌ Negative Test Cases
 
@@ -244,3 +244,13 @@ Negative
 Security
 
 This makes your project interview-ready.
+
+
+
+Feature,Endpoint (Method),Goal
+Auth,/register (POST),Test user creation and token generation.
+Login,/login (POST),Extract the JWT token for subsequent tests.
+Filtering,/api/v1/products?category=Hardware,Test GSON/Jackson filtering logic.
+Nested Data,/api/v1/products/prod-101/inventory,Test Path Parameters and nested relationships.
+Security,/api/v1/orders (GET),Ensure it returns 401 Unauthorized without a Bearer Token.
+Pagination,/api/v1/products?_page=1&_limit=2,Test handling of large datasets.

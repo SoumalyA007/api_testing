@@ -32,7 +32,7 @@ public class Products {
 
     }
 
-    public static Response getProduct(int id){
+    public static Response getProduct(Object id){
         Response resp = given()
                 .spec(BaseClass.get())
                 .basePath("/products/{id}")

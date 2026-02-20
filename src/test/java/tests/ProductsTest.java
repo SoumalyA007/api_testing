@@ -7,6 +7,7 @@ import payloads.ProductsPOJO;
 import testBase.BaseClass;
 import static io.restassured.RestAssured.*;
 import io.restassured.response.Response;
+import testBase.TestContext;
 
 import java.util.List;
 import java.util.Random;
@@ -22,7 +23,7 @@ public class ProductsTest extends BaseClass {
     public static void getAllProductStatus(){
 
         Response resp = Products.getProducts();
-        resp.then().spec(BaseClass.success200()).log().all();
+        resp.then().spec(success200()).log().all();
 
     }
 
@@ -39,7 +40,7 @@ public class ProductsTest extends BaseClass {
     public static void testFields(){
         Response resp = Products.getProducts();
         resp.then()
-                .spec(BaseClass.success200())
+                .spec(success200())
                 .body("id",everyItem(greaterThan(0)))
                 .body("price",everyItem(notNullValue()))
                 .body("description", everyItem(not(isEmptyOrNullString())))
@@ -71,7 +72,7 @@ public class ProductsTest extends BaseClass {
 
         Response resp = Products.getProduct(randId)
                 .then()
-                .spec(BaseClass.success200())
+                .spec(success200())
                 .body("id",equalTo(randId))
                 .log()
                 .ifValidationFails()
@@ -93,13 +94,72 @@ public class ProductsTest extends BaseClass {
                 .image("https://example.com/image.png")
                 .build();
 
-        Products.createProduct(productsPOJO)
+        Response resp = Products.createProduct(productsPOJO);
+        resp
                 .then()
-                .spec(BaseClass.success201())
+                .spec(success201())
                 .log().all();
+
+        TestContext.productId = resp.path("id");
+
+    }
+
+    @Test(dependsOnMethods = "createProductTest")
+    public static void updateProductTest(){
+
+        ProductsPOJO productsPOJO = ProductsPOJO.builder()
+                .title("Gaming Dude")
+                .description("PS1")
+                .price(1000)
+                .category("Gaming")
+                .image("https://example.com/image.png")
+                .build();
+
+        Response resp = Products.updateProduct(TestContext.productId , productsPOJO);
+        resp.then().spec(success200()).log().all();
+        resp.prettyPrint();
 
 
     }
+
+    @Test
+    public static void deleteProductTest(){
+        Response resp = Products.deleteProduct(TestContext.productId);
+        resp.then().spec(success200());
+    }
+
+    @Test
+    public static void verifyNumericPriceTest(){
+
+        Response resp = Products.getProducts();
+
+        resp.then()
+                .body("price", everyItem(instanceOf(Number.class)
+                ));
+
+    }
+
+    @Test
+    public static void getProductByInvalidId(){
+        Response products = Products.getProducts();
+        String randId = "19";
+
+
+        Response resp = Products.getProduct(randId);
+        resp
+                .then()
+                .spec(success200())
+                .log()
+                .ifValidationFails();
+
+        resp.prettyPrint();
+
+    }
+
+
+
+
+
 
 
 

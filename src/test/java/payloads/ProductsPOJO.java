@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductsPOJO {
 
-    private int id;
+
+    private Object id;
     private String title;
     private float price;
     private String description;
