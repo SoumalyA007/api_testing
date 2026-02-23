@@ -1,20 +1,18 @@
-package payloads;
+package payloads.response;
 
+import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Builder;
-import lombok.Data;
 
 import java.util.List;
 
-@Builder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CartResponsePOJO {
 
     private int id;
     private int userId;
-    private List<ProductsPOJO> products;
-
-
-
+    private String date;
+    private List<CartProductResponsePOJO> products;
 }

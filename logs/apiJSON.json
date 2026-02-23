@@ -1,0 +1,107 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "admin@enterprise.com",
+      "username": "admin1",
+      "password": "password123",
+      "role": "admin",
+      "details": {
+        "firstname": "System",
+        "lastname": "Admin"
+      }
+    },
+    {
+      "id": 2,
+      "email": "tester@qa.com",
+      "username": "testuser",
+      "password": "password123",
+      "role": "user",
+      "details": {
+        "firstname": "Jane",
+        "lastname": "Tester"
+      }
+    }
+  ],
+  "products": [
+    {
+      "id": 101,
+      "title": "Enterprise Laptop",
+      "price": 1200.50,
+      "category": "electronics",
+      "description": "High-end workstation",
+      "image": "https://images.com/laptop.png"
+    },
+    {
+      "id": 102,
+      "title": "Cloud Hub",
+      "price": 500.00,
+      "category": "software",
+      "description": "SaaS management tool",
+      "image": "https://images.com/cloud.png"
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat1",
+      "name": "electronics"
+    },
+    {
+      "id": "cat2",
+      "name": "software"
+    }
+  ],
+  "carts": [
+    {
+      "id": 1,
+      "userId": 2,
+      "date": "2024-03-20",
+      "products": [
+        {
+          "productId": 101,
+          "quantity": 1
+        }
+      ]
+    }
+  ],
+  "orders": [
+    {
+      "id": 5001,
+      "userId": 2,
+      "items": [
+        {
+          "productId": 101,
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 1200.50,
+      "status": "PAID",
+      "orderDate": "2024-03-20T10:00:00Z"
+    }
+  ],
+  "inventory": [
+    {
+      "id": 1,
+      "productId": 101,
+      "stockCount": 45,
+      "warehouse": "North-Zone",
+      "minThreshold": 5
+    },
+    {
+      "id": 2,
+      "productId": 102,
+      "stockCount": 100,
+      "warehouse": "Virtual",
+      "minThreshold": 0
+    }
+  ],
+  "shipping": [
+    {
+      "id": 9001,
+      "orderId": 5001,
+      "trackingNumber": "TRK123456",
+      "carrier": "FedEx",
+      "estimatedDelivery": "2024-03-25"
+    }
+  ]
+}

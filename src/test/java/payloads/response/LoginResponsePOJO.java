@@ -1,14 +1,14 @@
-package payloads;
+package payloads.response;
 
+import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Builder;
-import lombok.Data;
 
-@Builder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginResponsePOJO {
 
     private String token;
-
+    private String role;
 }

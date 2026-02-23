@@ -1,75 +1,63 @@
 package endpoints;
 import io.restassured.response.Response;
-import payloads.ProductsPOJO;
+import payloads.request.ProductsPOJO;
 import testBase.BaseClass;
 
 import static io.restassured.RestAssured.given;
 
 public class Products {
 
-
-
-    public static Response getProducts(){
-
-        Response resp = given()
+    public static Response getAllProducts(){
+        return given()
                 .spec(BaseClass.get())
                 .basePath("/products")
                 .when()
                 .get();
-
-        return resp;
-
     }
 
-    public static Response createProduct(ProductsPOJO post_body){
-        Response resp = given()
+    public static Response getProductById(int id){
+        return given()
+                .spec(BaseClass.get())
+                .basePath("/products/{id}")
+                .pathParam("id", id)
+                .when()
+                .get();
+    }
+
+    public static Response getProductsByCategory(String categoryName){
+        return given()
+                .spec(BaseClass.get())
+                .basePath("/products/category/{name}")
+                .pathParam("name", categoryName)
+                .when()
+                .get();
+    }
+
+    public static Response createProduct(ProductsPOJO product){
+        return given()
                 .spec(BaseClass.get())
                 .basePath("/products")
-                .body(post_body)
+                .body(product)
                 .when()
                 .post();
-        return resp;
-
     }
 
-    public static Response getProduct(Object id){
-        Response resp = given()
+    public static Response updateProduct(int id, ProductsPOJO product){
+        return given()
                 .spec(BaseClass.get())
                 .basePath("/products/{id}")
-                .pathParam("id",id)
-                .when()
-                .get();
-        return resp;
-
-    }
-
-    public static Response updateProduct(int id, ProductsPOJO update_body){
-        Response resp = given()
-                .spec(BaseClass.get())
-                .basePath("/products/{id}")
-                .pathParam("id",id)
-                .body(update_body)
+                .pathParam("id", id)
+                .body(product)
                 .when()
                 .put();
-        return resp;
-
     }
 
     public static Response deleteProduct(int id){
-        Response resp = given()
+        return given()
                 .spec(BaseClass.get())
                 .basePath("/products/{id}")
-                .pathParam("id",id)
+                .pathParam("id", id)
                 .when()
                 .delete();
-        return resp;
-
     }
-
-
-
-
-
-
-
 }

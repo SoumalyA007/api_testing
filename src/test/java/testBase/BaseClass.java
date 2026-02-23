@@ -2,15 +2,19 @@ package testBase;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.BeforeClass;
+import utilities.*;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
 
 public class BaseClass {
@@ -31,6 +35,11 @@ public class BaseClass {
         return new RequestSpecBuilder()
                 .setBaseUri(p.getProperty("baseURI"))
                 .addHeader("Content-Type","application/json")
+                .addHeader("Authorization",
+                        TokenManager.getToken() == null ? "" :
+                                "Bearer " + TokenManager.getToken())
+                .addFilter(new RequestLoggingFilter())
+                .addFilter(new ResponseLoggingFilter())
                 .build();
     }
 
@@ -60,7 +69,25 @@ public class BaseClass {
                 .build();
     }
 
+    public static ResponseSpecification fail401(){
 
+        return new ResponseSpecBuilder()
+                .expectStatusCode(401)
+                .build();
+    }
 
+    public static ResponseSpecification fail403(){
+
+        return new ResponseSpecBuilder()
+                .expectStatusCode(403)
+                .build();
+    }
+
+    public static ResponseSpecification fail404(){
+
+        return new ResponseSpecBuilder()
+                .expectStatusCode(404)
+                .build();
+    }
 
 }

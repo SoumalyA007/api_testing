@@ -1,20 +1,18 @@
-package payloads;
+package payloads.response;
 
-
+import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Builder;
-import lombok.Data;
 
-@Builder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ProductsResponsePOJO {
+public class ProductResponsePOJO {
 
     private int id;
     private String title;
-    private float price;
-    private String description;
+    private double price;
     private String category;
+    private String description;
     private String image;
-
 }

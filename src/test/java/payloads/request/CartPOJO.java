@@ -1,5 +1,4 @@
-package payloads;
-
+package payloads.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -7,19 +6,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ProductsPOJO {
+@NoArgsConstructor
+@AllArgsConstructor
+public class CartPOJO {
 
-
-    private Object id;
-    private String title;
-    private float price;
-    private String description;
-    private String category;
-    private String image;
-
-
+    private int id;
+    private int userId;
+    private String date;
+    private List<CartProductPOJO> products;
 }
-

@@ -1,256 +1,392 @@
-📦 FakeStoreAPI – Complete Test Coverage
-🔹 1. Products Module (/products)
+
+suppose this is the json and
+{
+  "/api/v1/*": "/$1",
+  "/auth/login": "/login",
+  "/products/categories": "/categories",
+  "/products/category/:name": "/products?category=:name",
+  "/my-orders": "/orders?userId=:userId",
+  "/track/:id": "/shipping?orderId=:id",
+
+  "users": 600,
+  "orders": 660,
+  "carts": 660,
+  "inventory": 644,
+  "shipping": 660,
+  "products": 664
+}
+
+this is the routes. Please provide test cases now like you had given before covering all the aspects.
+
+🔐 1️⃣ Authentication Module – /auth/login
 ✅ Positive Test Cases
 
-Get all products – status 200  ✅
+Login with valid admin credentials → 200
 
-Verify product list is not empty ✅
+Login with valid user credentials → 200
 
-Verify product fields: id, title, price, description, category, image ✅
+Verify token is returned
 
-Get single product by valid ID  ✅
+Verify token is non-empty string
 
-Create a new product with valid payload ✅
+Verify role in response (admin/user)
 
-Update product with valid ID ✅
-
-Delete product with valid ID ✅
-
-Verify price is numeric ✅
-
-Verify category value exists ✅
-
-Verify image URL format ✅
+Verify token expiry field exists (if implemented)
 
 ❌ Negative Test Cases
 
-Get product with invalid ID (string)
+Login with invalid password → 401
 
-Get product with non-existing ID
+Login with invalid email → 401
 
-Create product with missing required fields
+Login with empty body → 400
 
-Create product with invalid price (string/negative)
+Login with missing password → 400
 
-Update product with invalid ID
+Login with SQL injection payload → 401
 
-Delete product with invalid ID
+Login with wrong content-type → 415
 
-🔹 2. Categories Module (/products/categories)
-✅ Positive Test Cases
+🔐 Security Test Cases
 
-Get all categories – status 200
+Access /orders without token → 401
 
-Verify categories list is not empty
+Access /inventory as normal user (if admin-only) → 403
 
-Verify category names are strings
+Expired token access → 401
 
-Verify no duplicate categories
+Tampered token → 401
 
-Verify expected categories exist (electronics, jewelry, etc.)
+👤 2️⃣ Users Module – /users
+✅ Positive
 
-❌ Negative Test Cases
+Get all users → 200
 
-Call invalid category endpoint
+Verify user list not empty
 
-Call categories with unsupported HTTP method (POST/PUT)
+Validate fields:
 
-Verify response format remains consistent
+id
 
-🔹 3. Category-Wise Products (/products/category/{category})
-✅ Positive Test Cases
+email
 
-Get products by valid category
+username
 
-Verify each product belongs to requested category
+role
 
-Verify response is a list
+details.firstname
 
-Verify product count > 0
+details.lastname
 
-❌ Negative Test Cases
+Get user by valid ID → 200
 
-Get products for invalid category
+Create new user → 201
 
-Get products with numeric category
+Update existing user → 200
 
-Verify empty list for unknown category
+Delete user → 200
 
-🔹 4. Users Module (/users)
-✅ Positive Test Cases
+❌ Negative
 
-Get all users – status 200
+Get user by invalid ID → 404
 
-Verify user list is not empty
+Create user with existing email → 409
 
-Verify user fields: id, email, username, address
+Create user with missing email → 400
 
-Create user with valid payload
+Update non-existing user → 404
 
-Update user with valid ID
+Delete invalid ID → 404
 
-Delete user with valid ID
+🧪 Data Validation
 
-Verify email format
+Email format validation
 
-Verify username uniqueness (if applicable)
+Password minimum length
 
-❌ Negative Test Cases
+Role must be either admin or user
 
-Create user with missing fields
+ID must be positive
 
-Create user with invalid email format
 
-Get user with invalid ID
 
-Update user with invalid ID
+/products
 
-Delete user with invalid ID
+/products/categories
 
-🔹 5. Authentication Module (/auth/login)
-✅ Positive Test Cases
+/products/category/:name
 
-Login with valid username and password
+✅ Positive
 
-Verify token is generated
+Get all products → 200  ✅
 
-Verify token is not null
+Verify product fields: ✅
 
-Verify token format (JWT-like string)
+id
 
-❌ Negative Test Cases
+title
 
-Login with invalid username
+price
 
-Login with invalid password
+category
 
-Login with empty payload
+description
 
-Login with missing fields
+image
 
-Verify proper error message
+Price must be positive number ✅
 
-Verify status code for invalid login
+Category must exist in categories list ✅
 
-🔹 6. Carts Module (/carts)
-✅ Positive Test Cases
+Get single product by valid ID → 200 ✅
 
-Get all carts
+Get products by category → 200
 
-Get cart by valid ID
+Create product → 201
 
-Get carts by user ID
+Update product → 200
 
-Create cart with valid payload
+Delete product → 200
 
-Update cart with valid ID
+❌ Negative
 
-Delete cart with valid ID
+Get product invalid ID → 404
 
-Verify products array is present
+Create product with negative price → 400
 
-Verify product quantities are positive
+Create product without title → 400
 
-❌ Negative Test Cases
+Update non-existing product → 404
 
-Create cart with invalid user ID
+Delete invalid ID → 404
 
-Create cart with empty products array
+Get products by invalid category → empty list
 
-Update cart with invalid ID
+🔁 Edge Cases
 
-Delete cart with invalid ID
+Very large price value
 
-🔹 7. Query Parameters & Filtering
-✅ Test Cases
+Price as string → 400
 
-Limit products using ?limit=5
+Special characters in title
 
-Verify product count matches limit
+XSS payload in description
 
-Sort products ascending
+📦 4️⃣ Categories Module
 
-Sort products descending
+Route:
+/products/categories
 
-Combine limit + sort
+✅ Positive
 
-❌ Negative Test Cases
+Get all categories → 200
 
-Use invalid query parameter
+Validate id and name fields
 
-Use negative limit value
+Category names unique
 
-Use string value for numeric query
+Product category must match categories list
 
-🔹 8. Schema Validation (Very Important for Enterprise)
-Test Cases
+❌ Negative
 
-Validate product response schema
+Add duplicate category → 409
 
-Validate user response schema
+Create category with empty name → 400
 
-Validate cart response schema
+🛒 5️⃣ Cart Module – /carts
+✅ Positive
 
-Validate error response schema
+Get all carts → 200
 
-🔹 9. HTTP Headers Validation
-Test Cases
+Get cart by valid ID → 200
 
-Verify Content-Type is application/json
+Add product to cart → 201
 
-Verify response headers exist
+Validate productId exists
 
-Verify no sensitive headers exposed
+Validate quantity > 0
 
-🔹 10. Performance & Stability (Basic)
-Test Cases
+Update cart quantity → 200
 
-Verify response time < 2 seconds
+Delete cart → 200
 
-Verify API handles multiple requests
+❌ Negative
 
-Verify no 5xx errors under load
+Add invalid productId → 400
 
-🔹 11. Security & Negative Testing
-Test Cases
+Add quantity = 0 → 400
 
-SQL injection in fields
+Add negative quantity → 400
 
-Script injection in inputs
+Get cart invalid ID → 404
 
-Invalid content type
+Delete invalid cart → 404
 
-Large payload handling
+🔁 Edge Case
 
-Missing authentication (if applicable)
+Add quantity exceeding inventory
 
-🏗️ How This Looks on Your Resume
+Add duplicate product → quantity should merge
 
-✔ Designed and implemented 100+ REST API test cases
-✔ Covered positive, negative, schema, security, and performance testing
-✔ Built scalable RestAssured + TestNG framework
-✔ Used POJOs, deserialization, filters, and specs
+🧾 6️⃣ Orders Module – /orders
 
-✅ Pro Tip (VERY IMPORTANT)
+Custom route:
+/my-orders → /orders?userId=:userId
 
-Group tests as:
+✅ Positive
 
-Smoke
+Get all orders → 200
 
-Regression
+Get order by ID → 200
 
-Negative
+Get orders by userId → 200
 
-Security
+Create order → 201
 
-This makes your project interview-ready.
+Verify totalAmount calculation
 
+Verify status field exists
 
+Update order status → 200
 
-Feature,Endpoint (Method),Goal
-Auth,/register (POST),Test user creation and token generation.
-Login,/login (POST),Extract the JWT token for subsequent tests.
-Filtering,/api/v1/products?category=Hardware,Test GSON/Jackson filtering logic.
-Nested Data,/api/v1/products/prod-101/inventory,Test Path Parameters and nested relationships.
-Security,/api/v1/orders (GET),Ensure it returns 401 Unauthorized without a Bearer Token.
-Pagination,/api/v1/products?_page=1&_limit=2,Test handling of large datasets.
+❌ Negative
+
+Create order with invalid productId → 400
+
+Create order with empty items → 400
+
+Create order with wrong totalAmount → 400
+
+Get invalid order ID → 404
+
+Unauthorized user accessing another user's order → 403
+
+💼 Business Logic Tests
+
+After order creation:
+
+Inventory should decrease
+
+Cart should clear
+
+Shipping entry should generate
+
+📊 7️⃣ Inventory Module – /inventory
+✅ Positive
+
+Get inventory list → 200
+
+Verify stockCount is non-negative
+
+Verify warehouse field exists
+
+Update stockCount → 200
+
+Verify minThreshold field
+
+❌ Negative
+
+Update stockCount to negative → 400
+
+Invalid productId → 404
+
+Unauthorized update → 403
+
+🚨 Threshold Test
+
+If stockCount < minThreshold → Alert condition
+
+Prevent order if stockCount = 0
+
+🚚 8️⃣ Shipping Module – /shipping
+
+Custom route:
+/track/:id → /shipping?orderId=:id
+
+✅ Positive
+
+Track order by valid ID → 200
+
+Validate:
+
+trackingNumber
+
+carrier
+
+estimatedDelivery
+
+estimatedDelivery > orderDate
+
+❌ Negative
+
+Track invalid order → 404
+
+Track without auth → 401
+
+Invalid tracking format → 400
+
+🌐 9️⃣ Route Rewriting Validation
+
+Test these mappings:
+
+Route	Expected Mapping
+/api/v1/products	/products
+/auth/login	/login
+/products/category/electronics	/products?category=electronics
+/my-orders?userId=2	/orders?userId=2
+/track/5001	/shipping?orderId=5001
+
+Test cases:
+
+Verify correct redirection
+
+Verify correct data returned
+
+Verify no 404 due to route mismatch
+
+⚡ 1️⃣0️⃣ Performance & Load Tests
+
+100 concurrent users hitting /products
+
+Bulk order creation
+
+Large inventory update
+
+Response time < 500ms
+
+DB consistency under load
+
+🧪 1️⃣1️⃣ Contract Validation Tests
+
+Using JSON Schema:
+
+Required fields validation
+
+Data types validation
+
+No additional unknown fields
+
+Enum validation (status: PAID, SHIPPED, CANCELLED)
+
+🔄 1️⃣2️⃣ End-to-End Flow (Most Important)
+🏆 Full Business Scenario Test
+
+Login as user
+
+Fetch products
+
+Add product to cart
+
+Create order
+
+Verify inventory reduced
+
+Track order
+
+Verify shipping created
+
+Admin updates order status
+
+User fetches my-orders
+
+This single flow is gold for resume.
