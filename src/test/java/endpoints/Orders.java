@@ -1,4 +1,5 @@
 package endpoints;
+import enums.UserRole;
 import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
@@ -9,44 +10,44 @@ import testBase.BaseClass;
 
 public class Orders {
 
-    public static Response getAllOrders(){
+    public static Response getAllOrders(UserRole role){
         return given()
-                .spec(BaseClass.get())
+                .spec(BaseClass.get(role))
                 .basePath("/orders")
                 .when()
                 .get();
     }
 
-    public static Response getOrderById(int id){
+    public static Response getOrderById(int id,UserRole role){
         return given()
-                .spec(BaseClass.get())
+                .spec(BaseClass.get(role))
                 .basePath("/orders/{id}")
                 .pathParam("id", id)
                 .when()
                 .get();
     }
 
-    public static Response getOrdersByUserId(int userId){
+    public static Response getOrdersByUserId(int userId,UserRole role){
         return given()
-                .spec(BaseClass.get())
+                .spec(BaseClass.get(role))
                 .basePath("/my-orders")
                 .queryParam("userId", userId)
                 .when()
                 .get();
     }
 
-    public static Response createOrder(OrderPOJO order){
+    public static Response createOrder(OrderPOJO order,UserRole role){
         return given()
-                .spec(BaseClass.get())
+                .spec(BaseClass.get(role))
                 .basePath("/orders")
                 .body(order)
                 .when()
                 .post();
     }
 
-    public static Response updateOrder(int id, OrderPOJO order){
+    public static Response updateOrder(int id, OrderPOJO order,UserRole role){
         return given()
-                .spec(BaseClass.get())
+                .spec(BaseClass.get(role))
                 .basePath("/orders/{id}")
                 .pathParam("id", id)
                 .body(order)
@@ -54,9 +55,9 @@ public class Orders {
                 .put();
     }
 
-    public static Response deleteOrder(int id){
+    public static Response deleteOrder(int id,UserRole role){
         return given()
-                .spec(BaseClass.get())
+                .spec(BaseClass.get(role))
                 .basePath("/orders/{id}")
                 .pathParam("id", id)
                 .when()

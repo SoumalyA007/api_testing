@@ -1,5 +1,6 @@
 package testBase;
 
+import enums.UserRole;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -29,18 +30,23 @@ public class BaseClass {
         p.load(file);
 
 
+
     }
 
-    public static RequestSpecification get(){
-        return new RequestSpecBuilder()
+    public static RequestSpecification get(UserRole role){
+
+        RequestSpecBuilder builder = new RequestSpecBuilder()
                 .setBaseUri(p.getProperty("baseURI"))
                 .addHeader("Content-Type","application/json")
-                .addHeader("Authorization",
-                        TokenManager.getToken() == null ? "" :
-                                "Bearer " + TokenManager.getToken())
                 .addFilter(new RequestLoggingFilter())
-                .addFilter(new ResponseLoggingFilter())
-                .build();
+                .addFilter(new ResponseLoggingFilter());
+
+        if (role != null) {
+            builder.addHeader("Authorization",
+                    "Bearer " + TokenManager.getToken(role));
+        }
+
+        return builder.build();
     }
 
 

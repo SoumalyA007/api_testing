@@ -9,15 +9,17 @@ import static io.restassured.RestAssured.given;
 
 public class Auth {
 
-    public static LoginResponsePOJO login(LoginRequestPOJO request){
+    public static Response login(LoginRequestPOJO request){
 
         Response response = given()
-                .spec(BaseClass.get())
+                .spec(BaseClass.get(null))
                 .basePath("/auth/login")
                 .body(request)
                 .when()
                 .post();
 
-        return response.as(LoginResponsePOJO.class);
+        return response;
+
+        //return response.as(LoginResponsePOJO.class);
     }
 }

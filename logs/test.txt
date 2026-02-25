@@ -21,23 +21,23 @@ this is the routes. Please provide test cases now like you had given before cove
 🔐 1️⃣ Authentication Module – /auth/login
 ✅ Positive Test Cases
 
-Login with valid admin credentials → 200
+Login with valid admin credentials → 200 ✅
 
-Login with valid user credentials → 200
+Login with valid user credentials → 200  ✅
 
-Verify token is returned
+Verify token is returned ✅
 
-Verify token is non-empty string
+Verify token is non-empty string ✅
 
-Verify role in response (admin/user)
+Verify role in response (admin/user) ✅
 
 Verify token expiry field exists (if implemented)
 
 ❌ Negative Test Cases
 
-Login with invalid password → 401
+Login with invalid password → 401 ✅
 
-Login with invalid email → 401
+Login with invalid email → 401 ✅
 
 Login with empty body → 400
 

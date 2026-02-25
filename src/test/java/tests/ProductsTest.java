@@ -7,6 +7,7 @@ import org.apache.commons.math3.stat.descriptive.summary.Product;
 import org.testng.annotations.Test;
 import payloads.request.ProductsPOJO;
 import testBase.BaseClass;
+import utilities.TestContext;
 
 import java.util.HashSet;
 import java.util.List;
@@ -21,23 +22,23 @@ public class ProductsTest extends BaseClass {
 
 
     @Test
-    public void getAllProductsTest(){
-        Response resp = Products.getAllProducts();
+    public void getAllProductsTest() {
+        Response resp = Products.getAllProducts(null);
         resp.then().spec(BaseClass.success200());
 
     }
 
     @Test
-    public void verifyProductFields(){
-        Response resp = Products.getAllProducts();
+    public void verifyProductFields() {
+        Response resp = Products.getAllProducts(null);
         resp.then()
                 .spec(success200())
-                .body("id",everyItem(greaterThan(0)))
-                .body("title",everyItem(notNullValue()))
-                .body("price",everyItem(greaterThan(0.0)))
+                .body("id", everyItem(greaterThan(0)))
+                .body("title", everyItem(notNullValue()))
+                .body("price", everyItem(greaterThan(0.0)))
                 .body("description", everyItem(not(isEmptyOrNullString())))
-                .body("category",everyItem(not(isEmptyOrNullString())))
-                .body("image",everyItem(
+                .body("category", everyItem(not(isEmptyOrNullString())))
+                .body("image", everyItem(
                                 allOf(
                                         startsWith("https://"),
                                         anyOf(
@@ -53,9 +54,9 @@ public class ProductsTest extends BaseClass {
 
 
     @Test
-    public static void categoryExistsTest(){
+    public static void categoryExistsTest() {
 
-        List<String> categories = Categories.getCategories().then()
+        List<String> categories = Categories.getCategories(null).then()
                 .spec(success200())
                 .extract()
                 .jsonPath()
@@ -63,28 +64,70 @@ public class ProductsTest extends BaseClass {
 
         Set<String> categoriesSet = new HashSet<>(categories);
 
-        Products.getAllProducts()
+        TestContext.set("categories", categories);
+
+        Products.getAllProducts(null)
                 .then()
                 .spec(success200())
-                .body("category",everyItem(isIn(categoriesSet)));
+                .body("category", everyItem(isIn(categoriesSet)));
     }
 
     @Test
-    public static void getProductById(){
+    public static void getProductById() {
 
-        List<Integer> ids = Products.getAllProducts().then().extract().jsonPath().getList("id", Integer.class);
+        List<Integer> ids = Products.getAllProducts(null).then().extract().jsonPath().getList("id", Integer.class);
 
         int randId = ids.get(new Random().nextInt(ids.size()));
 
-        Products.getProductById(randId).then()
+        Products.getProductById(randId,null).then()
                 .spec(success200())
-                .body("id",equalTo(randId));
+                .body("id", equalTo(randId));
 
     }
 
+    @Test
+    public static void getProductByCategory() {
+
+        List<String> categories = (List<String>) TestContext.get("categories");
+
+        String randCategory = categories.get(new Random().nextInt(categories.size()));
+
+        Products.getProductsByCategory(randCategory, null)
+                .then().spec(success200())
+                .body("id", notNullValue());
+
+    }
+
+    @Test
+    public static void createProductWithoutLogin() {
+
+        ProductsPOJO productsPOJO = ProductsPOJO.builder()
+                .id(104)
+                .price(221.10)
+                .title("Samsung Galazy S20 FE ")
+                .image("https://iamge.jpg")
+                .category("electronics")
+                .description("It is a very good flagship mobile")
+                .build();
+
+        Products.createProduct(productsPOJO,null)
+                .then()
+                .spec(fail403());
 
 
+    }
 
+    @Test
+    public static void createProductWithLogin(){
+        ProductsPOJO productsPOJO = ProductsPOJO.builder()
+                .id(104)
+                .price(221.10)
+                .title("Samsung Galazy S20 FE ")
+                .image("https://iamge.jpg")
+                .category("electronics")
+                .description("It is a very good flagship mobile")
+                .build();
+    }
 
 
 }

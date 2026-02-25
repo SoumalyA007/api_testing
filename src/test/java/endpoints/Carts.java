@@ -1,5 +1,6 @@
 package endpoints;
 
+import enums.UserRole;
 import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
@@ -9,35 +10,35 @@ import testBase.BaseClass;
 
 public class Carts {
 
-    public static Response getAllCarts(){
+    public static Response getAllCarts(UserRole role){
         return given()
-                .spec(BaseClass.get())
+                .spec(BaseClass.get(role))
                 .basePath("/carts")
                 .when()
                 .get();
     }
 
-    public static Response getCartById(int id){
+    public static Response getCartById(int id,UserRole role){
         return given()
-                .spec(BaseClass.get())
+                .spec(BaseClass.get(role))
                 .basePath("/carts/{id}")
                 .pathParam("id", id)
                 .when()
                 .get();
     }
 
-    public static Response createCart(CartPOJO cart){
+    public static Response createCart(CartPOJO cart,UserRole role){
         return given()
-                .spec(BaseClass.get())
+                .spec(BaseClass.get(role))
                 .basePath("/carts")
                 .body(cart)
                 .when()
                 .post();
     }
 
-    public static Response updateCart(int id, CartPOJO cart){
+    public static Response updateCart(int id, CartPOJO cart,UserRole role){
         return given()
-                .spec(BaseClass.get())
+                .spec(BaseClass.get(role))
                 .basePath("/carts/{id}")
                 .pathParam("id", id)
                 .body(cart)
@@ -45,9 +46,9 @@ public class Carts {
                 .put();
     }
 
-    public static Response deleteCart(int id){
+    public static Response deleteCart(int id,UserRole role){
         return given()
-                .spec(BaseClass.get())
+                .spec(BaseClass.get(role))
                 .basePath("/carts/{id}")
                 .pathParam("id", id)
                 .when()
