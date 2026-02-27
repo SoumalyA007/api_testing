@@ -8,7 +8,7 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.*;
 import utilities.*;
 
 import java.io.FileReader;
@@ -45,6 +45,24 @@ public class BaseClass {
             builder.addHeader("Authorization",
                     "Bearer " + TokenManager.getToken(role));
         }
+        builder.addHeaders(TestContext.getHeaders());
+
+        return builder.build();
+    }
+
+    public static RequestSpecification getWithToken(String token){
+
+        RequestSpecBuilder builder = new RequestSpecBuilder()
+                .setBaseUri(p.getProperty("baseURI"))
+                .addHeader("Content-Type","application/json")
+                .addFilter(new RequestLoggingFilter())
+                .addFilter(new ResponseLoggingFilter());
+
+        if (token != null) {
+            builder.addHeader("Authorization", "Bearer " + token);
+        }
+
+        builder.addHeaders(TestContext.getHeaders());
 
         return builder.build();
     }
@@ -94,6 +112,19 @@ public class BaseClass {
         return new ResponseSpecBuilder()
                 .expectStatusCode(404)
                 .build();
+    }
+    public static ResponseSpecification fail415(){
+
+        return new ResponseSpecBuilder()
+                .expectStatusCode(415)
+                .build();
+    }
+
+
+    @AfterMethod
+    public void cleanUp(){
+        TestContext.clearHeaders();
+        TestContext.clear();
     }
 
 }

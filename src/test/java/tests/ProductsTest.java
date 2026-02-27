@@ -110,7 +110,7 @@ public class ProductsTest extends BaseClass {
                 .description("It is a very good flagship mobile")
                 .build();
 
-        Products.createProduct(productsPOJO,null)
+        Products.createProduct(productsPOJO,null,null)
                 .then()
                 .spec(fail403());
 

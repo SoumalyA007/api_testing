@@ -39,46 +39,46 @@ Login with invalid password → 401 ✅
 
 Login with invalid email → 401 ✅
 
-Login with empty body → 400
+Login with empty body → 400 ✅
 
-Login with missing password → 400
+Login with missing password → 400 ✅
 
-Login with SQL injection payload → 401
+Login with SQL injection payload → 401 ✅
 
-Login with wrong content-type → 415
+Login with wrong content-type → 415 ✅
 
 🔐 Security Test Cases
 
-Access /orders without token → 401
+Access /orders without token → 401 ✅
 
-Access /inventory as normal user (if admin-only) → 403
+Access /inventory as normal user (if admin-only) → 403 ✅
 
-Expired token access → 401
+Expired token access → 401 ✅
 
-Tampered token → 401
+Tampered token → 401 ✅
 
 👤 2️⃣ Users Module – /users
 ✅ Positive
 
-Get all users → 200
+Get all users → 200  ✅
 
-Verify user list not empty
+Verify user list not empty  ✅
 
-Validate fields:
+Validate fields: ✅
 
-id
+id ✅
 
-email
+email ✅
 
-username
+username ✅
 
-role
+role ✅
 
-details.firstname
+details.firstname ✅
 
-details.lastname
+details.lastname ✅
 
-Get user by valid ID → 200
+Get user by valid ID → 200 ✅
 
 Create new user → 201
 

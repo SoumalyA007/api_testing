@@ -18,4 +18,24 @@ public class TestContext {
     public static void clear(){
         data.clear();
     }
+
+    //header
+    private static ThreadLocal<Map<String, String>> headers =
+            ThreadLocal.withInitial(HashMap::new);
+
+    public static void addHeader(String key, String value) {
+        headers.get().put(key, value);
+    }
+
+    public static Map<String, String> getHeaders() {
+        return headers.get();
+    }
+
+    public static void clearHeaders() {
+        headers.get().clear();
+    }
+
+
+
+
 }

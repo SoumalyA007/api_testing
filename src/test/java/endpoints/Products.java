@@ -34,7 +34,19 @@ public class Products {
                 .get();
     }
 
-    public static Response createProduct(ProductsPOJO product,UserRole role){
+    public static Response createProduct(ProductsPOJO product,
+                                         UserRole role,
+                                         String token) {
+
+        if (token != null) {
+            return given()
+                    .spec(BaseClass.getWithToken(token))
+                    .basePath("/products")
+                    .body(product)
+                    .when()
+                    .post();
+        }
+
         return given()
                 .spec(BaseClass.get(role))
                 .basePath("/products")

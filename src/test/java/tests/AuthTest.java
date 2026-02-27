@@ -7,7 +7,11 @@ import org.testng.annotations.Test;
 import payloads.request.LoginRequestPOJO;
 import payloads.response.LoginResponsePOJO;
 import testBase.BaseClass;
+import utilities.TestContext;
 import utilities.TokenManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
@@ -68,7 +72,7 @@ public class AuthTest extends BaseClass {
     public void loginUserEmptyBody(){
 
         Response resp = given()
-                .spec(BaseClass.get())
+                .spec(BaseClass.get(null))
                 .basePath("/auth/login")
                 .when()
                 .post();
@@ -76,6 +80,87 @@ public class AuthTest extends BaseClass {
         resp.then()
                 .statusCode(400); // or expected code
     }
+
+    @Test
+    public void loginWithMissingPassword(){
+        LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
+                .email("tester@qa.com")
+                .build();
+        Response resp = Auth.login(loginRequestPOJO);
+
+        resp.then().spec(fail401());
+
+    }
+
+    @Test
+    public static void loginSqlInjection(){
+
+        LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
+                .email("' OR 1=1 --")
+                .password("' OR 1=1 --")
+                .build();
+
+        Response resp = Auth.login(loginRequestPOJO);
+
+        resp.then().spec(fail401());
+
+
+    }
+
+    @Test
+    public static void loginJSInjection(){
+
+        LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
+                .email("<script>alert(1)</script>")
+                .password("pass")
+                .build();
+
+        Response resp = Auth.login(loginRequestPOJO);
+
+        resp.then().spec(fail401());
+
+
+    }
+
+    @Test
+    public void loginJSONInjection(){
+
+        Map<String, Object> payload = new HashMap<>();
+
+        Map<String, Object> injection = new HashMap<>();
+        injection.put("$ne", null);
+
+        payload.put("username", injection);
+        payload.put("password", injection);
+
+        Response resp = given()
+                .spec(BaseClass.get(null))
+                .basePath("/login")
+                .body(payload)
+                .when()
+                .post();
+
+        resp.then().spec(fail401());
+    }
+
+    @Test
+    public void loginWrongContentType(){
+
+        TestContext.addHeader("Content-Type","Application/XML");
+
+        LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
+                .email("tester@qa.com")
+                .password("passwword1234")
+                .build();
+
+        Response resp = Auth.login(loginRequestPOJO);
+
+        resp.then().spec(fail415());
+    }
+
+
+
+
 
 
 
