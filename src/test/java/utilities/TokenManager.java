@@ -34,16 +34,16 @@ public class TokenManager {
 
     public static void generateToken(UserRole role){
 
-        String email="";
+        String username="";
         String password="";
 
         switch (role){
             case ADMIN:
-                email = "admin@enterprise.com";
+                username = "admin1";
                 password = "password123";
                 break;
             case USER:
-                email = "tester@qa.com";
+                username = "testuser";
                 password ="password123";
                 break;
             default:
@@ -51,7 +51,7 @@ public class TokenManager {
         }
 
         LoginRequestPOJO request = LoginRequestPOJO.builder()
-                .email(email)
+                .username(username)
                 .password(password)
                 .build();
 

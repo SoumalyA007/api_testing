@@ -21,7 +21,7 @@ public class AuthTest extends BaseClass {
     @Test
     public static void loginAdmin(){
         LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
-                .email("admin@enterprise.com")
+                .username("admin1")
                 .password("password123")
                 .build();
 
@@ -39,7 +39,7 @@ public class AuthTest extends BaseClass {
     public static void loginUser(){
 
         LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
-                .email("tester@qa.com")
+                .username("testuser")
                 .password("password123")
                 .build();
 
@@ -57,7 +57,7 @@ public class AuthTest extends BaseClass {
     public static void loginUserInvalid(){
 
         LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
-                .email("tester@qa.com")
+                .username("testuser")
                 .password("passwword1234")
                 .build();
 
@@ -84,7 +84,7 @@ public class AuthTest extends BaseClass {
     @Test
     public void loginWithMissingPassword(){
         LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
-                .email("tester@qa.com")
+                .username("testuser")
                 .build();
         Response resp = Auth.login(loginRequestPOJO);
 
@@ -96,7 +96,7 @@ public class AuthTest extends BaseClass {
     public static void loginSqlInjection(){
 
         LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
-                .email("' OR 1=1 --")
+                .username("' OR 1=1 --")
                 .password("' OR 1=1 --")
                 .build();
 
@@ -111,7 +111,7 @@ public class AuthTest extends BaseClass {
     public static void loginJSInjection(){
 
         LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
-                .email("<script>alert(1)</script>")
+                .username("<script>alert(1)</script>")
                 .password("pass")
                 .build();
 
@@ -149,7 +149,7 @@ public class AuthTest extends BaseClass {
         TestContext.addHeader("Content-Type","Application/XML");
 
         LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
-                .email("tester@qa.com")
+                .username("tester@qa.com")
                 .password("passwword1234")
                 .build();
 

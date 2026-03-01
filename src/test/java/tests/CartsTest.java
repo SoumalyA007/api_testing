@@ -9,6 +9,9 @@ import payloads.request.CartPOJO;
 import payloads.request.CartProductPOJO;
 import testBase.BaseClass;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -39,7 +42,9 @@ public class CartsTest extends BaseClass {
     public void addToCart(){
 
         List<Integer> productId = Products.getAllProducts(UserRole.USER).then().extract().jsonPath().getList("id",Integer.class);
-        int randProductId = productId.get(new Random().nextInt(productId.size()));
+        int randProductId = productId.get(new Random().nextInt(productId.size()-1));
+
+        List<CartProductPOJO> cartProducts = new ArrayList<>();
 
 
         CartProductPOJO cartProductPOJO  = CartProductPOJO.builder()
@@ -47,14 +52,70 @@ public class CartsTest extends BaseClass {
                 .quantity(2)
                 .build();
 
-        CartPOJO cartPOJO = CartPOJO.builder()
-                .
+        cartProducts.add(cartProductPOJO);
 
+        CartPOJO cartPOJO = CartPOJO.builder()
+                .userId(1)
+                .date(LocalDate.now().toString())
+                .products(cartProducts)
+                .build();
+
+        Carts.createCart(cartPOJO,UserRole.USER)
+                .then()
+                .spec(fail403());
     }
 
 
+    @Test
+    public void validateProductIdExists(){
+        //List<Integer> productId = Products.getAllProducts(UserRole.USER).then().extract().jsonPath().getList("id",Integer.class);
 
 
+        List<CartProductPOJO> cartProducts = new ArrayList<>();
+
+
+        CartProductPOJO cartProductPOJO  = CartProductPOJO.builder()
+                .productId(99999999)
+                .quantity(2)
+                .build();
+
+        cartProducts.add(cartProductPOJO);
+
+        CartPOJO cartPOJO = CartPOJO.builder()
+                .userId(2)
+                .date(LocalDate.now().toString())
+                .products(cartProducts)
+                .build();
+
+        Carts.createCart(cartPOJO,UserRole.USER)
+                .then()
+                .spec(fail400());
+
+    }
+
+    @Test
+    public void quantityGreaterThanZero(){
+
+        List<CartProductPOJO> cartProducts = new ArrayList<>();
+
+        CartProductPOJO cartProductPOJO  = CartProductPOJO.builder()
+                .productId(101)
+                .quantity(0)
+                .build();
+
+        cartProducts.add(cartProductPOJO);
+
+        CartPOJO cartPOJO = CartPOJO.builder()
+                .userId(2)
+                .date(LocalDate.now().toString())
+                .products(cartProducts)
+                .build();
+
+        Carts.createCart(cartPOJO,UserRole.USER)
+                .then()
+                .spec(fail400());
+
+    }
 
 
 }

@@ -5,7 +5,7 @@ const fs = require("fs");
 const server = jsonServer.create();
 const router = jsonServer.router("db.json");
 const middlewares = jsonServer.defaults();
-const SECRET = "your_jwt_secret";
+const SECRET = "my_super_secret_key_which_is_long_enough_12345";
 
 // ── Unix-style permission table ──────────────────────────────────────────────
 // Each resource: [ownerRead, ownerWrite, groupRead, groupWrite, otherRead, otherWrite]
@@ -47,6 +47,30 @@ function getCallerRole(req) {
     req.authError = err;
     return "invalid";
   }
+}
+
+function validateUser(req, res, next) {
+  const { email, password, role, id } = req.body;
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: "Invalid email format" });
+  }
+
+  if (!password || password.length < 6) {
+    return res.status(400).json({ error: "Password must be at least 6 characters" });
+  }
+
+  if (!["admin", "user"].includes(role)) {
+    return res.status(400).json({ error: "Role must be admin or user" });
+  }
+
+  if (!Number.isInteger(id) || id <= 0) {
+    return res.status(400).json({ error: "ID must be positive" });
+  }
+
+  next();
 }
 
 // ── Login endpoint ───────────────────────────────────────────────────────────
@@ -99,9 +123,60 @@ server.use((req, res, next) => {
 
 
   // For 'user' role: scope /orders and /carts to their own userId only
+  // Enforce ownership for USER role
   if (role === "user" && ["orders", "carts"].includes(resource)) {
-    req.query.userId = String(req.user.id);
+
+    // GET → restrict query
+    if (req.method === "GET") {
+      req.query.userId = String(req.user.id);
+    }
+
+    // POST → block creating resource for another user
+    if (req.method === "POST") {
+      if (req.body.userId && req.body.userId !== req.user.id) {
+        return res.status(403).json({
+          error: "Cannot create resource for another user"
+        });
+      }
+    }
+
+    // PUT / PATCH → block modifying another user’s resource
+    if (["PUT", "PATCH"].includes(req.method)) {
+      if (req.body.userId && req.body.userId !== req.user.id) {
+        return res.status(403).json({
+          error: "Cannot modify another user's resource"
+        });
+      }
+    }
   }
+
+    // 🔹 Validate productId exists for carts
+    if (resource === "carts" && ["POST", "PUT", "PATCH"].includes(req.method)) {
+
+      const db = router.db.getState();
+      const allProducts = db.products;
+
+      if (!req.body.products || !Array.isArray(req.body.products)) {
+        return res.status(400).json({ error: "Products array is required" });
+      }
+
+      for (const item of req.body.products) {
+
+        const productExists = allProducts.some(p => p.id === item.productId);
+
+        if (!productExists) {
+          return res.status(400).json({
+            error: `Product with id ${item.productId} does not exist`
+          });
+        }
+
+        if (!Number.isInteger(item.quantity) || item.quantity <= 0) {
+          return res.status(400).json({
+            error: "Quantity must be positive integer"
+          });
+        }
+      }
+    }
 
   next();
 });

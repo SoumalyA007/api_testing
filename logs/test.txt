@@ -203,11 +203,11 @@ Get all carts → 200 ✅
 
 Get cart by valid ID → 200 ✅
 
-Add product to cart → 201
+Add product to cart → 201 ✅
 
-Validate productId exists
+Validate productId exists ✅
 
-Validate quantity > 0
+Validate quantity > 0 ✅
 
 Update cart quantity → 200
 
