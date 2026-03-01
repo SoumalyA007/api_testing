@@ -50,7 +50,7 @@ public class SecurityTest extends BaseClass {
                 .description("It is a very good flagship mobile")
                 .build();
 
-        Products.createProduct(productsPOJO,null,expiredToken)
+        Products.createProduct(productsPOJO,null,null,expiredToken)
                 .then()
                 .spec(fail403());
 
@@ -70,7 +70,7 @@ public class SecurityTest extends BaseClass {
                 .description("It is a very good flagship mobile")
                 .build();
 
-        Products.createProduct(productsPOJO , null , token+"abv")
+        Products.createProduct(productsPOJO , null ,null, token+"abv")
                 .then().spec(fail403());
 
     }

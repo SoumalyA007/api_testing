@@ -35,7 +35,7 @@ public class Products {
     }
 
     public static Response createProduct(ProductsPOJO product,
-                                         UserRole role,
+                                         UserRole role, String body,
                                          String token) {
 
         if (token != null) {
@@ -43,6 +43,15 @@ public class Products {
                     .spec(BaseClass.getWithToken(token))
                     .basePath("/products")
                     .body(product)
+                    .when()
+                    .post();
+        }
+
+        if(body != null){
+            return given()
+                    .spec(BaseClass.get(role))
+                    .basePath("/products")
+                    .body(body)
                     .when()
                     .post();
         }

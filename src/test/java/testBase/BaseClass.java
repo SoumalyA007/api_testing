@@ -120,6 +120,15 @@ public class BaseClass {
                 .build();
     }
 
+    public static ResponseSpecification fail409(){
+
+        return new ResponseSpecBuilder()
+                .expectStatusCode(409)
+                .build();
+    }
+
+
+
 
     @AfterMethod
     public void cleanUp(){

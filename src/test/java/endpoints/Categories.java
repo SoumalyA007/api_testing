@@ -4,6 +4,7 @@ import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
 
+import payloads.request.CategoryPOJO;
 import testBase.BaseClass;
 
 public class Categories {
@@ -24,4 +25,27 @@ public class Categories {
                 .when()
                 .get();
     }
+
+    public static Response createCategories(CategoryPOJO body,UserRole role){
+
+        return given()
+                .spec(BaseClass.get(role))
+                .basePath("/products/categories")
+                .body(body)
+                .when()
+                .post();
+
+    }
+
+    public static Response createCategories(UserRole role , String body){
+
+        return given()
+                .spec(BaseClass.get(role))
+                .basePath("/products/categories")
+                .body(body)
+                .when()
+                .post();
+
+    }
+
 }

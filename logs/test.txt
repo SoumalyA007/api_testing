@@ -80,33 +80,33 @@ details.lastname ✅
 
 Get user by valid ID → 200 ✅
 
-Create new user → 201
+Create new user → 201 ✅
 
-Update existing user → 200
+Update existing user → 200 ✅
 
-Delete user → 200
+Delete user → 200 ✅
 
 ❌ Negative
 
-Get user by invalid ID → 404
+Get user by invalid ID → 404 ✅
 
-Create user with existing email → 409
+Create user with existing email → 409 ✅
 
-Create user with missing email → 400
+Create user with missing email → 400 ✅
 
-Update non-existing user → 404
+Update non-existing user → 404 ✅
 
-Delete invalid ID → 404
+Delete invalid ID → 404 ✅
 
 🧪 Data Validation
 
-Email format validation
+Email format validation ✅
 
-Password minimum length
+Password minimum length ✅
 
-Role must be either admin or user
+Role must be either admin or user ✅
 
-ID must be positive
+ID must be positive ✅
 
 
 
@@ -122,17 +122,17 @@ Get all products → 200  ✅
 
 Verify product fields: ✅
 
-id
+id ✅
 
-title
+title ✅
 
-price
+price ✅
 
-category
+category ✅
 
-description
+description ✅
 
-image
+image ✅
 
 Price must be positive number ✅
 
@@ -140,37 +140,40 @@ Category must exist in categories list ✅
 
 Get single product by valid ID → 200 ✅
 
-Get products by category → 200
+Get products by category → 200 ✅
 
-Create product → 201
+Create product with login → 201 ✅
 
-Update product → 200
+Create product without login -> 403 ✅
 
-Delete product → 200
+Update product → 200 ✅
+
+Delete product → 200 ✅
 
 ❌ Negative
 
-Get product invalid ID → 404
+Get product invalid ID → 404 ✅
 
-Create product with negative price → 400
+Create product with negative price → 400 ✅
 
-Create product without title → 400
+Create product without title → 400 ✅
 
-Update non-existing product → 404
+Update non-existing product → 404 ✅
 
-Delete invalid ID → 404
+Delete invalid ID → 404 ✅
 
-Get products by invalid category → empty list
+Get products by invalid category → empty list ✅
 
 🔁 Edge Cases
 
-Very large price value
+Very large price value ✅
 
-Price as string → 400
 
-Special characters in title
+Price as string → 400 ✅
 
-XSS payload in description
+
+XSS payload in description ✅
+
 
 📦 4️⃣ Categories Module
 
@@ -179,26 +182,26 @@ Route:
 
 ✅ Positive
 
-Get all categories → 200
+Get all categories → 200 ✅
 
-Validate id and name fields
+Validate id and name fields ✅
 
-Category names unique
+Category names unique ✅
 
-Product category must match categories list
+Product category must match categories list ✅
 
 ❌ Negative
 
-Add duplicate category → 409
+Add duplicate category → 409 ✅
 
-Create category with empty name → 400
+Create category with empty name → 400 ✅
 
 🛒 5️⃣ Cart Module – /carts
 ✅ Positive
 
-Get all carts → 200
+Get all carts → 200 ✅
 
-Get cart by valid ID → 200
+Get cart by valid ID → 200 ✅
 
 Add product to cart → 201
 
