@@ -17,7 +17,7 @@ public class SecurityTest extends BaseClass {
     @Test
     public void OrderWithoutToken(){
 
-        Response response = Orders.getAllOrders(null);
+        Response response = Orders.getOrders(null);
 
         response.then().spec(fail401());
 
@@ -27,7 +27,7 @@ public class SecurityTest extends BaseClass {
     @Test
     public void OrderWithoutRole(){
 
-        Response response = Orders.getAllOrders(UserRole.USER);
+        Response response = Orders.getOrders(UserRole.USER);
 
         response.then().spec(fail403());
 

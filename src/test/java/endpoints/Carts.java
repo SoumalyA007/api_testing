@@ -10,7 +10,7 @@ import testBase.BaseClass;
 
 public class Carts {
 
-    public static Response getAllCarts(UserRole role){
+    public static Response getCarts(UserRole role){
         return given()
                 .spec(BaseClass.get(role))
                 .basePath("/carts")

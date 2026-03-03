@@ -10,7 +10,7 @@ import testBase.BaseClass;
 
 public class Orders {
 
-    public static Response getAllOrders(UserRole role){
+    public static Response getOrders(UserRole role){
         return given()
                 .spec(BaseClass.get(role))
                 .basePath("/orders")

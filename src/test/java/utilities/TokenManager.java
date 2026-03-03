@@ -17,11 +17,11 @@ import java.util.Map;
 
 public class TokenManager {
 
-    private static String token;
-
     private static Map<UserRole, String> tokenStore = new HashMap<>();
+    private static Map<UserRole, Integer> userIdStore = new HashMap<>();
 
-    private static final String SECRET = "my_super_secret_key_which_is_long_enough_12345";
+    private static final String SECRET =
+            "my_super_secret_key_which_is_long_enough_12345";
 
     public static String getToken(UserRole role) {
 
@@ -30,6 +30,15 @@ public class TokenManager {
         }
 
         return tokenStore.get(role);
+    }
+
+    public static int getUserId(UserRole role) {
+
+        if (!userIdStore.containsKey(role)) {
+            generateToken(role);
+        }
+
+        return userIdStore.get(role);
     }
 
     public static void generateToken(UserRole role){
@@ -47,7 +56,7 @@ public class TokenManager {
                 password ="password123";
                 break;
             default:
-                System.out.println("The role you entered is not available");
+                throw new RuntimeException("Invalid role");
         }
 
         LoginRequestPOJO request = LoginRequestPOJO.builder()
@@ -57,15 +66,20 @@ public class TokenManager {
 
         Response response = Auth.login(request);
 
-        LoginResponsePOJO loginResponsePOJO = response.as(LoginResponsePOJO.class);
+        LoginResponsePOJO loginResponsePOJO =
+                response.as(LoginResponsePOJO.class);
 
-        token = loginResponsePOJO.getToken();
+        String token = loginResponsePOJO.getToken();
+        int userId = loginResponsePOJO.getUserId();
+
         tokenStore.put(role, token);
+        userIdStore.put(role, userId);
     }
 
-
     public static String generateExpiredToken(UserRole role) {
-        Key key = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
+
+        Key key = Keys.hmacShaKeyFor(
+                SECRET.getBytes(StandardCharsets.UTF_8));
 
         long now = System.currentTimeMillis();
 
@@ -77,5 +91,4 @@ public class TokenManager {
                 .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
     }
-
 }

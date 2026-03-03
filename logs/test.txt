@@ -209,27 +209,27 @@ Validate productId exists ✅
 
 Validate quantity > 0 ✅
 
-Update cart quantity → 200
+Update cart quantity → 200 ✅
 
-Delete cart → 200
+Delete cart → 200 ✅
 
 ❌ Negative
 
-Add invalid productId → 400
+Add invalid productId → 400 ✅
 
-Add quantity = 0 → 400
+Add quantity = 0 → 400 ✅
 
-Add negative quantity → 400
+Add negative quantity → 400 ✅
 
-Get cart invalid ID → 404
+Get cart invalid ID → 404 ✅
 
-Delete invalid cart → 404
+Delete invalid cart → 404 ✅
 
 🔁 Edge Case
 
 Add quantity exceeding inventory
 
-Add duplicate product → quantity should merge
+Add duplicate product → quantity should merge ✅
 
 🧾 6️⃣ Orders Module – /orders
 
@@ -238,11 +238,11 @@ Custom route:
 
 ✅ Positive
 
-Get all orders → 200
+Get all orders → 200 ✅
 
-Get order by ID → 200
+Get order by ID → 200 ✅
 
-Get orders by userId → 200
+Get orders by userId → 200 ✅
 
 Create order → 201
 

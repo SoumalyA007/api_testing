@@ -11,4 +11,5 @@ public class LoginResponsePOJO {
 
     private String token;
     private String role;
+    private int userId;
 }
