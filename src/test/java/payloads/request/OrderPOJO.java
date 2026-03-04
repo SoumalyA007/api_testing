@@ -11,10 +11,8 @@ import enums.OrderStatus;
 @AllArgsConstructor
 public class OrderPOJO {
 
-    private int id;
+
     private int userId;
     private List<OrderItemPOJO> items;
-    private double totalAmount;
-    private OrderStatus status;
-    private String orderDate;
+
 }

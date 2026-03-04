@@ -244,7 +244,7 @@ Get order by ID → 200 ✅
 
 Get orders by userId → 200 ✅
 
-Create order → 201
+Create order → 201 ✅
 
 Verify totalAmount calculation
 

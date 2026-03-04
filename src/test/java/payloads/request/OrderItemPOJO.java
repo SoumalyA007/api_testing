@@ -11,4 +11,5 @@ public class OrderItemPOJO {
 
     private int productId;
     private int quantity;
+
 }
