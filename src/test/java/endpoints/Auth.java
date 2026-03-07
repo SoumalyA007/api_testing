@@ -11,15 +11,17 @@ public class Auth {
 
     public static Response login(LoginRequestPOJO request){
 
-        Response response = given()
+        var req = given()
                 .spec(BaseClass.get(null))
-                .basePath("/auth/login")
-                .body(request)
+                .basePath("/auth/login");
+
+        if(request != null){
+            req.body(request);
+        }
+
+        return req
                 .when()
                 .post();
-
-        return response;
-
-        //return response.as(LoginResponsePOJO.class);
     }
+
 }

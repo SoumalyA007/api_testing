@@ -72,7 +72,7 @@ public class Orders {
                 .put();
     }
 
-    public static Response updateOrder(int id, OrderPOJO order, UserRole role){
+    public static Response updateOrderWithString(int id, String order, UserRole role){
         return given()
                 .spec(BaseClass.get(role))
                 .basePath("/orders/{id}")
@@ -82,7 +82,7 @@ public class Orders {
                 .put();
     }
 
-    public static Response updateOrder(int id, OrderStatusUpdatePOJO order, String token){
+    public static Response updateOrderWithToken(int id, OrderStatusUpdatePOJO order, String token){
         return given()
                 .spec(BaseClass.getWithToken(token))
                 .basePath("/orders/{id}")

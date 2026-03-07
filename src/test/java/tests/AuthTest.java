@@ -1,6 +1,7 @@
 package tests;
 
 import endpoints.Auth;
+import helpers.AuthHelper;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -9,6 +10,7 @@ import payloads.response.LoginResponsePOJO;
 import testBase.BaseClass;
 import utilities.TestContext;
 import utilities.TokenManager;
+import helpers.AuthHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,12 +20,12 @@ import static io.restassured.RestAssured.given;
 public class AuthTest extends BaseClass {
 
 
+    //login as user
     @Test
     public static void loginAdmin(){
-        LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
-                .username("admin1")
-                .password("password123")
-                .build();
+
+        //calling login function
+        LoginRequestPOJO loginRequestPOJO = AuthHelper.loginasUserOrAdmin("admin1","password123");
 
         Response resp = Auth.login(loginRequestPOJO);
         resp.then().spec(success200());
@@ -35,13 +37,11 @@ public class AuthTest extends BaseClass {
 
     }
 
+    //login as admin
     @Test
     public static void loginUser(){
 
-        LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
-                .username("testuser")
-                .password("password123")
-                .build();
+        LoginRequestPOJO loginRequestPOJO = AuthHelper.loginasUserOrAdmin("testuser","password123");
 
         Response resp = Auth.login(loginRequestPOJO);
         resp.then().spec(success200());
@@ -53,13 +53,11 @@ public class AuthTest extends BaseClass {
 
     }
 
+    //login with invalid credentials as user
     @Test
     public static void loginUserInvalid(){
 
-        LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
-                .username("testuser")
-                .password("passwword1234")
-                .build();
+        LoginRequestPOJO loginRequestPOJO = AuthHelper.loginasUserOrAdmin("testuser","passwword1234");
 
         Response resp = Auth.login(loginRequestPOJO);
 
@@ -68,17 +66,14 @@ public class AuthTest extends BaseClass {
 
     }
 
+    //login with empty request body as user
     @Test
     public void loginUserEmptyBody(){
 
-        Response resp = given()
-                .spec(BaseClass.get(null))
-                .basePath("/auth/login")
-                .when()
-                .post();
+        Auth.login(null)
+                .then()
+                .spec(fail400());
 
-        resp.then()
-                .statusCode(400); // or expected code
     }
 
     @Test
@@ -157,12 +152,6 @@ public class AuthTest extends BaseClass {
 
         resp.then().spec(fail415());
     }
-
-
-
-
-
-
 
 
 }

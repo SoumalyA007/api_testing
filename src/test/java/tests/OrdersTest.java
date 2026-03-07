@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.*;
 
-@Slf4j
 public class OrdersTest extends BaseClass {
 
     //User should fetch only his orders
@@ -88,6 +87,29 @@ public class OrdersTest extends BaseClass {
         Orders.getOrdersByUserId(userId,UserRole.ADMIN)
                 .then().spec(success200())
                 .body("userId",everyItem(equalTo(userId)));
+    }
+
+    //401 Invalid or expired token
+    @Test
+    public void getOrderForLoggedOutUser(){
+
+        String expiredToken = TokenManager.generateExpiredToken(UserRole.USER);
+        Orders.getOrders(expiredToken).then()
+                .spec(fail401());
+
+    }
+
+    //404 should be returned when
+    @Test
+    public void getOrderByInvalidOrderId(){
+
+        int invalidOrderId = Integer.MAX_VALUE;
+
+        Orders.getOrderById(invalidOrderId,UserRole.USER)
+                .then()
+                .spec(fail404());
+
+
     }
 
     //User access only his order
@@ -277,6 +299,19 @@ public class OrdersTest extends BaseClass {
     }
 
     @Test
+    public void createOrderWithNegativeQuantity(){
+
+        OrderPOJO order = OrderPOJO.builder()
+                .userId(TokenManager.getUserId(UserRole.USER))
+                .items(List.of(new OrderItemPOJO(101,-1)))
+                .build();
+
+        Orders.createOrder(order,UserRole.USER)
+                .then()
+                .spec(fail400());
+    }
+
+    @Test
     public void createOrderByUserWithoutUserId(){
         Double totalPrice = 0.0;
 
@@ -391,48 +426,30 @@ public class OrdersTest extends BaseClass {
 
     }
 
-    //401 Invalid or expired token
-    @Test
-    public void getOrderForLoggedOutUser(){
-
-        String expiredToken = TokenManager.generateExpiredToken(UserRole.USER);
-        Orders.getOrders(expiredToken).then()
-                .spec(fail401());
-
-    }
-
-    //404 should be returned when
-    @Test
-    public void getOrderByInvalidOrderId(){
-
-        int invalidOrderId = Integer.MAX_VALUE;
-
-        Orders.getOrderById(invalidOrderId,UserRole.USER)
-                .then()
-                .spec(fail404());
-
-
-    }
 
     //user can not update order
     @Test
-    public void userUpdatesOrder(){
+    public void userUpdatesOrder() {
+
         List<Integer> id = Orders.getOrders(UserRole.USER)
                 .then().spec(success200())
-                .extract().jsonPath().getList("id",Integer.class);
+                .extract().jsonPath().getList("id", Integer.class);
 
-        int randomOrderId = id.get(new Random().nextInt(id.size()-1));
+        int randomOrderId = id.get(new Random().nextInt(id.size()));
 
-        OrderItemPOJO orderItemPOJO = OrderItemPOJO.builder()
-                        .productId(101)
-                                .quantity(2).build();
+        String body = """
+        {
+            "userId": %d,
+            "items": [
+                {
+                    "productId": 101,
+                    "quantity": 2
+                }
+            ]
+        }
+        """.formatted(TokenManager.getUserId(UserRole.USER));
 
-        OrderPOJO orderPOJO = OrderPOJO.builder()
-                        .items(List.of(orderItemPOJO))
-                                .userId(TokenManager.getUserId(UserRole.USER))
-                                        .build();
-
-        Orders.updateOrder(randomOrderId,orderPOJO,UserRole.USER)
+        Orders.updateOrderWithString(randomOrderId, body, UserRole.USER)
                 .then()
                 .spec(fail403());
     }
@@ -445,16 +462,19 @@ public class OrdersTest extends BaseClass {
 
         int randomOrderId = id.get(new Random().nextInt(id.size()-1));
 
-        OrderItemPOJO orderItemPOJO = OrderItemPOJO.builder()
-                .productId(101)
-                .quantity(2).build();
+        String body = """
+        {
+            "userId": %d,
+            "items": [
+                {
+                    "productId": 101,
+                    "quantity": 2
+                }
+            ]
+        }
+        """.formatted(TokenManager.getUserId(UserRole.ADMIN));
 
-        OrderPOJO orderPOJO = OrderPOJO.builder()
-                .items(List.of(orderItemPOJO))
-                .userId(TokenManager.getUserId(UserRole.ADMIN))
-                .build();
-
-        Orders.updateOrder(randomOrderId,orderPOJO,UserRole.ADMIN)
+        Orders.updateOrderWithString(randomOrderId,body,UserRole.ADMIN)
                 .then()
                 .spec(fail403());
     }
@@ -480,7 +500,7 @@ public class OrdersTest extends BaseClass {
                 .build();
 
         String expiredToken = TokenManager.generateExpiredToken(UserRole.ADMIN);
-        Orders.updateOrder(5001,orderStatusUpdatePOJO,expiredToken)
+        Orders.updateOrderWithToken(5001,orderStatusUpdatePOJO,expiredToken)
                 .then()
                 .spec(fail401());
     }
@@ -497,6 +517,25 @@ public class OrdersTest extends BaseClass {
                 .spec(fail403());
     }
 
+    //admin update invalid status
+    @Test
+    public void invalidStatusUpdate(){
+
+        List<Integer> id = Orders.getOrders(UserRole.USER)
+                .then().spec(success200())
+                .extract().jsonPath().getList("id",Integer.class);
+
+        int randomOrderId = id.get(id.size()-1);
+
+        String body = """
+                {
+                "status":"abcd"
+                }
+                
+                """;
+        Orders.updateOrderWithString(randomOrderId,body,UserRole.ADMIN)
+                .then().spec(fail400());
+    }
 
     //delete order by user
     @Test
@@ -520,12 +559,22 @@ public class OrdersTest extends BaseClass {
         List<Integer> myOrder = Orders.getOrders(UserRole.USER)
                 .then().spec(success200()).extract().jsonPath().getList("id", Integer.class);
 
-        int randomOrderId = myOrder.get(-1);
+        int randomOrderId = myOrder.get(myOrder.size()-1);
 
         Orders.deleteOrder(randomOrderId,UserRole.ADMIN)
                 .then().spec(success200());
 
     }
+
+    @Test
+    public void deleteInvalidOrder(){
+
+        Orders.deleteOrder(Integer.MAX_VALUE,UserRole.ADMIN)
+                .then()
+                .spec(fail404());
+    }
+
+
 
 
 }

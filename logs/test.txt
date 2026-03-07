@@ -246,23 +246,23 @@ Get orders by userId → 200 ✅
 
 Create order → 201 ✅
 
-Verify totalAmount calculation
+Verify totalAmount calculation ✅
 
-Verify status field exists
+Verify status field exists ✅
 
-Update order status → 200
+Update order status → 200 ✅
 
 ❌ Negative
 
-Create order with invalid productId → 400
+Create order with invalid productId → 400 ✅
 
-Create order with empty items → 400
+Create order with empty items → 400 ✅
 
-Create order with wrong totalAmount → 400
+Create order with wrong totalAmount → 400 ✅
 
-Get invalid order ID → 404
+Get invalid order ID → 404 ✅
 
-Unauthorized user accessing another user's order → 403
+Unauthorized user accessing another user's order → 403 ✅
 
 💼 Business Logic Tests
 
