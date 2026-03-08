@@ -1,9 +1,12 @@
 package tests;
 
+import dataproviders.AuthDataProvider;
 import endpoints.Auth;
 import helpers.AuthHelper;
 import io.restassured.response.Response;
+import io.restassured.specification.ResponseSpecification;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import payloads.request.LoginRequestPOJO;
 import payloads.response.LoginResponsePOJO;
@@ -41,6 +44,7 @@ public class AuthTest extends BaseClass {
     @Test
     public static void loginUser(){
 
+        //calling login function
         LoginRequestPOJO loginRequestPOJO = AuthHelper.loginasUserOrAdmin("testuser","password123");
 
         Response resp = Auth.login(loginRequestPOJO);
@@ -53,89 +57,31 @@ public class AuthTest extends BaseClass {
 
     }
 
-    //login with invalid credentials as user
-    @Test
-    public static void loginUserInvalid(){
+    @Test(dataProvider = "invalidLoginPayloads", dataProviderClass = AuthDataProvider.class)
+    public static void invalidLogins(String message,LoginRequestPOJO loginRequestPOJO, ResponseSpecification spec){
 
-        LoginRequestPOJO loginRequestPOJO = AuthHelper.loginasUserOrAdmin("testuser","passwword1234");
-
-        Response resp = Auth.login(loginRequestPOJO);
-
-        resp.then().spec(fail401());
-
-
-    }
-
-    //login with empty request body as user
-    @Test
-    public void loginUserEmptyBody(){
-
-        Auth.login(null)
+        Auth.login(loginRequestPOJO)
                 .then()
-                .spec(fail400());
+                .spec(spec);
 
     }
 
-    @Test
-    public void loginWithMissingPassword(){
-        LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
-                .username("testuser")
-                .build();
-        Response resp = Auth.login(loginRequestPOJO);
+    @Test(dataProvider = "securityPayloads", dataProviderClass = AuthDataProvider.class)
+    public static void securityLoginTests(String message,LoginRequestPOJO loginRequestPOJO , ResponseSpecification spec){
 
-        resp.then().spec(fail401());
-
-    }
-
-    @Test
-    public static void loginSqlInjection(){
-
-        LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
-                .username("' OR 1=1 --")
-                .password("' OR 1=1 --")
-                .build();
-
-        Response resp = Auth.login(loginRequestPOJO);
-
-        resp.then().spec(fail401());
-
-
-    }
-
-    @Test
-    public static void loginJSInjection(){
-
-        LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
-                .username("<script>alert(1)</script>")
-                .password("pass")
-                .build();
-
-        Response resp = Auth.login(loginRequestPOJO);
-
-        resp.then().spec(fail401());
-
+        Auth.login(loginRequestPOJO).then()
+                .spec(spec);
 
     }
 
     @Test
     public void loginJSONInjection(){
 
-        Map<String, Object> payload = new HashMap<>();
+        Map<String,Object> payload = AuthHelper.loginJsonInjectionPayload();
+        Auth.login(payload)
+                .then()
+                .spec(fail401());
 
-        Map<String, Object> injection = new HashMap<>();
-        injection.put("$ne", null);
-
-        payload.put("username", injection);
-        payload.put("password", injection);
-
-        Response resp = given()
-                .spec(BaseClass.get(null))
-                .basePath("/login")
-                .body(payload)
-                .when()
-                .post();
-
-        resp.then().spec(fail401());
     }
 
     @Test
@@ -143,14 +89,11 @@ public class AuthTest extends BaseClass {
 
         TestContext.addHeader("Content-Type","Application/XML");
 
-        LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
-                .username("tester@qa.com")
-                .password("passwword1234")
-                .build();
+        LoginRequestPOJO loginRequestPOJO = AuthHelper.loginasUserOrAdmin("testuser","passwword1234");
 
-        Response resp = Auth.login(loginRequestPOJO);
+        Auth.login(loginRequestPOJO).then()
+                .spec(fail415());
 
-        resp.then().spec(fail415());
     }
 
 

@@ -24,4 +24,15 @@ public class Auth {
                 .post();
     }
 
+    // generic login (for injection / malformed payloads)
+    public static Response login(Object payload){
+
+        return given()
+                .spec(BaseClass.get(null))
+                .basePath("/login")
+                .body(payload)
+                .when()
+                .post();
+    }
+
 }

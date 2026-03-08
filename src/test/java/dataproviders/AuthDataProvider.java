@@ -1,9 +1,14 @@
 package dataproviders;
 
 import helpers.AuthHelper;
+import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.DataProvider;
+import testBase.BaseClass;
 
 public class AuthDataProvider {
+
+    ResponseSpecification badRequest = BaseClass.fail400();
+    ResponseSpecification unauthorizedRequest = BaseClass.fail401();
 
     @DataProvider(name = "invalidLoginPayloads")
     public Object[][] invalidLoginPayloads() {
@@ -11,28 +16,44 @@ public class AuthDataProvider {
         return new Object[][]{
 
                 // Missing password
-                {AuthHelper.loginWithoutPassword("admin")},
+                {"Missing Password",AuthHelper.loginWithoutPassword("admin"), badRequest},
 
                 // Missing username
-                {AuthHelper.loginWithoutUsername("password123")},
+                {"Missing Username",AuthHelper.loginWithoutUsername("password123"),badRequest},
 
                 // Null password
-                {AuthHelper.loginasUserOrAdmin("admin1",null)},
+                {"Null Password",AuthHelper.loginasUserOrAdmin("admin1",null),badRequest},
 
                 // Null username
-                {AuthHelper.loginasUserOrAdmin(null,"password123")},
+                {"Null Username",AuthHelper.loginasUserOrAdmin(null,"password123"),badRequest},
 
                 // Empty username
-                {AuthHelper.loginasUserOrAdmin("","password123")},
+                {"Empty username",AuthHelper.loginasUserOrAdmin("","password123"),badRequest},
 
                 // Empty password
-                {AuthHelper.loginasUserOrAdmin("admin1","")},
+                {"Empty password",AuthHelper.loginasUserOrAdmin("admin1",""),badRequest},
 
                 //both null values
-                {AuthHelper.loginasUserOrAdmin(null,null)},
+                {"Both null values",AuthHelper.loginasUserOrAdmin(null,null),badRequest},
 
                 //Both empty values
-                {AuthHelper.loginasUserOrAdmin("","")}
+                {"Both empty values",AuthHelper.loginasUserOrAdmin("",""),badRequest}
+        };
+    }
+
+
+
+    @DataProvider(name = "securityPayloads")
+    public Object[][] securityPayloads() {
+
+        return new Object[][]{
+
+                // Missing password
+                {"SQL Injection",AuthHelper.loginasUserOrAdmin("' OR 1=1 --","' OR 1=1 --"),unauthorizedRequest},
+                {"JS Injection",AuthHelper.loginasUserOrAdmin("<script>alert(1)</script>","password123"),unauthorizedRequest},
+                {"JS Injection",AuthHelper.loginasUserOrAdmin("<script>alert(1)</script>","password123"),unauthorizedRequest},
+                {"JSON Injection - $ne",AuthHelper.loginJsonInjectionPayload(),unauthorizedRequest}
+
         };
     }
 }
