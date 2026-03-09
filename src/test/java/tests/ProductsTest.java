@@ -5,6 +5,8 @@ import endpoints.Categories;
 import endpoints.Products;
 import enums.UserRole;
 import helpers.ProductHelper;
+import io.restassured.response.Response;
+import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.Test;
 import payloads.request.ProductsPOJO;
 import testBase.BaseClass;
@@ -49,11 +51,11 @@ public class ProductsTest extends BaseClass {
     @Test
     public void getProductByInvalidId(){
 
-        int invalidId = ProductHelper.getLastProductId() + Integer.MAX_VALUE;
+        int createdId = Integer.MAX_VALUE;
 
-        Products.getProductById(invalidId,null).then()
+        Products.getProductById(createdId,null).then()
                 .spec(fail404())
-                .body("id", equalTo(invalidId));
+                .body("id", equalTo(createdId));
 
     }
 
@@ -112,34 +114,23 @@ public class ProductsTest extends BaseClass {
     }
 
 
-    @Test
-    public  void createProductWithAdmin(){
+    @Test(dataProvider = "updateOrCreateProductPayloads", dataProviderClass = ProductDataProvider.class)
+    public  void createProduct(String message, ProductsPOJO payload, UserRole role, ResponseSpecification resp){
 
-        Products.createProduct(ProductHelper.validProduct(), UserRole.ADMIN)
-                .then()
-                .spec(fail403());
 
-    }
+        System.out.println("The current test is :- "+message);
 
-    @Test
-    public  void createProductWithoutAdmin() {
+        Response product = Products.createProduct(payload, role);
+        product.then().spec(resp);
 
-        Products.createProduct(ProductHelper.validProduct(),UserRole.USER)
-                .then()
-                .spec(fail403());
+        if(product.statusCode()==200){
+            int createdId = product.then().extract().jsonPath().getInt("id");
+            Products.deleteProduct(createdId,UserRole.ADMIN);
+        }
 
 
     }
 
-    @Test(dataProvider = "invalidProductPayloads",
-            dataProviderClass = ProductDataProvider.class)
-    public void createProductInvalidPayloads(ProductsPOJO payload){
-
-        Products.createProduct(payload, UserRole.ADMIN)
-                .then()
-                .spec(fail400());
-
-    }
 
     @Test
     public void createProductPriceAsString() {
@@ -154,54 +145,42 @@ public class ProductsTest extends BaseClass {
     }
 
 
-    @Test
-    public void updateWithAdmin(){
+    @Test(dataProvider = "updateOrCreateProductPayloads", dataProviderClass = ProductDataProvider.class)
+    public void updateProducts(String message, ProductsPOJO payload, UserRole role, ResponseSpecification resp){
 
-        Products.updateProduct(ProductHelper.getLastProductId() , ProductHelper.validProduct(), UserRole.ADMIN)
+        int createdId = ProductHelper.createTestProduct();
+        System.out.println("Test name :-- " +  message);
+        Products.updateProduct(createdId,payload,role)
                 .then()
-                .spec(success200());
+                .spec(resp);
+        Products.deleteProduct(createdId,UserRole.ADMIN);
 
-    }
-
-    @Test
-    public void updateWithoutAdmin(){
-
-        Products.updateProduct(ProductHelper.getLastProductId() , ProductHelper.validProduct(), UserRole.USER)
-                .then()
-                .spec(fail403());
 
     }
 
     @Test
     public void updateNonExistingProduct(){
 
-        int updateId = ProductHelper.getLastProductId()+ Integer.MAX_VALUE;
+        int updateId =  Integer.MAX_VALUE;
         Products.updateProduct(updateId , ProductHelper.validProduct(), UserRole.ADMIN)
                 .then()
                 .spec(fail404());
 
     }
 
+    @Test(dataProvider = "deleteProduct", dataProviderClass = ProductDataProvider.class)
+    public void deleteProductWithAdmin(String message, UserRole role, ResponseSpecification spec){
 
+        int createdId = ProductHelper.createTestProduct();
 
-    @Test
-    public void deleteProductWithAdmin(){
-
-        Products.deleteProduct(ProductHelper.getLastProductId(),UserRole.ADMIN).then().spec(success200());
-
-    }
-
-    @Test
-    public void deleteProductWithoutAdmin(){
-
-        Products.deleteProduct(ProductHelper.getLastProductId(),UserRole.USER).then().spec(fail403());
+        Products.deleteProduct(createdId,role).then().spec(spec);
 
     }
 
     @Test
     public void deleteProductWithInvalidId(){
 
-        int deleteId = ProductHelper.getLastProductId() + Integer.MAX_VALUE;
+        int deleteId =  Integer.MAX_VALUE;
 
         Products.deleteProduct(deleteId,UserRole.ADMIN).then().spec(fail404());
 

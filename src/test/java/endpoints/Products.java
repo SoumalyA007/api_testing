@@ -34,35 +34,6 @@ public class Products {
                 .get();
     }
 
-//    public static Response createProduct(ProductsPOJO product,
-//                                         UserRole role, String body,
-//                                         String token) {
-//
-//        if (token != null) {
-//            return given()
-//                    .spec(BaseClass.getWithToken(token))
-//                    .basePath("/products")
-//                    .body(product)
-//                    .when()
-//                    .post();
-//        }
-//
-//        if(body != null){
-//            return given()
-//                    .spec(BaseClass.get(role))
-//                    .basePath("/products")
-//                    .body(body)
-//                    .when()
-//                    .post();
-//        }
-//
-//        return given()
-//                .spec(BaseClass.get(role))
-//                .basePath("/products")
-//                .body(product)
-//                .when()
-//                .post();
-//    }
 
     public static Response createProduct(ProductsPOJO product, UserRole role) {
 

@@ -39,16 +39,16 @@ public class ProductHelper {
                 .build();
     }
 
-    public static int getLastProductId() {
-
-        List<Integer> ids = Products.getAllProducts(UserRole.USER)
-                .then()
-                .extract()
-                .jsonPath()
-                .getList("id", Integer.class);
-
-        return ids.get(ids.size() - 1);
-    }
+//    public static int getLastProductId() {
+//
+//        List<Integer> ids = Products.getAllProducts(UserRole.USER)
+//                .then()
+//                .extract()
+//                .jsonPath()
+//                .getList("id", Integer.class);
+//
+//        return ids.get(ids.size() - 1);
+//    }
 
     public static int getRandomProductId(){
 
@@ -90,5 +90,13 @@ public class ProductHelper {
           "description": "Test desc"
         }
         """;
+    }
+
+    public static int createTestProduct() {
+
+        return Products.createProduct(validProduct(), UserRole.ADMIN)
+                .then()
+                .extract()
+                .path("id");
     }
 }
