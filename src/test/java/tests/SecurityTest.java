@@ -3,13 +3,10 @@ package tests;
 import endpoints.Orders;
 import endpoints.Products;
 import enums.UserRole;
-import io.restassured.response.Response;
-import org.apache.commons.math3.stat.descriptive.summary.Product;
-import org.apache.logging.log4j.core.config.Order;
+import helpers.ProductHelper;
 import org.testng.annotations.Test;
 import payloads.request.ProductsPOJO;
 import testBase.BaseClass;
-import utilities.TestContext;
 import utilities.TokenManager;
 
 public class SecurityTest extends BaseClass {
@@ -17,19 +14,14 @@ public class SecurityTest extends BaseClass {
     @Test
     public void OrderWithoutToken(){
 
-        Response response = Orders.getOrdersWithOutAuth();
-
-        response.then().spec(fail401());
-
+        Orders.getOrdersWithOutAuth().then().spec(fail401());
 
     }
 
     @Test
     public void OrderWithoutRole(){
 
-        Response response = Orders.getOrders(UserRole.USER);
-
-        response.then().spec(fail403());
+        Orders.getOrders(UserRole.USER).then().spec(fail403());
 
     }
 
@@ -38,17 +30,7 @@ public class SecurityTest extends BaseClass {
 
         String expiredToken = TokenManager.generateExpiredToken(UserRole.ADMIN);
 
-        TestContext.addHeader("Authorization",
-                "Bearer " + expiredToken);
-
-        ProductsPOJO productsPOJO = ProductsPOJO.builder()
-                .id(104)
-                .price(221.10)
-                .title("Samsung Galazy S20 FE ")
-                .image("https://iamge.jpg")
-                .category("electronics")
-                .description("It is a very good flagship mobile")
-                .build();
+        ProductsPOJO productsPOJO = ProductHelper.validProduct();
 
         Products.createProduct(productsPOJO,expiredToken)
                 .then()
@@ -61,23 +43,12 @@ public class SecurityTest extends BaseClass {
 
         String token = TokenManager.getToken(UserRole.ADMIN);
 
-        ProductsPOJO productsPOJO = ProductsPOJO.builder()
-                .id(104)
-                .price(221.10)
-                .title("Samsung Galazy S20 FE ")
-                .image("https://iamge.jpg")
-                .category("electronics")
-                .description("It is a very good flagship mobile")
-                .build();
+        ProductsPOJO productsPOJO = ProductHelper.validProduct();
 
         Products.createProduct(productsPOJO , token+"abv")
                 .then().spec(fail403());
 
     }
-
-
-
-
 
 
 }

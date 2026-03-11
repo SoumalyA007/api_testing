@@ -1,7 +1,9 @@
 package tests;
 
+import dataproviders.UserDataProvider;
 import endpoints.Users;
 import enums.UserRole;
+import helpers.UserHelper;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 import payloads.request.UserDetailsPOJO;
@@ -45,57 +47,91 @@ public class UsersTest extends BaseClass {
 
     }
 
-        @Test
-        public void createUser(){
+    @Test(dataProvider = "createUserData",dataProviderClass = UserDataProvider.class)
+    public void createUser(String firstname, String lastname,String email, String username,String password){
 
-            UserDetailsPOJO userDetailsPOJO = UserDetailsPOJO.builder()
-                    .firstname("Soumalya")
-                    .lastname("Hajra")
-                    .build();
+        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
 
-            UserPOJO userPOJO = UserPOJO.builder()
-                    .email("user1@gmail.com")
-                    .username("Soumalya")
-                    .password("user@1")
-                    .details(userDetailsPOJO)
-                    .build();
+        UserPOJO userPOJO = UserHelper.userPayload(userDetailsPOJO,email,username,password);
 
-            Users.createUser(userPOJO,UserRole.ADMIN)
-                    .then()
-                    .spec(success201())
-                    .body("username",equalTo("Soumalya"))
-                    .body("id",notNullValue());
-
-        }
-
-
-    @Test
-    public void updateUser(){
-
-        Response resp = Users.getAllUsers(UserRole.USER);
-        List<Integer> userIds = resp.then().extract().jsonPath().getList("id", Integer.class);
-        int id = userIds.get(userIds.size()-1);
-
-        UserDetailsPOJO userDetailsPOJO = UserDetailsPOJO.builder()
-                .firstname("Soumalya")
-                .lastname("Hajra")
-                .build();
-
-        UserPOJO userPOJO = UserPOJO.builder()
-                .email("soumalya.hajra@gmail.com")
-                .username("Soumalya")
-                .password("pass@1234")
-                .details(userDetailsPOJO)
-                .build();
-
-        Users.updateUser(id,userPOJO,UserRole.ADMIN)
+        int id = Users.createUser(userPOJO,UserRole.ADMIN)
                 .then()
                 .spec(success201())
-                .body("username",equalTo("Soumalya"))
-                .body("id",notNullValue())
-                .body("password",equalTo("pass@1234"));
+                .body("username",equalTo(username))
+                .body("id",greaterThan(0))
+                .extract()
+                .jsonPath()
+                .getInt("id");
+
+        Users.deleteUser(id,UserRole.ADMIN);
 
     }
+
+
+//    @Test(dataProvider = "createUser",dataProviderClass = UserDataProvider.class)
+//    public void updateUser(String firstname, String lastname,String email, String username,String password){
+//
+//        Response resp = Users.getAllUsers(UserRole.USER);
+//        List<Integer> userIds = resp.then().extract().jsonPath().getList("id", Integer.class);
+//        int id = userIds.get(userIds.size()-1);
+//
+//        //UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload();
+//
+//        //UserPOJO userPOJO = UserHelper.userPayload(userDetailsPOJO);
+//
+//        Users.updateUser(id,userPOJO,UserRole.ADMIN)
+//                .then()
+//                .spec(success201())
+//                .body("username",equalTo("Soumalya"))
+//                .body("id",notNullValue())
+//                .body("password",equalTo("pass@1234"));
+//
+//
+//
+//        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
+//
+//        UserPOJO userPOJO = UserHelper.userPayload(userDetailsPOJO,email,username,password);
+//
+//        int id = Users.createUser(userPOJO,UserRole.ADMIN)
+//                .then()
+//                .spec(success201())
+//                .body("username",equalTo(username))
+//                .extract()
+//                .jsonPath()
+//                .getInt("id");
+//
+//
+//
+//    }
+
+    @Test(dataProvider = "updateUserFields", dataProviderClass = UserDataProvider.class)
+    public void updateUserField(String field,String value,String firstname, String lastname,String email, String username,String password){
+
+        // create user first
+        System.out.println("Updating field:" + field + " with value" + value);
+        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
+        UserPOJO user = UserHelper.userPayload(userDetailsPOJO,email,username,password);
+
+        int userId = Users.createUser(user, UserRole.ADMIN)
+                .then()
+                .extract()
+                .path("id");
+
+        // update payload
+        UserPOJO updateUser = UserHelper.updateUserField(field, value);
+
+        String jsonPath = field;
+
+        if(field.equals("firstname") || field.equals("lastname")){
+            jsonPath = "details." + field;
+        }
+
+        Users.updateUser(userId, updateUser, UserRole.ADMIN)
+                .then()
+                .spec(success200())
+                .body(field,equalTo(value));
+    }
+
 
     @Test
     public void deleteUser(){
