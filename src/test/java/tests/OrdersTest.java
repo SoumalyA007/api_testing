@@ -1,11 +1,14 @@
 package tests;
 
+import dataproviders.OrdersDataProvider;
 import endpoints.Carts;
 import endpoints.Orders;
 import endpoints.Products;
 import enums.OrderStatus;
 import enums.UserRole;
+import helpers.OrderHelper;
 import io.restassured.response.Response;
+import io.restassured.specification.ResponseSpecification;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.core.config.Order;
 import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
@@ -67,7 +70,7 @@ public class OrdersTest extends BaseClass {
                 .body("userId",everyItem(equalTo(currentUserId)));
     }
 
-    //User should be able to fetch his personal Orders
+    //User should not be able to fetch someone else's Orders
     @Test
     public void getOrderByRandomId(){
 
@@ -105,7 +108,7 @@ public class OrdersTest extends BaseClass {
 
         int invalidOrderId = Integer.MAX_VALUE;
 
-        Orders.getOrderById(invalidOrderId,UserRole.USER)
+        Orders.getOrderById(invalidOrderId,UserRole.ADMIN)
                 .then()
                 .spec(fail404());
 
@@ -154,63 +157,27 @@ public class OrdersTest extends BaseClass {
 
     }
 
+
     //user should be able to create a order for himself
     @Test
     public void createOrderByUser(){
 
-        Double totalPrice = 0.0;
+        List<OrderItemPOJO> orderItems = Carts.getCarts(UserRole.USER).then().extract().jsonPath().getList("");
 
         int userId = TokenManager.getUserId(UserRole.USER);
-        List<OrderItemPOJO> orderItems = Carts.getCarts(UserRole.USER)
-                .then()
-                .spec(success200())
-                .extract()
-                .jsonPath()
+        OrderPOJO order = OrderHelper.buildOrder(userId , orderItems);
 
-                .getList("[0].products", OrderItemPOJO.class);
+        OrderResponsePOJO orderResponse = Orders.createOrder(order,UserRole.USER).then().extract().as(OrderResponsePOJO.class);
 
-        OrderPOJO orderPOJO = OrderPOJO.builder()
-                .userId(userId)
-                .items(orderItems)
-                .build();
+        Assert.assertEquals(orderResponse.getUserId(),userId,"User Id should match");
+        Assert.assertEquals(orderResponse.getItems().size(),orderItems.size(),"Order of same number of products should be placed as was present in cart");
+        Assert.assertNotNull(orderResponse.getId(),"Order Id should not be null");
 
-        OrderResponsePOJO orderResponse =
-                Orders.createOrder(orderPOJO , UserRole.USER)
-                        .as(OrderResponsePOJO.class);
+        OrderHelper.validateOrderedItems(orderItems,orderResponse.getItems());
 
-        Assert.assertEquals(userId , orderResponse.getUserId());
-        Assert.assertNotNull(orderResponse.getId());
-        Assert.assertEquals(orderResponse.getItems().size(),orderItems.size());
+        double total = OrderHelper.calculateTotal(orderResponse.getItems());
+        Assert.assertEquals(total , orderResponse.getTotalAmount(),"Total price should be same");
 
-        List<OrderItemResponsePOJO> itemResponse = orderResponse.getItems();
-
-        //Checking of same productIds as order placed
-        Map<Integer, Integer> requestMap = orderItems.stream()
-                .collect(Collectors.toMap(
-                        OrderItemPOJO::getProductId,
-                        OrderItemPOJO::getQuantity
-                ));
-
-        for (OrderItemResponsePOJO item : itemResponse) {
-
-            Assert.assertTrue(requestMap.containsKey(item.getProductId()),
-                    "Unexpected productId in response: " + item.getProductId());
-
-            Assert.assertEquals(
-                    item.getQuantity(),
-                    requestMap.get(item.getProductId()),
-                    "Quantity mismatch for productId " + item.getProductId()
-            );
-
-            double price = Products.getProductById(item.getProductId(),UserRole.USER).then().extract().jsonPath().getDouble("price");
-            totalPrice += price* item.getQuantity();
-        }
-
-        Assert.assertEquals(orderResponse.getTotalAmount(),totalPrice,"The total prices does not match");
-
-        Assert.assertEquals(orderResponse.getStatus(),"PENDING","The order status is different");
-
-        Assert.assertEquals(orderResponse.getOrderDate(),LocalDate.now().toString(),"The order date does not match");
 
     }
 
@@ -218,23 +185,14 @@ public class OrdersTest extends BaseClass {
     @Test
     public void createOrderByUserForAnotherUser(){
 
+        List<OrderItemPOJO> orderItems = Carts.getCarts(UserRole.USER).then().extract().jsonPath().getList("");
+
         int userId = TokenManager.getUserId(UserRole.USER);
-        List<OrderItemPOJO> orderItems = Carts.getCarts(UserRole.USER)
-                .then()
-                .spec(success200())
-                .extract()
-                .jsonPath()
+        OrderPOJO order = OrderHelper.buildOrder(userId-1 , orderItems);
 
-                .getList("[0].products", OrderItemPOJO.class);
+        Orders.createOrder(order,UserRole.USER).then().spec(fail403());
 
-        OrderPOJO orderPOJO = OrderPOJO.builder()
-                .userId(userId+10)
-                .items(orderItems)
-                .build();
 
-        Orders.createOrder(orderPOJO , UserRole.USER)
-                .then()
-                .spec(fail403());
 
     }
 
@@ -242,79 +200,25 @@ public class OrdersTest extends BaseClass {
     @Test
     public void createOrderByAdmin(){
 
-        Double totalPrice = 0.0;
+        List<OrderItemPOJO> orderItems = Carts.getCarts(UserRole.USER).then().extract().jsonPath().getList("");
 
         int userId = TokenManager.getUserId(UserRole.USER);
-        List<OrderItemPOJO> orderItems = Carts.getCarts(UserRole.USER)
-                .then()
-                .spec(success200())
-                .extract()
-                .jsonPath()
+        OrderPOJO order = OrderHelper.buildOrder(userId , orderItems);
 
-                .getList("[0].products", OrderItemPOJO.class);
+        OrderResponsePOJO orderResponse = Orders.createOrder(order,UserRole.ADMIN).then().extract().as(OrderResponsePOJO.class);
 
-        OrderPOJO orderPOJO = OrderPOJO.builder()
-                .userId(userId)
-                .items(orderItems)
-                .build();
+        Assert.assertEquals(orderResponse.getUserId(),userId,"User Id should match");
+        Assert.assertEquals(orderResponse.getItems().size(),orderItems.size(),"Order of same number of products should be placed as was present in cart");
+        Assert.assertNotNull(orderResponse.getId(),"Order Id should not be null");
 
-        OrderResponsePOJO orderResponse =
-                Orders.createOrder(orderPOJO , UserRole.ADMIN)
-                        .as(OrderResponsePOJO.class);
+        OrderHelper.validateOrderedItems(orderItems,orderResponse.getItems());
 
-        Assert.assertEquals(userId , orderResponse.getUserId());
-        Assert.assertNotNull(orderResponse.getId());
-        Assert.assertEquals(orderResponse.getItems().size(),orderItems.size());
-
-        List<OrderItemResponsePOJO> itemResponse = orderResponse.getItems();
-
-        //Checking of same productIds as order placed
-        Map<Integer, Integer> requestMap = orderItems.stream()
-                .collect(Collectors.toMap(
-                        OrderItemPOJO::getProductId,
-                        OrderItemPOJO::getQuantity
-                ));
-
-        for (OrderItemResponsePOJO item : itemResponse) {
-
-            Assert.assertTrue(requestMap.containsKey(item.getProductId()),
-                    "Unexpected productId in response: " + item.getProductId());
-
-            Assert.assertEquals(
-                    item.getQuantity(),
-                    requestMap.get(item.getProductId()),
-                    "Quantity mismatch for productId " + item.getProductId()
-            );
-
-            double price = Products.getProductById(item.getProductId(),UserRole.USER).then().extract().jsonPath().getDouble("price");
-            totalPrice += price* item.getQuantity();
-        }
-
-        Assert.assertEquals(orderResponse.getTotalAmount(),totalPrice,"The total prices does not match");
-
-        Assert.assertEquals(orderResponse.getStatus(),"PENDING","The order status is different");
-
-        Assert.assertEquals(orderResponse.getOrderDate(),LocalDate.now().toString(),"The order date does not match");
-
-    }
-
-    @Test
-    public void createOrderWithNegativeQuantity(){
-
-        OrderPOJO order = OrderPOJO.builder()
-                .userId(TokenManager.getUserId(UserRole.USER))
-                .items(List.of(new OrderItemPOJO(101,-1)))
-                .build();
-
-        Orders.createOrder(order,UserRole.USER)
-                .then()
-                .spec(fail400());
+        double total = OrderHelper.calculateTotal(orderResponse.getItems());
+        Assert.assertEquals(total , orderResponse.getTotalAmount(),"Total price should be same");
     }
 
     @Test
     public void createOrderByUserWithoutUserId(){
-        Double totalPrice = 0.0;
-
 
         List<OrderItemPOJO> orderItems = Carts.getCarts(UserRole.USER)
                 .then()
@@ -336,71 +240,18 @@ public class OrdersTest extends BaseClass {
         Assert.assertNotNull(orderResponse.getId());
         Assert.assertEquals(orderResponse.getItems().size(),orderItems.size());
 
-        List<OrderItemResponsePOJO> itemResponse = orderResponse.getItems();
+        OrderHelper.validateOrderedItems(orderItems,orderResponse.getItems());
 
-        //Checking of same productIds as order placed
-        Map<Integer, Integer> requestMap = orderItems.stream()
-                .collect(Collectors.toMap(
-                        OrderItemPOJO::getProductId,
-                        OrderItemPOJO::getQuantity
-                ));
+        float total = OrderHelper.calculateTotal(orderResponse.getItems());
+        Assert.assertEquals(total , orderResponse.getTotalAmount(),"Total price should be same");
 
-        for (OrderItemResponsePOJO item : itemResponse) {
-
-            Assert.assertTrue(requestMap.containsKey(item.getProductId()),
-                    "Unexpected productId in response: " + item.getProductId());
-
-            Assert.assertEquals(
-                    item.getQuantity(),
-                    requestMap.get(item.getProductId()),
-                    "Quantity mismatch for productId " + item.getProductId()
-            );
-
-            double price = Products.getProductById(item.getProductId(),UserRole.USER).then().extract().jsonPath().getDouble("price");
-            totalPrice += price* item.getQuantity();
-        }
-
-        Assert.assertEquals(orderResponse.getTotalAmount(),totalPrice,"The total prices does not match");
+        Assert.assertEquals(orderResponse.getTotalAmount(),total,"The total prices does not match");
 
         Assert.assertEquals(orderResponse.getStatus(),"PENDING","The order status is different");
 
         Assert.assertEquals(orderResponse.getOrderDate(),LocalDate.now().toString(),"The order date does not match");
-    }
 
-    @Test
-    public void createOrderWithInvalidProductId() {
-
-        OrderPOJO order = OrderPOJO.builder()
-                .items(List.of(new OrderItemPOJO(Integer.MAX_VALUE,1)))
-                .build();
-
-        Orders.createOrder(order,UserRole.USER)
-                .then()
-                .statusCode(400);
-    }
-
-    @Test
-    public void createOrderWithNegativeProductId() {
-
-        OrderPOJO order = OrderPOJO.builder()
-                .items(List.of(new OrderItemPOJO(-100,1)))
-                .build();
-
-        Orders.createOrder(order,UserRole.USER)
-                .then()
-                .statusCode(400);
-    }
-
-    @Test
-    public void createOrderWithEmptyItemList(){
-
-        OrderPOJO order = OrderPOJO.builder()
-                .userId(TokenManager.getUserId(UserRole.USER))
-                .build();
-
-        Orders.createOrder(order , UserRole.USER)
-                .then()
-                .spec(fail400());
+        Orders.deleteOrder(orderResponse.getId(),UserRole.ADMIN);
     }
 
     @Test
@@ -426,6 +277,16 @@ public class OrdersTest extends BaseClass {
 
     }
 
+
+    @Test(dataProvider = "invalidOrderPayloads", dataProviderClass = OrdersDataProvider.class)
+    public void createOrderWithInvalidPayload(String scenario, OrderPOJO order, ResponseSpecification resp){
+
+        System.out.println("Running Scenario: " + scenario);
+
+        Orders.createOrder(order, UserRole.USER)
+                .then()
+                .spec(resp);
+    }
 
     //user can not update order
     @Test

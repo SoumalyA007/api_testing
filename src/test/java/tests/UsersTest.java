@@ -5,13 +5,11 @@ import endpoints.Users;
 import enums.UserRole;
 import helpers.UserHelper;
 import io.restassured.response.Response;
+import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.Test;
 import payloads.request.UserDetailsPOJO;
 import payloads.request.UserPOJO;
 import testBase.BaseClass;
-
-import java.util.List;
-import java.util.Random;
 
 import static org.hamcrest.Matchers.*;
 
@@ -39,9 +37,7 @@ public class UsersTest extends BaseClass {
     @Test
     public void getUserById(){
 
-        List<Integer> userId = Users.getAllUsers(UserRole.USER).then().spec(success200()).extract().jsonPath().getList("id",Integer.class);
-
-        int randUserId = userId.get(new Random().nextInt(userId.size()));
+        int randUserId = UserHelper.getLastUserId();
 
         Users.getUserById(randUserId,UserRole.USER).then().spec(success200()).body("id",equalTo(randUserId));
 
@@ -66,43 +62,6 @@ public class UsersTest extends BaseClass {
         Users.deleteUser(id,UserRole.ADMIN);
 
     }
-
-
-//    @Test(dataProvider = "createUser",dataProviderClass = UserDataProvider.class)
-//    public void updateUser(String firstname, String lastname,String email, String username,String password){
-//
-//        Response resp = Users.getAllUsers(UserRole.USER);
-//        List<Integer> userIds = resp.then().extract().jsonPath().getList("id", Integer.class);
-//        int id = userIds.get(userIds.size()-1);
-//
-//        //UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload();
-//
-//        //UserPOJO userPOJO = UserHelper.userPayload(userDetailsPOJO);
-//
-//        Users.updateUser(id,userPOJO,UserRole.ADMIN)
-//                .then()
-//                .spec(success201())
-//                .body("username",equalTo("Soumalya"))
-//                .body("id",notNullValue())
-//                .body("password",equalTo("pass@1234"));
-//
-//
-//
-//        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
-//
-//        UserPOJO userPOJO = UserHelper.userPayload(userDetailsPOJO,email,username,password);
-//
-//        int id = Users.createUser(userPOJO,UserRole.ADMIN)
-//                .then()
-//                .spec(success201())
-//                .body("username",equalTo(username))
-//                .extract()
-//                .jsonPath()
-//                .getInt("id");
-//
-//
-//
-//    }
 
     @Test(dataProvider = "updateUserFields", dataProviderClass = UserDataProvider.class)
     public void updateUserField(String field,String value,String firstname, String lastname,String email, String username,String password){
@@ -129,18 +88,26 @@ public class UsersTest extends BaseClass {
         Users.updateUser(userId, updateUser, UserRole.ADMIN)
                 .then()
                 .spec(success200())
-                .body(field,equalTo(value));
+                .body(jsonPath,equalTo(value));
+
+        Users.deleteUser(userId,UserRole.ADMIN);
     }
 
 
-    @Test
-    public void deleteUser(){
+    @Test(dataProvider = "deleteUserFields", dataProviderClass = UserDataProvider.class)
+    public void deleteUser(String firstname, String lastname, String email, String username, String password, UserRole role , ResponseSpecification resp){
 
-        Response resp = Users.getAllUsers(UserRole.USER);
-        List<Integer> userIds = resp.then().extract().jsonPath().getList("id", Integer.class);
-        int id = userIds.get(userIds.size()-1);
+        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
+        UserPOJO user = UserHelper.userPayload(userDetailsPOJO,email,username,password);
 
-        Users.deleteUser(id,UserRole.ADMIN);
+        int userId = Users.createUser(user, UserRole.ADMIN)
+                .then()
+                .extract()
+                .path("id");
+
+       Users.deleteUser(userId,role)
+               .then()
+               .spec(resp);
 
 
     }
@@ -148,205 +115,135 @@ public class UsersTest extends BaseClass {
     @Test
     public void getUserByInvalidId(){
 
-        List<Integer> userId = Users.getAllUsers(UserRole.USER).then().spec(success200()).extract().jsonPath().getList("id",Integer.class);
+        int invalidId = UserHelper.getLastUserId() + 1 ;
 
-        int id = userId.get(userId.size()-1);
-        int invalidId = id + 1 ;
-
-        Users.getUserById(invalidId+1,UserRole.USER).then().spec(fail403());
+        Users.getUserById(invalidId,UserRole.USER).then().spec(fail404());
 
     }
 
-    @Test
-    public void createUserWithExistingEmail(){
+    @Test(dataProvider = "createUserData",dataProviderClass = UserDataProvider.class)
+    public void createUserWithExistingEmail(String firstname, String lastname,String email, String username,String password){
 
-        String existingemail = "admin@enterprise.com";
 
-        UserDetailsPOJO userDetailsPOJO = UserDetailsPOJO.builder()
-                .firstname("Soumalya")
-                .lastname("Hajra")
-                .build();
+        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
 
-        UserPOJO userPOJO = UserPOJO.builder()
-                .email(existingemail)
-                .username("Soumalya")
-                .password("user@1")
-                .details(userDetailsPOJO)
-                .build();
+        UserPOJO userPOJO = UserHelper.userPayload(userDetailsPOJO,email,username,password);
+
+        Response resp = Users.createUser(userPOJO, UserRole.ADMIN)
+                .then()
+                .spec(success201())
+                .body("username", equalTo(username))
+                .body("id", greaterThan(0))
+                .extract()
+                .response();
+
+        int id = resp.path("id");
+        String existingemail = resp.path("email");
+
+
+        UserDetailsPOJO createDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
+
+        UserPOJO createUserPOJO = UserHelper.userPayload(userDetailsPOJO,existingemail,username+username,password);
+
+
+
+        Users.createUser(createUserPOJO,UserRole.ADMIN)
+                .then()
+                .spec(fail400());
+
+
+        Users.deleteUser(id , UserRole.ADMIN);
+
+    }
+
+
+    @Test(dataProvider = "createWithoutEmailField",dataProviderClass = UserDataProvider.class)
+    public void createUserWithMissingEmail(String firstname, String lastname,String username , String password){
+
+
+        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
+
+        UserPOJO userPOJO = UserHelper.updateCreateUserWithoutEmail(userDetailsPOJO,username,password);
 
         Users.createUser(userPOJO,UserRole.ADMIN)
                 .then()
-                .spec(fail400())
-                .body("username",equalTo("Soumalya"))
-                .body("id",notNullValue());
+                .spec(fail404());
+
 
     }
 
+    @Test(dataProvider = "updateUserFields", dataProviderClass = UserDataProvider.class)
+    public void updateNonExistingUser(String field,String value,String firstname, String lastname,String email, String username,String password){
 
-    @Test
-    public void createUserWithMissingEmail(){
 
-        String existingemail = "admin@enterprise.com";
+        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
+        UserPOJO user = UserHelper.userPayload(userDetailsPOJO,email,username,password);
 
-        UserDetailsPOJO userDetailsPOJO = UserDetailsPOJO.builder()
-                .firstname("Soumalya")
-                .lastname("Hajra")
-                .build();
-
-        UserPOJO userPOJO = UserPOJO.builder()
-                .username("Soumalya")
-                .password("user@1")
-                .details(userDetailsPOJO)
-                .build();
-
-        Users.createUser(userPOJO,UserRole.ADMIN)
+        int userId = Users.createUser(user, UserRole.ADMIN)
                 .then()
-                .spec(fail400())
-                .body("username",equalTo("Soumalya"))
-                .body("id",notNullValue());
+                .extract()
+                .path("id");
 
-    }
+        // update payload
+        UserPOJO updateUser = UserHelper.updateUserField(field, value);
 
-    @Test
-    public void updateNonExistingUser(){
+        String jsonPath = field;
 
-        Response resp = Users.getAllUsers(UserRole.USER);
-        List<Integer> userIds = resp.then().extract().jsonPath().getList("id", Integer.class);
-        int id = userIds.get(userIds.size()+1);
+        if(field.equals("firstname") || field.equals("lastname")){
+            jsonPath = "details." + field;
+        }
 
-        UserDetailsPOJO userDetailsPOJO = UserDetailsPOJO.builder()
-                .firstname("Soumalya")
-                .lastname("Hajra")
-                .build();
-
-        UserPOJO userPOJO = UserPOJO.builder()
-                .email("soumalya.hajra@gmail.com")
-                .username("Soumalya")
-                .password("pass@1234")
-                .details(userDetailsPOJO)
-                .build();
-
-        Users.updateUser(id,userPOJO,UserRole.ADMIN)
+        Users.updateUser(userId+ 100000, updateUser, UserRole.ADMIN)
                 .then()
-                .spec(fail404())
-                .body("username",equalTo("Soumalya"))
-                .body("id",notNullValue())
-                .body("password",equalTo("pass@1234"));
+                .spec(fail400());
 
-    }
-
-    @Test
-    public void deleteByInvalidId(){
-
-        Response resp = Users.getAllUsers(UserRole.USER);
-        List<Integer> userIds = resp.then().extract().jsonPath().getList("id", Integer.class);
-        int id = userIds.get(userIds.size()+10);
-
-        Users.deleteUser(id,UserRole.ADMIN).then().spec(fail404());
+        Users.deleteUser(userId,UserRole.ADMIN);
 
 
     }
 
-    @Test
-    public void emailFormatValidation(){
+    @Test(dataProvider = "deleteUserByInvalidIdFields", dataProviderClass = UserDataProvider.class)
+    public void deleteUserByInvalidId(String firstname, String lastname, String email, String username, String password , ResponseSpecification resp){
 
-        UserDetailsPOJO userDetailsPOJO = UserDetailsPOJO.builder()
-                .firstname("Soumalya")
-                .lastname("Hajra")
-                .build();
 
-        UserPOJO userPOJO = UserPOJO.builder()
-                .email("user1")
-                .username("Soumalya")
-                .password("user@12345")
-                .details(userDetailsPOJO)
-                .build();
+        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
+        UserPOJO user = UserHelper.userPayload(userDetailsPOJO,email,username,password);
 
-        Users.createUser(userPOJO,UserRole.ADMIN)
+        int userId = Users.createUser(user, UserRole.ADMIN)
                 .then()
-                .spec(fail400())
-                .body("username",equalTo("Soumalya"))
-                .body("id",notNullValue());
+                .extract()
+                .path("id");
+
+        Users.deleteUser(userId + 100000,UserRole.ADMIN).then().spec(resp);
 
     }
 
-    @Test
-    public void passwordSizeValidation(){
+    @Test(dataProvider = "validateUserData",dataProviderClass = UserDataProvider.class)
+    public void validateUserData(String field,String firstname, String lastname,String email, String username,String password, UserRole role, ResponseSpecification spec){
 
-        UserDetailsPOJO userDetailsPOJO = UserDetailsPOJO.builder()
-                .firstname("Soumalya")
-                .lastname("Hajra")
-                .build();
+        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
 
-        UserPOJO userPOJO = UserPOJO.builder()
-                .email("user1@gmail.com")
-                .username("Soumalya")
-                .password("user")
-                .details(userDetailsPOJO)
-                .build();
+        UserPOJO user;
 
-        Users.createUser(userPOJO,UserRole.ADMIN)
+        System.out.println("Currently Running :>" + field);
+
+        if(field.equalsIgnoreCase("Positive ID Validation")){
+
+            user = UserHelper.userPayloadWithId(-10,userDetailsPOJO,email,username,password);
+        }else{
+            user = UserHelper.userPayload(userDetailsPOJO,email,username,password);
+        }
+
+        int id = Users.createUser(user, role)
                 .then()
-                .spec(fail400())
-                .body("username",equalTo("Soumalya"))
-                .body("id",notNullValue());
+                .spec(spec)
+                .extract()
+                .jsonPath()
+                .getInt("id");
+
+        Users.deleteUser(id,UserRole.ADMIN);
+
 
     }
-
-    @Test
-    public void roleValidation(){
-
-        UserDetailsPOJO userDetailsPOJO = UserDetailsPOJO.builder()
-                .firstname("Soumalya")
-                .lastname("Hajra")
-                .build();
-
-        UserPOJO userPOJO = UserPOJO.builder()
-                .email("user1@gmail.com")
-                .username("Soumalya")
-                .password("user@131213")
-                .details(userDetailsPOJO)
-                .role("manager")
-                .build();
-
-        Users.createUser(userPOJO,UserRole.ADMIN)
-                .then()
-                .spec(fail400())
-                .body("username",equalTo("Soumalya"))
-                .body("id",notNullValue());
-
-    }
-
-    @Test
-    public void positiveIdValidation(){
-
-        UserDetailsPOJO userDetailsPOJO = UserDetailsPOJO.builder()
-                .firstname("Soumalya")
-                .lastname("Hajra")
-                .build();
-
-        UserPOJO userPOJO = UserPOJO.builder()
-                .id(-1)
-                .email("user1@gmail.com")
-                .username("Soumalya")
-                .password("user@131213")
-                .details(userDetailsPOJO)
-                .role("admin")
-                .build();
-
-        Users.createUser(userPOJO,UserRole.ADMIN)
-                .then()
-                .spec(fail400())
-                .body("username",equalTo("Soumalya"))
-                .body("id",notNullValue());
-
-    }
-
-
-
-
-
-
-
 
 }

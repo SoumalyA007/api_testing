@@ -1,9 +1,15 @@
 package helpers;
 
+import endpoints.Users;
+import enums.UserRole;
 import payloads.request.UserDetailsPOJO;
 import payloads.request.UserPOJO;
+import testBase.BaseClass;
 
-public class UserHelper {
+import java.util.List;
+import java.util.Random;
+
+public class UserHelper extends BaseClass {
 
 
     public static UserDetailsPOJO userDetailPayload(String firstName , String lastName){
@@ -15,6 +21,16 @@ public class UserHelper {
 
     public static UserPOJO userPayload(UserDetailsPOJO userDetailPayload,String email,String username, String password){
         return UserPOJO.builder()
+                .email(email)
+                .username(username)
+                .password(password)
+                .details(userDetailPayload)
+                .build();
+    }
+
+    public static UserPOJO userPayloadWithId(int userId, UserDetailsPOJO userDetailPayload,String email,String username, String password){
+        return UserPOJO.builder()
+                .id(userId)
                 .email(email)
                 .username(username)
                 .password(password)
@@ -60,7 +76,24 @@ public class UserHelper {
         return builder.build();
     }
 
+    public static UserPOJO updateCreateUserWithoutEmail(UserDetailsPOJO userDetailPayload,String username, String password){
 
+        return UserPOJO.builder()
+                .username(username)
+                .password(password)
+                .details(userDetailPayload)
+                .build();
+
+    }
+
+    public static int getLastUserId(){
+
+        List<Integer> userId = Users.getAllUsers(UserRole.USER).then().spec(success200()).extract().jsonPath().getList("id",Integer.class);
+
+        int lastUserId = userId.get(new Random().nextInt(userId.size()-1));
+
+        return lastUserId;
+    }
 
 
 

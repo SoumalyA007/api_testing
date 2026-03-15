@@ -1,5 +1,6 @@
 package payloads.request;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.util.List;
@@ -9,10 +10,11 @@ import enums.OrderStatus;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderPOJO {
 
 
-    private int userId;
+    private Integer userId;
     private List<OrderItemPOJO> items;
 
 }
