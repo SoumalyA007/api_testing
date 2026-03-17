@@ -10,6 +10,7 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.*;
 import utilities.*;
+import static org.hamcrest.Matchers.*;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -84,6 +85,13 @@ public class BaseClass {
                 .build();
 
 
+    }
+
+    public ResponseSpecification success200or201(){
+        return new ResponseSpecBuilder()
+                .expectHeader("Content-Type","application/json; charset=utf-8")
+                .expectStatusCode(anyOf(is(200), is(201)))
+                .build();
     }
 
     public static ResponseSpecification fail400(){

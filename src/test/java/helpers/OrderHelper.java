@@ -31,22 +31,20 @@ public class OrderHelper {
                 .build();
     }
 
-    public static float calculateTotal(List<OrderItemResponsePOJO> items) {
+    public static double calculateTotal(List<OrderItemResponsePOJO> items) {
 
-        float total = 0;
+        return items.stream()
+                .mapToDouble(item -> {
+                    double price = Products
+                            .getProductById(item.getProductId(), UserRole.USER)
+                            .then()
+                            .extract()
+                            .jsonPath()
+                            .getDouble("price");
 
-        for (OrderItemResponsePOJO item : items) {
-
-            float price = Products
-                    .getProductById(item.getProductId(), UserRole.USER)
-                    .then()
-                    .extract()
-                    .path("price");
-
-            total += price * item.getQuantity();
-        }
-
-        return total;
+                    return price * item.getQuantity();
+                })
+                .sum();
     }
 
     public static void validateOrderedItems(

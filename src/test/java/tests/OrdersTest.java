@@ -162,12 +162,19 @@ public class OrdersTest extends BaseClass {
     @Test
     public void createOrderByUser(){
 
-        List<OrderItemPOJO> orderItems = Carts.getCarts(UserRole.USER).then().extract().jsonPath().getList("");
+        List<OrderItemPOJO> orderItems = Carts.getCarts(UserRole.USER)
+                .then()
+                .extract()
+                .jsonPath()
+                .getList("[0].products", OrderItemPOJO.class);
 
         int userId = TokenManager.getUserId(UserRole.USER);
         OrderPOJO order = OrderHelper.buildOrder(userId , orderItems);
 
-        OrderResponsePOJO orderResponse = Orders.createOrder(order,UserRole.USER).then().extract().as(OrderResponsePOJO.class);
+        System.out.println(order);
+
+
+        OrderResponsePOJO orderResponse = Orders.createOrder(order,UserRole.USER).then().statusCode(201).extract().as(OrderResponsePOJO.class);
 
         Assert.assertEquals(orderResponse.getUserId(),userId,"User Id should match");
         Assert.assertEquals(orderResponse.getItems().size(),orderItems.size(),"Order of same number of products should be placed as was present in cart");
@@ -176,7 +183,7 @@ public class OrdersTest extends BaseClass {
         OrderHelper.validateOrderedItems(orderItems,orderResponse.getItems());
 
         double total = OrderHelper.calculateTotal(orderResponse.getItems());
-        Assert.assertEquals(total , orderResponse.getTotalAmount(),"Total price should be same");
+        Assert.assertEquals(total , orderResponse.getTotalPrice(),"Total price should be same");
 
 
     }
@@ -214,7 +221,7 @@ public class OrdersTest extends BaseClass {
         OrderHelper.validateOrderedItems(orderItems,orderResponse.getItems());
 
         double total = OrderHelper.calculateTotal(orderResponse.getItems());
-        Assert.assertEquals(total , orderResponse.getTotalAmount(),"Total price should be same");
+        Assert.assertEquals(total , orderResponse.getTotalPrice(),"Total price should be same");
     }
 
     @Test
@@ -242,10 +249,10 @@ public class OrdersTest extends BaseClass {
 
         OrderHelper.validateOrderedItems(orderItems,orderResponse.getItems());
 
-        float total = OrderHelper.calculateTotal(orderResponse.getItems());
-        Assert.assertEquals(total , orderResponse.getTotalAmount(),"Total price should be same");
+        double total = OrderHelper.calculateTotal(orderResponse.getItems());
+        Assert.assertEquals(total , orderResponse.getTotalPrice(),"Total price should be same");
 
-        Assert.assertEquals(orderResponse.getTotalAmount(),total,"The total prices does not match");
+        Assert.assertEquals(orderResponse.getTotalPrice(),total,"The total prices does not match");
 
         Assert.assertEquals(orderResponse.getStatus(),"PENDING","The order status is different");
 

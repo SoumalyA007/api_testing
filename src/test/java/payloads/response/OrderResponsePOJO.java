@@ -14,7 +14,7 @@ public class OrderResponsePOJO {
     private int id;
     private int userId;
     private List<OrderItemResponsePOJO> items;
-    private double totalAmount;
+    private double totalPrice;
     private OrderStatus status;
     private String orderDate;
 }

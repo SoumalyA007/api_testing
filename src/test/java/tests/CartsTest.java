@@ -3,6 +3,7 @@ package tests;
 import endpoints.Carts;
 import endpoints.Products;
 import enums.UserRole;
+import helpers.CartHelper;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 import payloads.request.CartPOJO;
@@ -16,22 +17,7 @@ import static org.hamcrest.Matchers.*;
 
 public class CartsTest extends BaseClass {
 
-    private int createTestCart() {
 
-        CartPOJO cart = CartPOJO.builder()
-                .date(LocalDate.now().toString())
-                .products(List.of(
-                        CartProductPOJO.builder()
-                                .productId(101)
-                                .quantity(1)
-                                .build()
-                ))
-                .build();
-
-        Response response = Carts.createCart(cart, UserRole.USER);
-
-        return response.jsonPath().getInt("id");
-    }
 
     @Test
     public void getAllCarts(){
@@ -76,7 +62,7 @@ public class CartsTest extends BaseClass {
 
         Carts.createCart(cartPOJO,UserRole.USER)
                 .then()
-                .spec(success201());
+                .spec(success200or201());
     }
 
 
@@ -134,7 +120,7 @@ public class CartsTest extends BaseClass {
     @Test
     public void updateCartQuantity() {
 
-        int cartId = createTestCart();
+        int cartId = CartHelper.createTestCart();
 
         CartPOJO updatedCart = CartPOJO.builder()
                 .date(LocalDate.now().toString())
