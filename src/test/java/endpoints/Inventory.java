@@ -27,6 +27,15 @@ public class Inventory {
                 .get();
     }
 
+    public static Response getInventoryByProductId(int productId, UserRole role){
+        return given()
+                .spec(BaseClass.get(role))
+                .basePath("/inventory")
+                .queryParam("productId", productId)
+                .when()
+                .get();
+    }
+
     public static Response updateInventory(int id, InventoryPOJO inventory, UserRole role){
         return given()
                 .spec(BaseClass.get(role))

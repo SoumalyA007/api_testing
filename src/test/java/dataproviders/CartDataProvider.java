@@ -1,13 +1,21 @@
 package dataproviders;
 
+import enums.UserRole;
+import helpers.CartHelper;
 import org.testng.annotations.DataProvider;
+import testBase.BaseClass;
 
 public class CartDataProvider {
 
-    @DataProvider(name = "create")
+    @DataProvider(name = "createCart")
     public Object[][] createCart(){
 
+        return new Object[][]{
+                {"Add 1 product in cart", 1, UserRole.ADMIN, BaseClass.success200or201()},
+                {"Add 2 product in cart", 2, UserRole.ADMIN, BaseClass.success200or201()},
+                {"Add 3 product in cart", 3, UserRole.ADMIN, BaseClass.success200or201()}
 
+        };
 
 
     }
