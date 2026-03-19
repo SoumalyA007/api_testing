@@ -52,78 +52,35 @@ public class CartsTest extends BaseClass {
                 .spec(resp);
     }
 
+    @Test(dataProvider = "negativeTestCart",dataProviderClass = CartDataProvider.class)
+    public void negativeCartTests(String message,UserRole role,ResponseSpecification resp){
 
-    @Test
-    public void validateProductIdExists(){
-        //List<Integer> productId = Products.getAllProducts(UserRole.USER).then().extract().jsonPath().getList("id",Integer.class);
+        List<CartProductPOJO> cartProductPOJOList = CartHelper.negativeTestCartProduct(message);
 
+        CartPOJO cartPOJO = CartHelper.createTestCart(cartProductPOJOList);
 
-        List<CartProductPOJO> cartProducts = new ArrayList<>();
-
-
-        CartProductPOJO cartProductPOJO  = CartProductPOJO.builder()
-                .productId(99999999)
-                .quantity(2)
-                .build();
-
-        cartProducts.add(cartProductPOJO);
-
-        CartPOJO cartPOJO = CartPOJO.builder()
-                .userId(2)
-                .date(LocalDate.now().toString())
-                .products(cartProducts)
-                .build();
-
-        Carts.createCart(cartPOJO,UserRole.USER)
+        Carts.createCart(cartPOJO,role)
                 .then()
-                .spec(fail400());
+                .spec(resp);
 
     }
 
     @Test
-    public void quantityGreaterThanZero(){
+    public void updateCartQuantity(){
 
-        List<CartProductPOJO> cartProducts = new ArrayList<>();
+        Response resp = Carts.getCarts(UserRole.USER).then().extract().response();
+        int cartId = resp.then().extract().jsonPath().getInt("[0].id");
+        int quantity  = resp.then().extract().jsonPath().getInt("[0].products[0].quantity");
 
-        CartProductPOJO cartProductPOJO  = CartProductPOJO.builder()
-                .productId(101)
-                .quantity(0)
-                .build();
+        CartPOJO cartPOJO = CartHelper.updateCartQuantity(cartId,UserRole.USER);
 
-        cartProducts.add(cartProductPOJO);
+        Response response = Carts.updateCart(cartId , cartPOJO , UserRole.USER).then().extract().response();
 
-        CartPOJO cartPOJO = CartPOJO.builder()
-                .userId(2)
-                .date(LocalDate.now().toString())
-                .products(cartProducts)
-                .build();
+        response.then().spec(success200())
+                .body("products[0].quantity" , equalTo(quantity+1) );
 
-        Carts.createCart(cartPOJO,UserRole.USER)
-                .then()
-                .spec(fail400());
 
     }
-
-//    @Test
-//    public void updateCartQuantity() {
-//
-//        //int cartId = CartHelper.createTestCart();
-//
-//        CartPOJO updatedCart = CartPOJO.builder()
-//                .date(LocalDate.now().toString())
-//                .products(List.of(
-//                        CartProductPOJO.builder()
-//                                .productId(101)
-//                                .quantity(3)
-//                                .build()
-//                ))
-//                .build();
-//
-//        Carts.updateCart(cartId, updatedCart, UserRole.USER)
-//                .then()
-//                .statusCode(200)
-//                .body("products[0].quantity", equalTo(3));
-//    }
 
 
     @Test

@@ -20,4 +20,17 @@ public class CartDataProvider {
 
     }
 
+    @DataProvider(name = "negativeTestCart")
+    public Object[][] negativeTestCart(){
+
+        return new Object[][]{
+                {"productId",  UserRole.ADMIN, BaseClass.fail400()},
+                {"zeroQuantity", UserRole.ADMIN, BaseClass.fail400()}
+
+        };
+
+
+    }
+
+
 }
