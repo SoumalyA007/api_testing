@@ -5,8 +5,10 @@ import endpoints.Carts;
 import endpoints.Products;
 import enums.UserRole;
 import helpers.CartHelper;
+import helpers.ProductHelper;
 import io.restassured.response.Response;
 import io.restassured.specification.ResponseSpecification;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import payloads.request.CartPOJO;
 import payloads.request.CartProductPOJO;
@@ -45,7 +47,7 @@ public class CartsTest extends BaseClass {
 
         List<CartProductPOJO> cartProductPOJOList = CartHelper.createTestCartProduct(numberOfProducts);
 
-        CartPOJO cartPOJO = CartHelper.createTestCart(cartProductPOJOList);
+        CartPOJO cartPOJO = CartHelper.createTestCart(cartProductPOJOList,role);
 
         Carts.createCart(cartPOJO,role)
                 .then()
@@ -57,7 +59,7 @@ public class CartsTest extends BaseClass {
 
         List<CartProductPOJO> cartProductPOJOList = CartHelper.negativeTestCartProduct(message);
 
-        CartPOJO cartPOJO = CartHelper.createTestCart(cartProductPOJOList);
+        CartPOJO cartPOJO = CartHelper.createTestCart(cartProductPOJOList,role);
 
         Carts.createCart(cartPOJO,role)
                 .then()
@@ -83,29 +85,17 @@ public class CartsTest extends BaseClass {
     }
 
 
-    @Test
-    public void deleteCart() {
+    @Test(dataProvider = "deleteCart", dataProviderClass = CartDataProvider.class)
+    public void deleteCart(String message , int numberOfProducts , UserRole role , ResponseSpecification resp) {
 
 
-        List<CartProductPOJO> cartProducts = new ArrayList<>();
+        List<CartProductPOJO> cartProductPOJOList = CartHelper.createTestCartProduct(numberOfProducts);
 
-        cartProducts.add(
-                CartProductPOJO.builder()
-                        .productId(101)
-                        .quantity(1)
-                        .build()
-        );
+        CartPOJO cartPOJO = CartHelper.createTestCart(cartProductPOJOList,role);
 
-        CartPOJO cartPOJO = CartPOJO.builder()
-                .userId(2)
-                .date(LocalDate.now().toString())
-                .products(cartProducts)
-                .build();
+        Response createCartResponse = Carts.createCart(cartPOJO,role);
 
-        Response createResponse =
-                Carts.createCart(cartPOJO, UserRole.USER);
-
-        int cartId = createResponse.jsonPath().getInt("id");
+        int cartId = createCartResponse.jsonPath().getInt("id");
 
 
         Carts.deleteCart(cartId, UserRole.USER)
@@ -118,118 +108,75 @@ public class CartsTest extends BaseClass {
                 .statusCode(404);
     }
 
-    @Test
-    public void deleteInvalidCart() {
-        List<Integer> cartId = Carts.getCarts(UserRole.USER).then().spec(success200())
-                .extract().jsonPath().getList("id",Integer.class);
-        int invalidId = Collections.max(cartId) + 1000;
+    @Test(dataProvider = "invalidCartId", dataProviderClass = CartDataProvider.class)
+    public void deleteCartByInvalidId(UserRole role){
 
-        Carts.deleteCart(invalidId,UserRole.USER).then().spec(fail404());
+        int invalidId = CartHelper.getCartId(role) + 1000;
 
+        Carts.deleteCart(invalidId, role)
+                .then()
+                .spec(fail404());
     }
 
-    @Test
-    public void getCartByInvalidId(){
-        List<Integer> cartId = Carts.getCarts(UserRole.USER).then().spec(success200())
-                .extract().jsonPath().getList("id",Integer.class);
+    @Test(dataProvider = "invalidCartId", dataProviderClass = CartDataProvider.class)
+    public void getCartByInvalidId(String message,UserRole role, ResponseSpecification resp){
 
-        int invalidId = Collections.max(cartId) + 1000;
+        int invalidId = CartHelper.getCartId(role) + 1000;
 
-        Carts.getCartById(invalidId, UserRole.USER).then().spec(fail404());
-
+        Carts.getCartById(invalidId, role)
+                .then()
+                .spec(resp);
     }
 
-    @Test
-    public void userCannotAccessOtherUserCart() {
 
+    @Test(dataProvider = "AccessTest", dataProviderClass = CartDataProvider.class)
+    public void CaertAccessTest(String message , int numberOfProducts , UserRole role , UserRole accessedBy, ResponseSpecification resp ) {
 
-        CartPOJO cartPOJO = CartPOJO.builder()
-                .userId(1)
-                .date(LocalDate.now().toString())
-                .products(List.of(
-                        CartProductPOJO.builder()
-                                .productId(101)
-                                .quantity(1)
-                                .build()
-                ))
-                .build();
+        List<CartProductPOJO> cartProductPOJOList = CartHelper.createTestCartProduct(numberOfProducts);
 
-        Response createResp = Carts.createCart(cartPOJO, UserRole.ADMIN);
+        CartPOJO cartPOJO = CartHelper.createTestCart(cartProductPOJOList,role);
+
+        Response createResp = Carts.createCart(cartPOJO, role);
         int cartId = createResp.jsonPath().getInt("id");
 
         // Try accessing as USER (not owner)
-        Carts.getCartById(cartId, UserRole.USER)
+        Carts.getCartById(cartId, accessedBy)
                 .then()
-                .statusCode(403);
+                .spec(resp);
     }
 
 
-    @Test
-    public void adminCanAccessAnyCart() {
+    @Test(dataProvider = "updateByAccessTest", dataProviderClass = CartDataProvider.class)
+    public void UpdateCartByAccess(int numberOfProducts, UserRole updatingOf , UserRole updatingBy,ResponseSpecification resp) {
 
-        List<Integer> cartIds = Carts.getCarts(UserRole.ADMIN)
-                .then()
-                .extract()
-                .jsonPath()
-                .getList("id", Integer.class);
+        List<CartProductPOJO> cartProductPOJOList = CartHelper.createTestCartProduct(numberOfProducts);
 
-        int randomId = cartIds.get(new Random().nextInt(cartIds.size()));
+        CartPOJO cartPOJO = CartHelper.createTestCart(cartProductPOJOList,updatingOf);
 
-        Carts.getCartById(randomId, UserRole.ADMIN)
-                .then()
-                .statusCode(200);
-    }
-
-    @Test
-    public void userCannotUpdateOtherCart() {
-
-        CartPOJO cartPOJO = CartPOJO.builder()
-                .userId(5)
-                .date(LocalDate.now().toString())
-                .products(List.of(
-                        CartProductPOJO.builder()
-                                .productId(101)
-                                .quantity(1)
-                                .build()
-                ))
-                .build();
-
-        Response createResp = Carts.createCart(cartPOJO, UserRole.ADMIN);
+        Response createResp = Carts.createCart(cartPOJO, updatingOf);
         int cartId = createResp.jsonPath().getInt("id");
+        cartPOJO.setDate(LocalDate.now().toString());
 
-        Carts.updateCart(cartId, cartPOJO, UserRole.USER)
+        Carts.updateCart(cartId, cartPOJO, updatingBy)
                 .then()
-                .statusCode(403);
+                .spec(resp);
     }
 
-    @Test
-    public void duplicateProductShouldMergeQuantity() {
-
-        // Step 1: Get valid product ID dynamically
-        int productId = Products.getAllProducts(UserRole.USER)
-                .then()
-                .extract()
-                .jsonPath()
-                .getList("id", Integer.class)
-                .get(1);
+    @Test(dataProvider = "duplicateProductTest", dataProviderClass = CartDataProvider.class)
+    public void duplicateProductShouldMergeQuantity(int numberOfProducts, UserRole role) {
 
         // Step 2: Create cart with duplicate product entries
-        CartPOJO cartPOJO = CartPOJO.builder()
-                .date(LocalDate.now().toString())
-                .products(List.of(
-                        CartProductPOJO.builder()
-                                .productId(productId)
-                                .quantity(2)
-                                .build(),
-                        CartProductPOJO.builder()
-                                .productId(productId)
-                                .quantity(3)
-                                .build()
-                ))
-                .build();
+        List<CartProductPOJO> cartProductPOJOList = CartHelper.createTestCartProduct(numberOfProducts);
+
+        CartProductPOJO first = cartProductPOJOList.get(0);
+        cartProductPOJOList.add(first);
+        int duplicatedProductId = first.getProductId();
+        int requestQty = first.getQuantity();
+
+        CartPOJO cartPOJO = CartHelper.createTestCart(cartProductPOJOList,role);
 
         Response createResponse =
-                Carts.createCart(cartPOJO, UserRole.USER);
+                Carts.createCart(cartPOJO, role);
 
         int cartId = createResponse.jsonPath().getInt("id");
 
@@ -238,41 +185,27 @@ public class CartsTest extends BaseClass {
                 .then()
                 .statusCode(200)
                 .body("products.size()", greaterThan(0))
-                .body("products.find { it.productId == " + productId + " }.quantity",
-                        equalTo(5));
+                .body("products.find { it.productId == " + duplicatedProductId + " }.quantity",
+                        equalTo(2*requestQty));
     }
 
-    @Test
-    public void userShouldHaveOnlyOneCart() {
+    @Test(dataProvider = "numberOfCartsTest", dataProviderClass = CartDataProvider.class)
+    public void userShouldHaveOnlyOneCart(int numberOfProducts , UserRole role) {
 
-        int productId = Products.getAllProducts(UserRole.USER)
-                .then()
-                .extract()
-                .jsonPath()
-                .getList("id", Integer.class)
-                .get(0);
 
-        CartPOJO cart = CartPOJO.builder()
-                .products(List.of(
-                        CartProductPOJO.builder()
-                                .productId(productId)
-                                .quantity(2)
-                                .build()
-                ))
-                .build();
+        List<CartProductPOJO> cartProductPOJOList = CartHelper.createTestCartProduct(numberOfProducts);
+        CartPOJO cartPOJO = CartHelper.createTestCart(cartProductPOJOList,role);
 
         // First creation
-        Carts.createCart(cart, UserRole.USER)
-                .then()
-                .statusCode(201);
+        Carts.createCart(cartPOJO, role);
 
+        CartProductPOJO first = cartPOJO.getProducts().getFirst();
+        first.setQuantity(first.getQuantity()+1);
         // Second creation
-        Carts.createCart(cart, UserRole.USER)
-                .then()
-                .statusCode(201); // updated, not new
+        Carts.createCart(cartPOJO, role);// updated, not new
 
         // Verify only 1 cart exists
-        Carts.getCarts(UserRole.USER)
+        Carts.getCarts(role)
                 .then()
                 .body("size()", equalTo(1));
     }

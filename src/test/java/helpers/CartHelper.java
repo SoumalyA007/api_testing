@@ -20,12 +20,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CartHelper extends BaseClass {
 
-    public static CartPOJO createTestCart(List<CartProductPOJO> cartProducts) {
+    public static CartPOJO createTestCart(List<CartProductPOJO> cartProducts,UserRole role) {
 
         CartPOJO cart = CartPOJO.builder()
                 .date(LocalDate.now().toString())
                 .products(cartProducts)
-                .userId(TokenManager.getUserId(UserRole.USER))
+                .userId(TokenManager.getUserId(role))
                 .build();
 
         return cart;
@@ -124,6 +124,12 @@ public class CartHelper extends BaseClass {
                 .date(LocalDate.now().toString())
                 .products(updatedProducts)
                 .build();
+    }
+
+    public static int getCartId(UserRole role){
+
+        return Carts.getCarts(role).then().spec(success200())
+                .extract().jsonPath().getInt("[0].id");
     }
 
 }
