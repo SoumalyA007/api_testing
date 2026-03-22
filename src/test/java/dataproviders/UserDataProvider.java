@@ -64,8 +64,8 @@ public class UserDataProvider extends BaseClass {
         };
     }
 
-    @DataProvider(name = "createWithOutEmailField")
-    public Object[][] createUserWithoutEmailField(){
+    @DataProvider(name = "createWithoutEmailField")
+    public Object[][] createWithoutEmailField(){
 
         return new Object[][]{
 

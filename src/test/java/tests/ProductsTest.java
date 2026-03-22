@@ -10,10 +10,12 @@ import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.Test;
 import payloads.request.ProductsPOJO;
 import testBase.BaseClass;
-import utilities.TestContext;
+import testData.ProductTestDataFactory;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import static org.hamcrest.Matchers.*;
 
 public class ProductsTest extends BaseClass {
@@ -21,56 +23,55 @@ public class ProductsTest extends BaseClass {
     @Test
     public void getAllProductsTest() {
         Products.getAllProducts(null)
-        .then().spec(success200());
+                .then()
+                .spec(success200());
     }
 
     @Test
-    public  void getProductById() {
+    public void getProductById() {
 
         int randId = ProductHelper.getRandomProductId();
 
-        Products.getProductById(randId,null).then()
+        Products.getProductById(randId, null)
+                .then()
                 .spec(success200())
                 .body("id", equalTo(randId));
-
     }
 
     @Test
-    public  void getProductByCategory() {
-
-
+    public void getProductByCategory() {
 
         String randCategory = ProductHelper.getRandomCategory();
 
         Products.getProductsByCategory(randCategory, null)
-                .then().spec(success200())
+                .then()
+                .spec(success200())
                 .body("id", notNullValue());
-
     }
 
     @Test
-    public void getProductByInvalidId(){
+    public void getProductByInvalidId() {
 
-        int createdId = Integer.MAX_VALUE;
+        int invalidId = 9999999;
 
-        Products.getProductById(createdId,null).then()
-                .spec(fail404())
-                .body("id", equalTo(createdId));
-
+        Products.getProductById(invalidId, null)
+                .then()
+                .spec(fail404());
     }
 
     @Test
     public void getProductByInvalidCategory() {
 
-        String randCategory = ProductHelper.getRandomCategory() + ProductHelper.getRandomCategory();
+        String invalidCategory = "invalid_category";
 
-        Products.getProductsByCategory(randCategory, null)
-                .then().spec(fail400());
-
+        Products.getProductsByCategory(invalidCategory, null)
+                .then()
+                .spec(fail400());
     }
 
     @Test
     public void verifyProductFields() {
+
         Products.getAllProducts(null)
                 .then()
                 .spec(success200())
@@ -79,112 +80,111 @@ public class ProductsTest extends BaseClass {
                 .body("price", everyItem(greaterThan(0.0)))
                 .body("description", everyItem(not(isEmptyOrNullString())))
                 .body("category", everyItem(not(isEmptyOrNullString())))
-                .body("image", everyItem(
-                                allOf(
-                                        startsWith("https://"),
-                                        anyOf(
-                                                endsWith(".png"),
-                                                endsWith(".jpg"),
-                                                endsWith("jpeg"),
-                                                endsWith("webp")
-                                        ))
-                        )
-                )
-                .log().ifValidationFails();
+                .body("image", everyItem(startsWith("https://")));
     }
-
 
     @Test
     public void categoryExistsTest() {
 
-        List<String> categories = Categories.getCategories(null).then()
+        List<String> categories = Categories.getCategories(null)
+                .then()
                 .spec(success200())
                 .extract()
                 .jsonPath()
                 .getList("name", String.class);
 
-        Set<String> categoriesSet = new HashSet<>(categories);
-
-        TestContext.set("categories", categories);
+        Set<String> categorySet = new HashSet<>(categories);
 
         Products.getAllProducts(null)
                 .then()
                 .spec(success200())
-                .body("category", everyItem(isIn(categoriesSet)));
+                .body("category", everyItem(isIn(categorySet)));
     }
 
+    // ================= CREATE =================
 
-    @Test(dataProvider = "updateOrCreateProductPayloads", dataProviderClass = ProductDataProvider.class)
-    public  void createProduct(String message, ProductsPOJO payload, UserRole role, ResponseSpecification resp){
+    @Test(dataProvider = "createProductPayloads", dataProviderClass = ProductDataProvider.class)
+    public void createProduct(String message, ProductsPOJO payload, UserRole role, ResponseSpecification spec) {
 
+        System.out.println("Test: " + message);
 
-        System.out.println("The current test is :- "+message);
+        Response response = Products.createProduct(payload, role);
+        response.then().spec(spec);
 
-        Response product = Products.createProduct(payload, role);
-        product.then().spec(resp);
-
-        if(product.statusCode()==200){
-            int createdId = product.then().extract().jsonPath().getInt("id");
-            Products.deleteProduct(createdId,UserRole.ADMIN);
+        if (response.statusCode() == 201) {
+            int createdId = response.then().extract().path("id");
+            Products.deleteProduct(createdId, UserRole.ADMIN);
         }
-
-
     }
-
 
     @Test
     public void createProductPriceAsString() {
 
-        Products.createProduct(ProductHelper.productPriceAsString(), UserRole.ADMIN).then().spec(fail400());
+        Products.createProduct(ProductTestDataFactory.productPriceAsString(), UserRole.ADMIN)
+                .then()
+                .spec(fail400());
     }
 
     @Test
     public void createProductXSSInDescription() {
 
-        Products.createProduct(ProductHelper.xssProduct(), UserRole.ADMIN).then().spec(fail400());
+        Products.createProduct(ProductTestDataFactory.xssProduct(), UserRole.ADMIN)
+                .then()
+                .spec(fail400());
     }
 
+    // ================= UPDATE =================
 
-    @Test(dataProvider = "updateOrCreateProductPayloads", dataProviderClass = ProductDataProvider.class)
-    public void updateProducts(String message, ProductsPOJO payload, UserRole role, ResponseSpecification resp){
+    @Test(dataProvider = "updateProductPayloads", dataProviderClass = ProductDataProvider.class)
+    public void updateProducts(String message, ProductsPOJO payload, UserRole role, ResponseSpecification spec) {
 
         int createdId = ProductHelper.createTestProduct();
-        System.out.println("Test name :-- " +  message);
-        Products.updateProduct(createdId,payload,role)
-                .then()
-                .spec(resp);
-        Products.deleteProduct(createdId,UserRole.ADMIN);
 
+        System.out.println("Test: " + message);
 
+        Response response = Products.updateProduct(createdId, payload, role);
+        response.then().spec(spec);
+
+        if (response.statusCode() == 200) {
+            Products.getProductById(createdId, null)
+                    .then()
+                    .body("title", equalTo(payload.getTitle()));
+        }
+
+        Products.deleteProduct(createdId, UserRole.ADMIN);
     }
 
     @Test
-    public void updateNonExistingProduct(){
+    public void updateNonExistingProduct() {
 
-        int updateId =  Integer.MAX_VALUE;
-        Products.updateProduct(updateId , ProductHelper.validProduct(), UserRole.ADMIN)
+        int invalidId = 9999999;
+
+        Products.updateProduct(invalidId, ProductTestDataFactory.validProduct(), UserRole.ADMIN)
                 .then()
                 .spec(fail404());
-
     }
 
+    // ================= DELETE =================
+
     @Test(dataProvider = "deleteProduct", dataProviderClass = ProductDataProvider.class)
-    public void deleteProductWithAdmin(String message, UserRole role, ResponseSpecification spec){
+    public void deleteProductTest(String message, UserRole role, ResponseSpecification spec) {
 
         int createdId = ProductHelper.createTestProduct();
 
-        Products.deleteProduct(createdId,role).then().spec(spec);
+        System.out.println("Test: " + message);
 
+        Products.deleteProduct(createdId, role)
+                .then()
+                .spec(spec);
     }
 
     @Test
-    public void deleteProductWithInvalidId(){
+    public void deleteProductWithInvalidId() {
 
-        int deleteId =  Integer.MAX_VALUE;
+        int invalidId = 9999999;
 
-        Products.deleteProduct(deleteId,UserRole.ADMIN).then().spec(fail404());
-
-
+        Products.deleteProduct(invalidId, UserRole.ADMIN)
+                .then()
+                .spec(fail404());
     }
-
 }

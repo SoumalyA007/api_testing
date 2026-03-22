@@ -2,6 +2,7 @@ package helpers;
 
 import endpoints.Users;
 import enums.UserRole;
+import java.util.Comparator;
 import payloads.request.UserDetailsPOJO;
 import payloads.request.UserPOJO;
 import testBase.BaseClass;
@@ -9,92 +10,53 @@ import testBase.BaseClass;
 import java.util.List;
 import java.util.Random;
 
-public class UserHelper extends BaseClass {
+public class UserHelper {
 
+    private static List<Integer> cachedUserIds;
 
-    public static UserDetailsPOJO userDetailPayload(String firstName , String lastName){
-        return UserDetailsPOJO.builder()
-                .firstname(firstName)
-                .lastname(lastName)
-                .build();
-    }
+    // ================= USER IDS =================
 
-    public static UserPOJO userPayload(UserDetailsPOJO userDetailPayload,String email,String username, String password){
-        return UserPOJO.builder()
-                .email(email)
-                .username(username)
-                .password(password)
-                .details(userDetailPayload)
-                .build();
-    }
-
-    public static UserPOJO userPayloadWithId(int userId, UserDetailsPOJO userDetailPayload,String email,String username, String password){
-        return UserPOJO.builder()
-                .id(userId)
-                .email(email)
-                .username(username)
-                .password(password)
-                .details(userDetailPayload)
-                .build();
-    }
-
-    public static UserPOJO updateUserField(String field, String value){
-
-        UserPOJO.UserPOJOBuilder builder = UserPOJO.builder();
-
-        switch(field){
-
-            case "email":
-                builder.email(value);
-                break;
-
-            case "username":
-                builder.username(value);
-                break;
-
-            case "password":
-                builder.password(value);
-                break;
-
-            case "firstname":
-                builder.details(
-                        UserDetailsPOJO.builder()
-                                .firstname(value)
-                                .build()
-                );
-                break;
-
-            case "lastname":
-                builder.details(
-                        UserDetailsPOJO.builder()
-                                .lastname(value)
-                                .build()
-                );
-                break;
+    public static List<Integer> getAllUserIds() {
+        if (cachedUserIds == null) {
+            cachedUserIds = Users.getAllUsers(UserRole.USER)
+                    .then()
+                    .extract()
+                    .jsonPath()
+                    .getList("id", Integer.class);
         }
-
-        return builder.build();
+        return cachedUserIds;
     }
 
-    public static UserPOJO updateCreateUserWithoutEmail(UserDetailsPOJO userDetailPayload,String username, String password){
-
-        return UserPOJO.builder()
-                .username(username)
-                .password(password)
-                .details(userDetailPayload)
-                .build();
-
+    public static int getRandomUserId() {
+        List<Integer> ids = getAllUserIds();
+        return ids.get(new Random().nextInt(ids.size()));
     }
 
-    public static int getLastUserId(){
+    // ✅ FIXED VERSION (if you still want "last")
+    public static int getLastUserId() {
+        List<Integer> ids = getAllUserIds();
 
-        List<Integer> userId = Users.getAllUsers(UserRole.USER).then().spec(success200()).extract().jsonPath().getList("id",Integer.class);
-
-        int lastUserId = userId.get(new Random().nextInt(userId.size()-1));
-
-        return lastUserId;
+        return ids.stream()
+                .max(Comparator.naturalOrder())
+                .orElseThrow(() -> new RuntimeException("No users found"));
     }
 
+    // ================= TEST SETUP =================
 
+    public static int createTestUser(payloads.request.UserPOJO userPOJO) {
+        return Users.createUser(userPOJO, UserRole.ADMIN)
+                .then()
+                .extract()
+                .path("id");
+    }
 
+    // ================= CLEANUP =================
+
+    public static void deleteUserIfExists(int userId) {
+        try {
+            Users.deleteUser(userId, UserRole.ADMIN);
+        } catch (Exception ignored) {
+            // safe cleanup
+        }
+    }
 }

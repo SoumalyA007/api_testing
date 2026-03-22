@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 import payloads.request.UserDetailsPOJO;
 import payloads.request.UserPOJO;
 import testBase.BaseClass;
+import testData.UserTestDataFactory;
 
 import static org.hamcrest.Matchers.*;
 
@@ -37,7 +38,7 @@ public class UsersTest extends BaseClass {
     @Test
     public void getUserById(){
 
-        int randUserId = UserHelper.getLastUserId();
+        int randUserId = UserHelper.getRandomUserId();
 
         Users.getUserById(randUserId,UserRole.USER).then().spec(success200()).body("id",equalTo(randUserId));
 
@@ -46,9 +47,9 @@ public class UsersTest extends BaseClass {
     @Test(dataProvider = "createUserData",dataProviderClass = UserDataProvider.class)
     public void createUser(String firstname, String lastname,String email, String username,String password){
 
-        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
+        UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
 
-        UserPOJO userPOJO = UserHelper.userPayload(userDetailsPOJO,email,username,password);
+        UserPOJO userPOJO = UserTestDataFactory.userPayload(userDetailsPOJO,email,username,password);
 
         int id = Users.createUser(userPOJO,UserRole.ADMIN)
                 .then()
@@ -68,8 +69,8 @@ public class UsersTest extends BaseClass {
 
         // create user first
         System.out.println("Updating field:" + field + " with value" + value);
-        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
-        UserPOJO user = UserHelper.userPayload(userDetailsPOJO,email,username,password);
+        UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
+        UserPOJO user = UserTestDataFactory.userPayload(userDetailsPOJO,email,username,password);
 
         int userId = Users.createUser(user, UserRole.ADMIN)
                 .then()
@@ -77,7 +78,7 @@ public class UsersTest extends BaseClass {
                 .path("id");
 
         // update payload
-        UserPOJO updateUser = UserHelper.updateUserField(field, value);
+        UserPOJO updateUser = UserTestDataFactory.updateUserField(field, value);
 
         String jsonPath = field;
 
@@ -97,17 +98,17 @@ public class UsersTest extends BaseClass {
     @Test(dataProvider = "deleteUserFields", dataProviderClass = UserDataProvider.class)
     public void deleteUser(String firstname, String lastname, String email, String username, String password, UserRole role , ResponseSpecification resp){
 
-        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
-        UserPOJO user = UserHelper.userPayload(userDetailsPOJO,email,username,password);
+        UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
+        UserPOJO user = UserTestDataFactory.userPayload(userDetailsPOJO,email,username,password);
 
         int userId = Users.createUser(user, UserRole.ADMIN)
                 .then()
                 .extract()
                 .path("id");
 
-       Users.deleteUser(userId,role)
-               .then()
-               .spec(resp);
+        Users.deleteUser(userId,role)
+                .then()
+                .spec(resp);
 
 
     }
@@ -125,9 +126,9 @@ public class UsersTest extends BaseClass {
     public void createUserWithExistingEmail(String firstname, String lastname,String email, String username,String password){
 
 
-        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
+        UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
 
-        UserPOJO userPOJO = UserHelper.userPayload(userDetailsPOJO,email,username,password);
+        UserPOJO userPOJO = UserTestDataFactory.userPayload(userDetailsPOJO,email,username,password);
 
         Response resp = Users.createUser(userPOJO, UserRole.ADMIN)
                 .then()
@@ -141,9 +142,9 @@ public class UsersTest extends BaseClass {
         String existingemail = resp.path("email");
 
 
-        UserDetailsPOJO createDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
+        UserDetailsPOJO createDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
 
-        UserPOJO createUserPOJO = UserHelper.userPayload(userDetailsPOJO,existingemail,username+username,password);
+        UserPOJO createUserPOJO = UserTestDataFactory.userPayload(userDetailsPOJO,existingemail,username+username,password);
 
 
 
@@ -161,9 +162,9 @@ public class UsersTest extends BaseClass {
     public void createUserWithMissingEmail(String firstname, String lastname,String username , String password){
 
 
-        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
+        UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
 
-        UserPOJO userPOJO = UserHelper.updateCreateUserWithoutEmail(userDetailsPOJO,username,password);
+        UserPOJO userPOJO = UserTestDataFactory.updateCreateUserWithoutEmail(userDetailsPOJO,username,password);
 
         Users.createUser(userPOJO,UserRole.ADMIN)
                 .then()
@@ -176,8 +177,8 @@ public class UsersTest extends BaseClass {
     public void updateNonExistingUser(String field,String value,String firstname, String lastname,String email, String username,String password){
 
 
-        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
-        UserPOJO user = UserHelper.userPayload(userDetailsPOJO,email,username,password);
+        UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
+        UserPOJO user = UserTestDataFactory.userPayload(userDetailsPOJO,email,username,password);
 
         int userId = Users.createUser(user, UserRole.ADMIN)
                 .then()
@@ -185,7 +186,7 @@ public class UsersTest extends BaseClass {
                 .path("id");
 
         // update payload
-        UserPOJO updateUser = UserHelper.updateUserField(field, value);
+        UserPOJO updateUser = UserTestDataFactory.updateUserField(field, value);
 
         String jsonPath = field;
 
@@ -206,8 +207,8 @@ public class UsersTest extends BaseClass {
     public void deleteUserByInvalidId(String firstname, String lastname, String email, String username, String password , ResponseSpecification resp){
 
 
-        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
-        UserPOJO user = UserHelper.userPayload(userDetailsPOJO,email,username,password);
+        UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
+        UserPOJO user = UserTestDataFactory.userPayload(userDetailsPOJO,email,username,password);
 
         int userId = Users.createUser(user, UserRole.ADMIN)
                 .then()
@@ -221,7 +222,7 @@ public class UsersTest extends BaseClass {
     @Test(dataProvider = "validateUserData",dataProviderClass = UserDataProvider.class)
     public void validateUserData(String field,String firstname, String lastname,String email, String username,String password, UserRole role, ResponseSpecification spec){
 
-        UserDetailsPOJO userDetailsPOJO = UserHelper.userDetailPayload(firstname , lastname);
+        UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
 
         UserPOJO user;
 
@@ -229,9 +230,9 @@ public class UsersTest extends BaseClass {
 
         if(field.equalsIgnoreCase("Positive ID Validation")){
 
-            user = UserHelper.userPayloadWithId(-10,userDetailsPOJO,email,username,password);
+            user = UserTestDataFactory.userPayloadWithId(-10,userDetailsPOJO,email,username,password);
         }else{
-            user = UserHelper.userPayload(userDetailsPOJO,email,username,password);
+            user = UserTestDataFactory.userPayload(userDetailsPOJO,email,username,password);
         }
 
         int id = Users.createUser(user, role)

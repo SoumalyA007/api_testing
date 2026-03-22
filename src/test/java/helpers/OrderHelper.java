@@ -1,9 +1,9 @@
 package helpers;
 
 import endpoints.Carts;
+import endpoints.Orders;
 import endpoints.Products;
 import enums.UserRole;
-import org.testng.Assert;
 import payloads.request.OrderItemPOJO;
 import payloads.request.OrderPOJO;
 import payloads.response.OrderItemResponsePOJO;
@@ -14,8 +14,9 @@ import java.util.stream.Collectors;
 
 public class OrderHelper {
 
-    public static List<OrderItemPOJO> getCartProducts(UserRole role) {
+    // ================= SETUP =================
 
+    public static List<OrderItemPOJO> getCartProducts(UserRole role) {
         return Carts.getCarts(role)
                 .then()
                 .extract()
@@ -23,16 +24,22 @@ public class OrderHelper {
                 .getList("[0].products", OrderItemPOJO.class);
     }
 
-    public static OrderPOJO buildOrder(int userId, List<OrderItemPOJO> items) {
-
-        return OrderPOJO.builder()
-                .userId(userId)
-                .items(items)
-                .build();
+    public static int createTestOrder(OrderPOJO order, UserRole role) {
+        return Orders.createOrder(order, role)
+                .then()
+                .extract()
+                .path("id");
     }
 
-    public static double calculateTotal(List<OrderItemResponsePOJO> items) {
+    public static void deleteOrderIfExists(int orderId) {
+        try {
+            Orders.deleteOrder(orderId, UserRole.ADMIN);
+        } catch (Exception ignored) {}
+    }
 
+    // ================= VALIDATION =================
+
+    public static double calculateTotal(List<OrderItemResponsePOJO> items) {
         return items.stream()
                 .mapToDouble(item -> {
                     double price = Products
@@ -59,16 +66,13 @@ public class OrderHelper {
 
         for (OrderItemResponsePOJO item : responseItems) {
 
-            Assert.assertTrue(
-                    requestMap.containsKey(item.getProductId()),
-                    "Unexpected productId in response: " + item.getProductId()
-            );
+            if (!requestMap.containsKey(item.getProductId())) {
+                throw new AssertionError("Unexpected productId: " + item.getProductId());
+            }
 
-            Assert.assertEquals(
-                    item.getQuantity(),
-                    requestMap.get(item.getProductId()),
-                    "Quantity mismatch for productId " + item.getProductId()
-            );
+            if (item.getQuantity() != requestMap.get(item.getProductId())) {
+                throw new AssertionError("Quantity mismatch for productId: " + item.getProductId());
+            }
         }
     }
 }

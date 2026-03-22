@@ -20,116 +20,64 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CartHelper extends BaseClass {
 
-    public static CartPOJO createTestCart(List<CartProductPOJO> cartProducts,UserRole role) {
-
-        CartPOJO cart = CartPOJO.builder()
-                .date(LocalDate.now().toString())
-                .products(cartProducts)
-                .userId(TokenManager.getUserId(role))
-                .build();
-
-        return cart;
-
-    }
 
 
-    public static List<CartProductPOJO> createTestCartProduct(int noOfProduct) {
+    public static CartProductPOJO randomProduct(UserRole role) {
 
-        int randomProductId=0;
-        List<CartProductPOJO> cartProductPOJOList = new ArrayList<>();
-        for(int i=0;i<noOfProduct;i++){
-            randomProductId = randProductId();
-            int productQuantity = Inventory.getInventoryByProductId(randomProductId,UserRole.ADMIN).then().spec(success200())
-                    .extract()
-                    .jsonPath()
-                    .getInt("[0].quantity");
+        List<Integer> ids = Products.getAllProducts(role)
+                .then()
+                .extract()
+                .jsonPath()
+                .getList("id");
 
-            System.out.println(productQuantity);
+        int productId = ids.get(new Random().nextInt(ids.size()));
 
-            int randomQuantity =  ThreadLocalRandom.current().nextInt(1, productQuantity + 1);
+        int maxQty = Inventory.getInventoryByProductId(productId, role)
+                .then()
+                .extract()
+                .jsonPath()
+                .getInt("[0].quantity");
 
-            CartProductPOJO cartProductPOJO = CartProductPOJO.builder()
-                    .productId(randomProductId)
-                    .quantity(randomQuantity)
-                    .build();
+        int qty = ThreadLocalRandom.current().nextInt(1, maxQty + 1);
 
-            cartProductPOJOList.add(cartProductPOJO);
-
-        }
-
-        return cartProductPOJOList;
-
-
-    }
-
-
-    public static List<CartProductPOJO> negativeTestCartProduct(String message) {
-
-        List<CartProductPOJO> cartProductPOJOList = new ArrayList<>();
-        CartProductPOJO cartProductPOJO;
-            if(message.equals("productId")){
-                cartProductPOJO = CartProductPOJO.builder()
-                        .productId(999999999)
-                        .quantity(1)
-                        .build();
-                cartProductPOJOList.add(cartProductPOJO);
-
-            }else if(message.equals("zeroQuantity")){
-
-                int randomProductId = randProductId();
-                cartProductPOJO = CartProductPOJO.builder()
-                        .productId(randomProductId)
-                        .quantity(0)
-                        .build();
-                cartProductPOJOList.add(cartProductPOJO);
-        }
-        return cartProductPOJOList;
-    }
-
-    public static int randProductId(){
-        List<Integer> productIds = Products.getAllProducts(UserRole.USER).then().extract().jsonPath().getList("id");
-        int randomProductId = productIds.get(new Random().nextInt(productIds.size()));
-
-        return randomProductId;
-
-    }
-
-    public static CartPOJO updateCartQuantity(int cartId, UserRole role){
-
-        CartResponsePOJO cartResponsePOJO =
-                Carts.getCartById(cartId, role)
-                        .then()
-                        .extract()
-                        .as(CartResponsePOJO.class);
-
-        // Update only first product
-        List<CartProductPOJO> updatedProducts = cartResponsePOJO.getProducts()
-                .stream()
-                .map(p -> {
-                    if (p.getProductId() == cartResponsePOJO.getProducts().get(0).getProductId()) {
-                        return CartProductPOJO.builder()
-                                .productId(p.getProductId())
-                                .quantity(p.getQuantity() + 1)
-                                .build();
-                    }
-                    return CartProductPOJO.builder()
-                            .productId(p.getProductId())
-                            .quantity(p.getQuantity())
-                            .build();
-                })
-                .toList();
-
-        return CartPOJO.builder()
-                .userId(TokenManager.getUserId(role))
-                .date(LocalDate.now().toString())
-                .products(updatedProducts)
+        return CartProductPOJO.builder()
+                .productId(productId)
+                .quantity(qty)
                 .build();
     }
 
-    public static int getCartId(UserRole role){
+    public static List<CartProductPOJO> randomProducts(int count, UserRole role) {
+        List<CartProductPOJO> list = new ArrayList<>();
 
-        return Carts.getCarts(role).then().spec(success200())
-                .extract().jsonPath().getInt("[0].id");
+        for (int i = 0; i < count; i++) {
+            list.add(randomProduct(role));
+        }
+
+        return list;
     }
+
+    public static List<CartProductPOJO> negativeProducts(String type, UserRole role) {
+
+        List<CartProductPOJO> list = new ArrayList<>();
+
+        if(type.equals("productId")){
+            list.add(CartProductPOJO.builder()
+                    .productId(999999999)
+                    .quantity(1)
+                    .build());
+        }
+
+        if(type.equals("zeroQuantity")){
+            int productId = randomProduct(role).getProductId();
+
+            list.add(CartProductPOJO.builder()
+                    .productId(productId)
+                    .quantity(0)
+                    .build());
+        }
+
+        return list;
+    }
+
 
 }

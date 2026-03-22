@@ -30,7 +30,7 @@ public class CartDataProvider {
         };
     }
 
-    @DataProvider(name = "deletCart")
+    @DataProvider(name = "deleteCart")
     public Object[][] deleteCart(){
 
         return new Object[][]{

@@ -1,47 +1,17 @@
 package helpers;
 
+import endpoints.Auth;
+import io.restassured.response.Response;
 import payloads.request.LoginRequestPOJO;
-
-import java.util.HashMap;
-import java.util.Map;
+import payloads.response.LoginResponsePOJO;
 
 public class AuthHelper {
 
-    public static LoginRequestPOJO loginasUserOrAdmin(String username , String password){
+    public static String getToken(LoginRequestPOJO payload) {
+        Response response = Auth.login(payload);
 
-        LoginRequestPOJO loginRequestPOJO = LoginRequestPOJO.builder()
-                .username(username)
-                .password(password)
-                .build();
+        LoginResponsePOJO loginResponse = response.as(LoginResponsePOJO.class);
 
-        return loginRequestPOJO;
+        return loginResponse.getToken();
     }
-
-    public static LoginRequestPOJO loginWithoutPassword(String username){
-        return LoginRequestPOJO.builder()
-                .username(username)
-                .build();
-    }
-
-    public static LoginRequestPOJO loginWithoutUsername(String password){
-        return LoginRequestPOJO.builder()
-                .password(password)
-                .build();
-    }
-
-    public static Map<String,Object> loginJsonInjectionPayload(){
-
-        Map<String, Object> payload = new HashMap<>();
-
-        Map<String, Object> injection = new HashMap<>();
-        injection.put("$ne", null);
-
-        payload.put("username", injection);
-        payload.put("password", injection);
-
-        return payload;
-    }
-
-
-
 }

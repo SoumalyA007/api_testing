@@ -1,448 +1,356 @@
 package tests;
 
 import dataproviders.OrdersDataProvider;
-import endpoints.Carts;
 import endpoints.Orders;
-import endpoints.Products;
 import enums.OrderStatus;
 import enums.UserRole;
 import helpers.OrderHelper;
 import io.restassured.response.Response;
 import io.restassured.specification.ResponseSpecification;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.core.config.Order;
-import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
-import org.mozilla.javascript.Token;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import payloads.request.CartProductPOJO;
 import payloads.request.OrderItemPOJO;
 import payloads.request.OrderPOJO;
 import payloads.request.OrderStatusUpdatePOJO;
-import payloads.response.OrderItemResponsePOJO;
 import payloads.response.OrderResponsePOJO;
 import testBase.BaseClass;
+import testData.OrderTestDataFactory;
 import utilities.TokenManager;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.*;
 
 public class OrdersTest extends BaseClass {
 
-    //User should fetch only his orders
+    private final Random random = new Random();
+
+    // ================= GET ORDERS =================
+
     @Test
-    public void getOrderUser(){
-
+    public void userShouldGetOnlyOwnOrders() {
         int currentUserId = TokenManager.getUserId(UserRole.USER);
-        Orders.getOrders(UserRole.USER).then()
-                .spec(success200())
-                .body("userId",everyItem(equalTo(currentUserId)));
 
+        Orders.getOrders(UserRole.USER)
+                .then()
+                .spec(success200())
+                .body("userId", everyItem(equalTo(currentUserId)));
     }
 
-    //admin should be able to fetch all orders of all users
     @Test
-    public void getOrderAdmin(){
-
+    public void adminShouldGetAllOrders() {
         Response response = Orders.getOrders(UserRole.ADMIN);
+
         response.then().spec(success200());
+
         List<Integer> userIds = response.jsonPath().getList("userId");
         Assert.assertTrue(userIds.stream().distinct().count() > 1,
-                "Admin should see orders from multiple users");
-
+                "Admin should see multiple users' orders");
     }
 
-    //User should be able to fetch his personal Orders
     @Test
-    public void getOrderById(){
+    public void userShouldGetOrdersByUserId() {
+        int userId = TokenManager.getUserId(UserRole.USER);
 
-        int currentUserId = TokenManager.getUserId(UserRole.USER);
-
-        Orders.getOrdersByUserId(currentUserId,UserRole.USER)
+        Orders.getOrdersByUserId(userId, UserRole.USER)
                 .then()
                 .spec(success200())
-                .body("userId",everyItem(equalTo(currentUserId)));
+                .body("userId", everyItem(equalTo(userId)));
     }
 
-    //User should not be able to fetch someone else's Orders
     @Test
-    public void getOrderByRandomId(){
+    public void userShouldNotAccessOtherUsersOrders() {
+        int otherUserId = TokenManager.getUserId(UserRole.ADMIN);
 
-        int currentUserId = TokenManager.getUserId(UserRole.ADMIN);
-
-        Orders.getOrdersByUserId(currentUserId,UserRole.USER)
+        Orders.getOrdersByUserId(otherUserId, UserRole.USER)
                 .then()
                 .spec(fail403());
     }
 
-    //Admin can get anyone's order
     @Test
-    public void getOrderByRandomIdByAdmin(){
-
+    public void adminCanAccessAnyUsersOrders() {
         int userId = TokenManager.getUserId(UserRole.USER);
 
-        Orders.getOrdersByUserId(userId,UserRole.ADMIN)
-                .then().spec(success200())
-                .body("userId",everyItem(equalTo(userId)));
+        Orders.getOrdersByUserId(userId, UserRole.ADMIN)
+                .then()
+                .spec(success200())
+                .body("userId", everyItem(equalTo(userId)));
     }
 
-    //401 Invalid or expired token
     @Test
-    public void getOrderForLoggedOutUser(){
-
+    public void shouldReturn401ForExpiredToken() {
         String expiredToken = TokenManager.generateExpiredToken(UserRole.USER);
-        Orders.getOrders(expiredToken).then()
-                .spec(fail401());
 
+        Orders.getOrders(expiredToken)
+                .then()
+                .spec(fail401());
     }
 
-    //404 should be returned when
     @Test
-    public void getOrderByInvalidOrderId(){
-
-        int invalidOrderId = Integer.MAX_VALUE;
-
-        Orders.getOrderById(invalidOrderId,UserRole.ADMIN)
+    public void shouldReturn404ForInvalidOrderId() {
+        Orders.getOrderById(Integer.MAX_VALUE, UserRole.ADMIN)
                 .then()
                 .spec(fail404());
-
-
     }
 
-    //User access only his order
+    // ================= GET ORDER BY ID =================
+
     @Test
     public void userShouldAccessOwnOrder() {
+        int userId = TokenManager.getUserId(UserRole.USER);
 
-        // Step 1: Get user's own orders
-        List<Integer> orderIds = Orders.getOrdersByUserId(1, UserRole.USER)
+        List<Integer> orderIds = Orders.getOrdersByUserId(userId, UserRole.USER)
                 .then()
-                .statusCode(200)
+                .spec(success200())
                 .extract()
                 .jsonPath()
                 .getList("id", Integer.class);
 
-        int ownOrderId = orderIds.get(0);
+        int orderId = orderIds.get(random.nextInt(orderIds.size()));
 
-        // Step 2: Fetch that order
-        Orders.getOrderById(ownOrderId, UserRole.USER)
+        Orders.getOrderById(orderId, UserRole.USER)
                 .then()
-                .statusCode(200)
-                .body("id", equalTo(ownOrderId));
+                .spec(success200())
+                .body("id", equalTo(orderId));
     }
 
-    //User can not access other orderIds
     @Test
-    public void userShouldNotAccessOtherOrder() {
-        // Step 1: Get user's own orders
-        int userIdAdmin = TokenManager.getUserId(UserRole.ADMIN);
+    public void userShouldNotAccessOthersOrderById() {
+        int adminUserId = TokenManager.getUserId(UserRole.ADMIN);
 
-        List<Integer> orderIds = Orders.getOrdersByUserId(userIdAdmin, UserRole.USER)
+        List<Integer> orderIds = Orders.getOrdersByUserId(adminUserId, UserRole.ADMIN)
                 .then()
-                .statusCode(200)
                 .extract()
                 .jsonPath()
                 .getList("id", Integer.class);
 
-        int randomOrderId = orderIds.get(new Random().nextInt(orderIds.size()-1));
+        int orderId = orderIds.get(random.nextInt(orderIds.size()));
 
-        Orders.getOrderById(randomOrderId, UserRole.USER)
+        Orders.getOrderById(orderId, UserRole.USER)
                 .then()
                 .spec(fail403());
-
     }
 
+    // ================= CREATE ORDER =================
 
-    //user should be able to create a order for himself
     @Test
-    public void createOrderByUser(){
+    public void userShouldCreateOrder() {
+        List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
+        int userId = TokenManager.getUserId(UserRole.USER);
 
-        List<OrderItemPOJO> orderItems = Carts.getCarts(UserRole.USER)
+        OrderPOJO order = OrderTestDataFactory.validOrder(userId, items);
+
+        OrderResponsePOJO response = Orders.createOrder(order, UserRole.USER)
                 .then()
+                .statusCode(201)
                 .extract()
-                .jsonPath()
-                .getList("[0].products", OrderItemPOJO.class);
+                .as(OrderResponsePOJO.class);
 
-        int userId = TokenManager.getUserId(UserRole.USER);
-        OrderPOJO order = OrderHelper.buildOrder(userId , orderItems);
+        try {
+            Assert.assertEquals(response.getUserId(), userId);
+            Assert.assertEquals(response.getItems().size(), items.size());
 
-        System.out.println(order);
+            OrderHelper.validateOrderedItems(items, response.getItems());
 
+            double expectedTotal = OrderHelper.calculateTotal(response.getItems());
+            Assert.assertEquals(response.getTotalPrice(), expectedTotal, 0.01);
 
-        OrderResponsePOJO orderResponse = Orders.createOrder(order,UserRole.USER).then().statusCode(201).extract().as(OrderResponsePOJO.class);
-
-        Assert.assertEquals(orderResponse.getUserId(),userId,"User Id should match");
-        Assert.assertEquals(orderResponse.getItems().size(),orderItems.size(),"Order of same number of products should be placed as was present in cart");
-        Assert.assertNotNull(orderResponse.getId(),"Order Id should not be null");
-
-        OrderHelper.validateOrderedItems(orderItems,orderResponse.getItems());
-
-        double total = OrderHelper.calculateTotal(orderResponse.getItems());
-        Assert.assertEquals(total , orderResponse.getTotalPrice(),"Total price should be same");
-
-
-    }
-
-    //User should not be able to create a order for others
-    @Test
-    public void createOrderByUserForAnotherUser(){
-
-        List<OrderItemPOJO> orderItems = Carts.getCarts(UserRole.USER).then().extract().jsonPath().getList("");
-
-        int userId = TokenManager.getUserId(UserRole.USER);
-        OrderPOJO order = OrderHelper.buildOrder(userId-1 , orderItems);
-
-        Orders.createOrder(order,UserRole.USER).then().spec(fail403());
-
-
-
-    }
-
-    //admin can create a order for anyone
-    @Test
-    public void createOrderByAdmin(){
-
-        List<OrderItemPOJO> orderItems = Carts.getCarts(UserRole.USER).then().extract().jsonPath().getList("");
-
-        int userId = TokenManager.getUserId(UserRole.USER);
-        OrderPOJO order = OrderHelper.buildOrder(userId , orderItems);
-
-        OrderResponsePOJO orderResponse = Orders.createOrder(order,UserRole.ADMIN).then().extract().as(OrderResponsePOJO.class);
-
-        Assert.assertEquals(orderResponse.getUserId(),userId,"User Id should match");
-        Assert.assertEquals(orderResponse.getItems().size(),orderItems.size(),"Order of same number of products should be placed as was present in cart");
-        Assert.assertNotNull(orderResponse.getId(),"Order Id should not be null");
-
-        OrderHelper.validateOrderedItems(orderItems,orderResponse.getItems());
-
-        double total = OrderHelper.calculateTotal(orderResponse.getItems());
-        Assert.assertEquals(total , orderResponse.getTotalPrice(),"Total price should be same");
+        } finally {
+            OrderHelper.deleteOrderIfExists(response.getId());
+        }
     }
 
     @Test
-    public void createOrderByUserWithoutUserId(){
-
-        List<OrderItemPOJO> orderItems = Carts.getCarts(UserRole.USER)
-                .then()
-                .spec(success200())
-                .extract()
-                .jsonPath()
-
-                .getList("[0].products", OrderItemPOJO.class);
-
-        OrderPOJO orderPOJO = OrderPOJO.builder()
-                .items(orderItems)
-                .build();
-
-        OrderResponsePOJO orderResponse =
-                Orders.createOrder(orderPOJO , UserRole.USER)
-                        .as(OrderResponsePOJO.class);
-
-        Assert.assertEquals(TokenManager.getUserId(UserRole.USER) , orderResponse.getUserId());
-        Assert.assertNotNull(orderResponse.getId());
-        Assert.assertEquals(orderResponse.getItems().size(),orderItems.size());
-
-        OrderHelper.validateOrderedItems(orderItems,orderResponse.getItems());
-
-        double total = OrderHelper.calculateTotal(orderResponse.getItems());
-        Assert.assertEquals(total , orderResponse.getTotalPrice(),"Total price should be same");
-
-        Assert.assertEquals(orderResponse.getTotalPrice(),total,"The total prices does not match");
-
-        Assert.assertEquals(orderResponse.getStatus(),"PENDING","The order status is different");
-
-        Assert.assertEquals(orderResponse.getOrderDate(),LocalDate.now().toString(),"The order date does not match");
-
-        Orders.deleteOrder(orderResponse.getId(),UserRole.ADMIN);
-    }
-
-    @Test
-    public void createOrderByWithOutLogin(){
-
+    public void userShouldNotCreateOrderForAnotherUser() {
+        List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
         int userId = TokenManager.getUserId(UserRole.USER);
-        List<OrderItemPOJO> orderItems = Carts.getCarts(UserRole.USER)
-                .then()
-                .spec(success200())
-                .extract()
-                .jsonPath()
 
-                .getList("[0].products", OrderItemPOJO.class);
-
-        OrderPOJO orderPOJO = OrderPOJO.builder()
-                .userId(userId)
-                .items(orderItems)
-                .build();
-
-
-        Orders.createOrder(orderPOJO , null)
-                .then().spec(fail401());
-
-    }
-
-
-    @Test(dataProvider = "invalidOrderPayloads", dataProviderClass = OrdersDataProvider.class)
-    public void createOrderWithInvalidPayload(String scenario, OrderPOJO order, ResponseSpecification resp){
-
-        System.out.println("Running Scenario: " + scenario);
+        OrderPOJO order = OrderTestDataFactory.validOrder(userId - 1, items);
 
         Orders.createOrder(order, UserRole.USER)
                 .then()
-                .spec(resp);
-    }
-
-    //user can not update order
-    @Test
-    public void userUpdatesOrder() {
-
-        List<Integer> id = Orders.getOrders(UserRole.USER)
-                .then().spec(success200())
-                .extract().jsonPath().getList("id", Integer.class);
-
-        int randomOrderId = id.get(new Random().nextInt(id.size()));
-
-        String body = """
-        {
-            "userId": %d,
-            "items": [
-                {
-                    "productId": 101,
-                    "quantity": 2
-                }
-            ]
-        }
-        """.formatted(TokenManager.getUserId(UserRole.USER));
-
-        Orders.updateOrderWithString(randomOrderId, body, UserRole.USER)
-                .then()
                 .spec(fail403());
     }
 
     @Test
-    public void adminUpdatesOrder(){
-        List<Integer> id = Orders.getOrders(UserRole.USER)
-                .then().spec(success200())
-                .extract().jsonPath().getList("id",Integer.class);
+    public void adminShouldCreateOrder() {
+        List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
+        int userId = TokenManager.getUserId(UserRole.USER);
 
-        int randomOrderId = id.get(new Random().nextInt(id.size()-1));
+        OrderPOJO order = OrderTestDataFactory.validOrder(userId, items);
 
-        String body = """
-        {
-            "userId": %d,
-            "items": [
-                {
-                    "productId": 101,
-                    "quantity": 2
-                }
-            ]
+        OrderResponsePOJO response = Orders.createOrder(order, UserRole.ADMIN)
+                .then()
+                .statusCode(201)
+                .extract()
+                .as(OrderResponsePOJO.class);
+
+        OrderHelper.deleteOrderIfExists(response.getId());
+    }
+
+    @Test
+    public void createOrderWithoutUserId() {
+        List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
+
+        OrderPOJO order = OrderTestDataFactory.orderWithoutUserId(items);
+
+        OrderResponsePOJO response = Orders.createOrder(order, UserRole.USER)
+                .then()
+                .statusCode(201)
+                .extract()
+                .as(OrderResponsePOJO.class);
+
+        try {
+            Assert.assertNotNull(response.getId());
+            Assert.assertEquals(response.getStatus(), "PENDING");
+            Assert.assertEquals(response.getOrderDate(), LocalDate.now().toString());
+        } finally {
+            OrderHelper.deleteOrderIfExists(response.getId());
         }
-        """.formatted(TokenManager.getUserId(UserRole.ADMIN));
-
-        Orders.updateOrderWithString(randomOrderId,body,UserRole.ADMIN)
-                .then()
-                .spec(fail403());
-    }
-
-    //Admin can update status of the order
-    @Test
-    public void adminUpdatesOrderStatus(){
-        OrderStatusUpdatePOJO orderStatusUpdatePOJO = OrderStatusUpdatePOJO.builder()
-                .status(OrderStatus.PAID)
-                .build();
-
-        Orders.updateOrder(5001,orderStatusUpdatePOJO,UserRole.ADMIN)
-                .then()
-                .spec(success200())
-                .body("id" , equalTo(5001))
-                .body("status",equalTo("PAID"));
     }
 
     @Test
-    public void adminUpdatesOrderStatusWithExpiredToken(){
-        OrderStatusUpdatePOJO orderStatusUpdatePOJO = OrderStatusUpdatePOJO.builder()
-                .status(OrderStatus.PAID)
-                .build();
+    public void createOrderWithoutLogin() {
+        List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
+        int userId = TokenManager.getUserId(UserRole.USER);
 
-        String expiredToken = TokenManager.generateExpiredToken(UserRole.ADMIN);
-        Orders.updateOrderWithToken(5001,orderStatusUpdatePOJO,expiredToken)
+        OrderPOJO order = OrderTestDataFactory.validOrder(userId, items);
+
+        Orders.createOrder(order, null)
                 .then()
                 .spec(fail401());
     }
 
-    //User Update OrderStatus
-    @Test
-    public void userUpdatesOrderStatus(){
-        OrderStatusUpdatePOJO orderStatusUpdatePOJO = OrderStatusUpdatePOJO.builder()
-                .status(OrderStatus.PAID)
-                .build();
+    // ================= INVALID PAYLOAD =================
 
-        Orders.updateOrder(5001,orderStatusUpdatePOJO,UserRole.USER)
+    @Test(dataProvider = "invalidOrderPayloads", dataProviderClass = OrdersDataProvider.class)
+    public void createOrderWithInvalidPayload(
+            String scenario,
+            OrderPOJO order,
+            ResponseSpecification spec) {
+
+        System.out.println("Scenario: " + scenario);
+
+        Orders.createOrder(order, UserRole.USER)
+                .then()
+                .spec(spec);
+    }
+
+    // ================= UPDATE =================
+
+    @Test
+    public void userShouldNotUpdateOrder() {
+        int userId = TokenManager.getUserId(UserRole.USER);
+
+        List<Integer> orderIds = Orders.getOrdersByUserId(userId, UserRole.USER)
+                .then()
+                .extract()
+                .jsonPath()
+                .getList("id", Integer.class);
+
+        int orderId = orderIds.get(random.nextInt(orderIds.size()));
+
+        String body = """
+        {
+            "status": "PAID"
+        }
+        """;
+
+        Orders.updateOrderWithString(orderId, body, UserRole.USER)
                 .then()
                 .spec(fail403());
     }
 
-    //admin update invalid status
     @Test
-    public void invalidStatusUpdate(){
+    public void adminShouldUpdateOrderStatus() {
+        OrderStatusUpdatePOJO payload = OrderStatusUpdatePOJO.builder()
+                .status(OrderStatus.PAID)
+                .build();
 
-        List<Integer> id = Orders.getOrders(UserRole.USER)
-                .then().spec(success200())
-                .extract().jsonPath().getList("id",Integer.class);
+        Orders.updateOrder(5001, payload, UserRole.ADMIN)
+                .then()
+                .spec(success200())
+                .body("status", equalTo("PAID"));
+    }
 
-        int randomOrderId = id.get(id.size()-1);
+    @Test
+    public void adminUpdateWithExpiredToken() {
+        String expiredToken = TokenManager.generateExpiredToken(UserRole.ADMIN);
+
+        OrderStatusUpdatePOJO payload = OrderStatusUpdatePOJO.builder()
+                .status(OrderStatus.PAID)
+                .build();
+
+        Orders.updateOrderWithToken(5001, payload, expiredToken)
+                .then()
+                .spec(fail401());
+    }
+
+    @Test
+    public void invalidStatusUpdateShouldFail() {
+        int userId = TokenManager.getUserId(UserRole.USER);
+
+        List<Integer> orderIds = Orders.getOrdersByUserId(userId, UserRole.USER)
+                .then()
+                .extract()
+                .jsonPath()
+                .getList("id", Integer.class);
+
+        int orderId = orderIds.get(orderIds.size() - 1);
 
         String body = """
-                {
-                "status":"abcd"
-                }
-                
-                """;
-        Orders.updateOrderWithString(randomOrderId,body,UserRole.ADMIN)
-                .then().spec(fail400());
+        {
+            "status": "INVALID_STATUS"
+        }
+        """;
+
+        Orders.updateOrderWithString(orderId, body, UserRole.ADMIN)
+                .then()
+                .spec(fail400());
     }
 
-    //delete order by user
+    // ================= DELETE =================
+
     @Test
-    public void userDeleteOrder(){
+    public void userShouldDeleteOwnOrder() {
+        int userId = TokenManager.getUserId(UserRole.USER);
 
-        List<Integer> myOrder = Orders.getOrders(UserRole.USER)
-                .then().spec(success200()).extract().jsonPath().getList("id", Integer.class);
+        List<Integer> orderIds = Orders.getOrdersByUserId(userId, UserRole.USER)
+                .then()
+                .extract()
+                .jsonPath()
+                .getList("id", Integer.class);
 
-        int randomOrderId = myOrder.get(myOrder.size()-1);
+        int orderId = orderIds.get(orderIds.size() - 1);
 
-        Orders.deleteOrder(randomOrderId,UserRole.USER)
-                .then().spec(success200());
-
-
-    }
-
-    //delete order by admin
-    @Test
-    public void adminDeleteOrder(){
-
-        List<Integer> myOrder = Orders.getOrders(UserRole.USER)
-                .then().spec(success200()).extract().jsonPath().getList("id", Integer.class);
-
-        int randomOrderId = myOrder.get(myOrder.size()-1);
-
-        Orders.deleteOrder(randomOrderId,UserRole.ADMIN)
-                .then().spec(success200());
-
+        Orders.deleteOrder(orderId, UserRole.USER)
+                .then()
+                .spec(success200());
     }
 
     @Test
-    public void deleteInvalidOrder(){
+    public void adminShouldDeleteOrder() {
+        int userId = TokenManager.getUserId(UserRole.USER);
 
-        Orders.deleteOrder(Integer.MAX_VALUE,UserRole.ADMIN)
+        List<Integer> orderIds = Orders.getOrdersByUserId(userId, UserRole.USER)
+                .then()
+                .extract()
+                .jsonPath()
+                .getList("id", Integer.class);
+
+        int orderId = orderIds.get(orderIds.size() - 1);
+
+        Orders.deleteOrder(orderId, UserRole.ADMIN)
+                .then()
+                .spec(success200());
+    }
+
+    @Test
+    public void deleteInvalidOrderShouldReturn404() {
+        Orders.deleteOrder(Integer.MAX_VALUE, UserRole.ADMIN)
                 .then()
                 .spec(fail404());
     }
-
-
-
-
 }

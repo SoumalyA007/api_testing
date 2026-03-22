@@ -7,6 +7,7 @@ import helpers.ProductHelper;
 import org.testng.annotations.Test;
 import payloads.request.ProductsPOJO;
 import testBase.BaseClass;
+import testData.ProductTestDataFactory;
 import utilities.TokenManager;
 
 public class SecurityTest extends BaseClass {
@@ -30,7 +31,7 @@ public class SecurityTest extends BaseClass {
 
         String expiredToken = TokenManager.generateExpiredToken(UserRole.ADMIN);
 
-        ProductsPOJO productsPOJO = ProductHelper.validProduct();
+        ProductsPOJO productsPOJO = ProductTestDataFactory.validProduct();
 
         Products.createProduct(productsPOJO,expiredToken)
                 .then()
@@ -43,7 +44,7 @@ public class SecurityTest extends BaseClass {
 
         String token = TokenManager.getToken(UserRole.ADMIN);
 
-        ProductsPOJO productsPOJO = ProductHelper.validProduct();
+        ProductsPOJO productsPOJO = ProductTestDataFactory.validProduct();
 
         Products.createProduct(productsPOJO , token+"abv")
                 .then().spec(fail403());
