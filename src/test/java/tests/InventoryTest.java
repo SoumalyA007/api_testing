@@ -21,7 +21,7 @@ public class InventoryTest extends BaseClass {
     @Test
     public void getAllInventoryTest() {
 
-        InventoryHelper.getAllInventory(UserRole.USER)
+        InventoryHelper.getAllInventory(UserRole.ADMIN)
                 .then()
                 .spec(success200())
                 .body("id", everyItem(greaterThan(0)))

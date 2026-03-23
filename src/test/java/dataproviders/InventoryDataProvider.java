@@ -1,15 +1,17 @@
 package dataproviders;
 
+import com.github.javafaker.Faker;
 import enums.UserRole;
 import org.testng.annotations.DataProvider;
 
 public class InventoryDataProvider {
 
+    private static final Faker faker = new Faker();
     @DataProvider(name = "validInventoryData")
     public Object[][] validInventoryData() {
         return new Object[][]{
-                {101, 50, "Virtual", 5, 10, UserRole.ADMIN},
-                {102, 100, "North-Zone", 10, 20, UserRole.ADMIN}
+                {(int)faker.number().randomNumber(), 50, "Virtual", 5, 10, UserRole.ADMIN},
+                {(int)faker.number().randomNumber(), 100, "North-Zone", 10, 20, UserRole.ADMIN}
         };
     }
 
