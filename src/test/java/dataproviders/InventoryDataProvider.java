@@ -1,17 +1,16 @@
 package dataproviders;
 
-import com.github.javafaker.Faker;
 import enums.UserRole;
 import org.testng.annotations.DataProvider;
+import utilities.ProductIdGenerator;
 
 public class InventoryDataProvider {
 
-    private static final Faker faker = new Faker();
     @DataProvider(name = "validInventoryData")
     public Object[][] validInventoryData() {
         return new Object[][]{
-                {(int)faker.number().randomNumber(), 50, "Virtual", 5, 10, UserRole.ADMIN},
-                {(int)faker.number().randomNumber(), 100, "North-Zone", 10, 20, UserRole.ADMIN}
+                {ProductIdGenerator.getUniqueProductId(), 50, "Virtual", 5, 10, UserRole.ADMIN},
+                {ProductIdGenerator.getUniqueProductId(), 100, "North-Zone", 10, 20, UserRole.ADMIN}
         };
     }
 
@@ -25,7 +24,7 @@ public class InventoryDataProvider {
     @DataProvider(name = "exceedStockData")
     public Object[][] exceedStockData() {
         return new Object[][]{
-                {103, UserRole.ADMIN}
+                {ProductIdGenerator.getUniqueProductId(), UserRole.ADMIN}
         };
     }
 }

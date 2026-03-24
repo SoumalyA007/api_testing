@@ -18,6 +18,16 @@ public class Inventory {
                 .get();
     }
 
+    // ✅ GET all inventory
+    public static Response getInventory(String token) {
+        return given()
+                .spec(BaseClass.getWithToken(token))
+                .basePath("/inventory")
+                .when()
+                .get();
+    }
+
+
     // ✅ GET inventory by ID
     public static Response getInventoryById(int id, UserRole role) {
         return given()

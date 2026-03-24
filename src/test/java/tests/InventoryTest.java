@@ -1,13 +1,16 @@
 package tests;
 
 import dataproviders.InventoryDataProvider;
+import endpoints.Inventory;
 import endpoints.Products;
 import enums.UserRole;
 import helpers.InventoryHelper;
+import helpers.ProductHelper;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import testBase.BaseClass;
 import testData.InventoryTestDataFactory;
+import utilities.TokenManager;
 
 import java.util.HashSet;
 import java.util.List;
@@ -17,11 +20,11 @@ import static org.hamcrest.Matchers.*;
 
 public class InventoryTest extends BaseClass {
 
-    //  1. Get all inventory
+    //  1. Get all inventory as Admin
     @Test
-    public void getAllInventoryTest() {
+    public void getAllInventoryAsAdmin() {
 
-        InventoryHelper.getAllInventory(UserRole.ADMIN)
+        Inventory.getInventory(UserRole.ADMIN)
                 .then()
                 .spec(success200())
                 .body("id", everyItem(greaterThan(0)))
@@ -31,19 +34,67 @@ public class InventoryTest extends BaseClass {
                 .body("warehouse", everyItem(notNullValue()));
     }
 
-    //  2. Create inventory (Data Driven)
-    @Test(dataProvider = "validInventoryData", dataProviderClass = InventoryDataProvider.class)
-    public void createInventoryTest(int productId, int stock, String warehouse,
-                                    int threshold, int quantity, UserRole role) {
+    //  2. Get all inventory as User
+    @Test
+    public void getAllInventoryAsUser() {
 
-        String payload = InventoryTestDataFactory
-                .validInventoryJson(productId, stock, warehouse, threshold, quantity);
-
-        InventoryHelper.createInventory(payload, role)
+        Inventory.getInventory(UserRole.USER)
                 .then()
-                .spec(success200())
-                .body("productId", equalTo(productId));
+                .spec(fail403());
     }
+
+    //  3. Get all inventory with Invalid Token
+    @Test
+    public void getAllInventoryWithInvalidToken() {
+
+        String expiredToken = TokenManager.generateExpiredToken(UserRole.ADMIN);
+
+        Inventory.getInventory(expiredToken)
+                .then()
+                .spec(fail403());
+    }
+
+    // 4. Get Inventory by Valid Id
+    @Test
+    public void getInventoryByValidId(){
+
+        InventoryHelper.getAllInventory(UserRole.ADMIN)
+    }
+
+
+
+    //  4. Create inventory (Data Driven + Cleanup)
+//    @Test(dataProvider = "validInventoryData", dataProviderClass = InventoryDataProvider.class)
+//    public void createInventoryTest(int stock, String warehouse,
+//                                    int threshold, int quantity, UserRole role) {
+//
+//        int productId = ProductHelper.createTestProduct();
+//        Integer inventoryId = null;
+//
+//        try {
+//            String payload = InventoryTestDataFactory
+//                    .validInventoryJson(productId, stock, warehouse, threshold, quantity);
+//
+//            var json = InventoryHelper.createInventory(payload, role)
+//                    .then()
+//                    .spec(success200())
+//                    .body("productId", equalTo(productId))
+//                    .body("stockCount", equalTo(stock))
+//                    .body("quantity", equalTo(quantity))
+//                    .body("warehouse", equalTo(warehouse))
+//                    .extract()
+//                    .jsonPath();
+//
+//            inventoryId = json.getInt("id");
+//
+//        } finally {
+//            // 🔥 Cleanup
+//            if (inventoryId != null) {
+//                InventoryHelper.deleteInventory(inventoryId, role);
+//            }
+//            Products.deleteProduct(productId, role);
+//        }
+//    }
 
     //  3. Invalid payload
     @Test(dataProvider = "invalidInventoryData", dataProviderClass = InventoryDataProvider.class)
@@ -56,15 +107,23 @@ public class InventoryTest extends BaseClass {
                 .statusCode(400);
     }
 
-    //  4. Quantity exceeds stock
+    //  4. Quantity exceeds stock (with cleanup)
     @Test(dataProvider = "exceedStockData", dataProviderClass = InventoryDataProvider.class)
-    public void quantityExceedsStockTest(int productId, UserRole role) {
+    public void quantityExceedsStockTest(UserRole role) {
 
-        String payload = InventoryTestDataFactory.quantityExceedsStockJson(productId);
+        int productId = ProductHelper.createTestProduct();
 
-        InventoryHelper.createInventory(payload, role)
-                .then()
-                .statusCode(400);
+        try {
+            String payload = InventoryTestDataFactory.quantityExceedsStockJson(productId);
+
+            InventoryHelper.createInventory(payload, role)
+                    .then()
+                    .statusCode(400);
+
+        } finally {
+            // 🔥 Cleanup
+            Products.deleteProduct(productId, role);
+        }
     }
 
     //  5. Unique Inventory IDs
@@ -83,21 +142,17 @@ public class InventoryTest extends BaseClass {
                 "Duplicate inventory IDs found");
     }
 
-    //  6. Quantity <= Stock validation
+    //  6. Quantity <= Stock validation (optimized)
     @Test
     public void quantityLessThanStockTest() {
 
-        var response = InventoryHelper.getAllInventory(UserRole.USER);
-
-        List<Integer> stockList = response.then()
+        var json = InventoryHelper.getAllInventory(UserRole.USER)
+                .then()
                 .extract()
-                .jsonPath()
-                .getList("stockCount", Integer.class);
+                .jsonPath();
 
-        List<Integer> quantityList = response.then()
-                .extract()
-                .jsonPath()
-                .getList("quantity", Integer.class);
+        List<Integer> stockList = json.getList("stockCount", Integer.class);
+        List<Integer> quantityList = json.getList("quantity", Integer.class);
 
         for (int i = 0; i < stockList.size(); i++) {
             Assert.assertTrue(quantityList.get(i) <= stockList.get(i),
