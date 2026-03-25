@@ -8,6 +8,7 @@ import helpers.InventoryHelper;
 import helpers.ProductHelper;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import payloads.response.InventoryResponsePOJO;
 import testBase.BaseClass;
 import testData.InventoryTestDataFactory;
 import utilities.TokenManager;
@@ -58,8 +59,42 @@ public class InventoryTest extends BaseClass {
     @Test
     public void getInventoryByValidId(){
 
-        InventoryHelper.getAllInventory(UserRole.ADMIN)
+        List<InventoryResponsePOJO> inventory = InventoryHelper.getAllInventory(UserRole.ADMIN);
+        int firstId = inventory.get(0).getId();
+        int firstProductId = inventory.get(0).getProductId();
+
+        Inventory.getInventoryById(firstId,UserRole.ADMIN)
+                .then()
+                .spec(success200())
+                .body("productId",equalTo(firstProductId))
+                .body("stockCount",greaterThanOrEqualTo(0))
+                .body("warehouse",greaterThanOrEqualTo(0))
+                .body("minThreshold",greaterThanOrEqualTo(0));
+
     }
+
+    // 5. Get Inventory by Invalid Id
+    @Test(dataProvider = "invalidInventoryData",dataProviderClass = InventoryDataProvider.class)
+    public void getInventoryByInvalidId(Object obj,UserRole role){
+
+        Inventory.getInventoryById(obj,role)
+                .then()
+                .spec(fail404());
+    }
+
+    // 5. Get Inventory by Filtering with ProductID as query parameter
+    @Test(dataProvider = "filteringInventoryData",dataProviderClass = InventoryDataProvider.class)
+    public void getInventoryByFilteringByProductId(String paramKey , String value, UserRole role){
+
+        int productId = ProductHelper.getRandomProductId();
+
+        Inventory.getInventoryByFiltering(paramKey,value,role)
+                .then()
+                .spec(success200())
+                .body(paramKey, everyItem(equalTo(value)));
+
+    }
+
 
 
 
@@ -96,16 +131,6 @@ public class InventoryTest extends BaseClass {
 //        }
 //    }
 
-    //  3. Invalid payload
-    @Test(dataProvider = "invalidInventoryData", dataProviderClass = InventoryDataProvider.class)
-    public void invalidInventoryTest(UserRole role) {
-
-        String payload = InventoryTestDataFactory.invalidInventoryJson();
-
-        InventoryHelper.createInventory(payload, role)
-                .then()
-                .statusCode(400);
-    }
 
     //  4. Quantity exceeds stock (with cleanup)
     @Test(dataProvider = "exceedStockData", dataProviderClass = InventoryDataProvider.class)

@@ -29,7 +29,7 @@ public class Inventory {
 
 
     // ✅ GET inventory by ID
-    public static Response getInventoryById(int id, UserRole role) {
+    public static Response getInventoryById(Object id, UserRole role) {
         return given()
                 .spec(BaseClass.get(role))
                 .basePath("/inventory/{id}")
@@ -44,6 +44,15 @@ public class Inventory {
                 .spec(BaseClass.get(role))
                 .basePath("/inventory")
                 .queryParam("productId", productId)
+                .when()
+                .get();
+    }
+
+    public static Response getInventoryByFiltering(String query,Object value, UserRole role) {
+        return given()
+                .spec(BaseClass.get(role))
+                .basePath("/inventory")
+                .queryParam(query, value)
                 .when()
                 .get();
     }

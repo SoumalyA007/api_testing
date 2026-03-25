@@ -17,7 +17,19 @@ public class InventoryDataProvider {
     @DataProvider(name = "invalidInventoryData")
     public Object[][] invalidInventoryData() {
         return new Object[][]{
-                {UserRole.ADMIN}
+                {99999999,UserRole.ADMIN},
+                {0,UserRole.ADMIN},
+                {-999999,UserRole.ADMIN},
+                {"99999",UserRole.ADMIN}
+        };
+    }
+
+    @DataProvider(name = "filteringInventoryData")
+    public Object[][] filteringInventoryData() {
+        return new Object[][]{
+                {"productId",101,UserRole.ADMIN},
+                {"warehouse","Virtual",UserRole.ADMIN},
+                {"warehouse","North-Zone",UserRole.ADMIN}
         };
     }
 
