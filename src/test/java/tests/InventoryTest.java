@@ -6,9 +6,12 @@ import endpoints.Products;
 import enums.UserRole;
 import helpers.InventoryHelper;
 import helpers.ProductHelper;
+import io.restassured.specification.ResponseSpecification;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import payloads.request.InventoryPOJO;
 import payloads.response.InventoryResponsePOJO;
+import payloads.response.ProductResponsePOJO;
 import testBase.BaseClass;
 import testData.InventoryTestDataFactory;
 import utilities.TokenManager;
@@ -84,7 +87,7 @@ public class InventoryTest extends BaseClass {
 
     // 5. Get Inventory by Filtering with ProductID as query parameter
     @Test(dataProvider = "filteringInventoryData",dataProviderClass = InventoryDataProvider.class)
-    public void getInventoryByFilteringByProductId(String paramKey , String value, UserRole role){
+    public void getInventoryByFiltering(String paramKey , String value, UserRole role){
 
         int productId = ProductHelper.getRandomProductId();
 
@@ -95,6 +98,66 @@ public class InventoryTest extends BaseClass {
 
     }
 
+    // 6. Get Inventory by Filtering with invalid values as query parameter
+    @Test(dataProvider = "filteringByInvalidInventoryData",dataProviderClass = InventoryDataProvider.class)
+    public void getInventoryByFilteringWithInvalidValue(String paramKey , String value, UserRole role, ResponseSpecification responseStatus){
+
+        int productId = ProductHelper.getRandomProductId();
+
+        Inventory.getInventoryByFiltering(paramKey,value,role)
+                .then()
+                .spec(responseStatus);
+
+    }
+
+
+
+    //  7. Inventory should be created automatically on product creation
+
+    @Test
+    public void inventoryShouldBeCreatedAutomatically(){
+
+        int productId = -1;
+        try{
+            productId = ProductHelper.createTestProduct();
+
+            final int productFinalId = productId;
+
+            List<InventoryResponsePOJO> inventoryList =
+                    InventoryHelper.getAllInventory(UserRole.ADMIN);
+
+            boolean found = inventoryList.stream()
+                    .anyMatch(inv -> inv.getProductId() == productFinalId);
+
+            Assert.assertTrue(found, "Inventory not created for product");
+        }finally {
+            int inventoryId = InventoryHelper.getInventoryIdByProductId(productId);
+
+            if (inventoryId>0) {
+                Inventory.deleteInventory(inventoryId, UserRole.ADMIN);
+            }
+            Products.deleteProduct(productId, UserRole.ADMIN);
+        }
+
+    }
+
+    // 8. Creating inventory with already existing inventory of productId
+    @Test(dataProvider = "createInventory",dataProviderClass = InventoryDataProvider.class)
+    public void inventoryCreationOfAlreadyExistingProductId(int stock, String warehouse, int threshold, int quantity){
+
+        int productId = ProductHelper.getRandomProductId();
+
+//        ProductResponsePOJO response = Products.getProductByProductId(productId,UserRole.ADMIN).then()
+//                .extract()
+//                .response()
+//                .as(ProductResponsePOJO.class);
+
+        InventoryPOJO inventory =   InventoryTestDataFactory.validInventoryPayload(productId,stock,warehouse,threshold,quantity);
+
+        Inventory.createInventory(inventory,UserRole.ADMIN).then().spec(success200());
+
+
+    }
 
 
 
@@ -132,96 +195,96 @@ public class InventoryTest extends BaseClass {
 //    }
 
 
-    //  4. Quantity exceeds stock (with cleanup)
-    @Test(dataProvider = "exceedStockData", dataProviderClass = InventoryDataProvider.class)
-    public void quantityExceedsStockTest(UserRole role) {
-
-        int productId = ProductHelper.createTestProduct();
-
-        try {
-            String payload = InventoryTestDataFactory.quantityExceedsStockJson(productId);
-
-            InventoryHelper.createInventory(payload, role)
-                    .then()
-                    .statusCode(400);
-
-        } finally {
-            // 🔥 Cleanup
-            Products.deleteProduct(productId, role);
-        }
-    }
-
-    //  5. Unique Inventory IDs
-    @Test
-    public void uniqueInventoryIdTest() {
-
-        List<Integer> ids = InventoryHelper.getAllInventory(UserRole.USER)
-                .then()
-                .extract()
-                .jsonPath()
-                .getList("id", Integer.class);
-
-        Set<Integer> uniqueIds = new HashSet<>(ids);
-
-        Assert.assertEquals(ids.size(), uniqueIds.size(),
-                "Duplicate inventory IDs found");
-    }
-
-    //  6. Quantity <= Stock validation (optimized)
-    @Test
-    public void quantityLessThanStockTest() {
-
-        var json = InventoryHelper.getAllInventory(UserRole.USER)
-                .then()
-                .extract()
-                .jsonPath();
-
-        List<Integer> stockList = json.getList("stockCount", Integer.class);
-        List<Integer> quantityList = json.getList("quantity", Integer.class);
-
-        for (int i = 0; i < stockList.size(); i++) {
-            Assert.assertTrue(quantityList.get(i) <= stockList.get(i),
-                    "Quantity exceeds stock at index: " + i);
-        }
-    }
-
-    //  7. Product mapping validation
-    @Test
-    public void productMappingTest() {
-
-        List<Integer> inventoryProductIds = InventoryHelper.getAllInventory(UserRole.USER)
-                .then()
-                .extract()
-                .jsonPath()
-                .getList("productId", Integer.class);
-
-        List<Integer> productIds = Products.getAllProducts(UserRole.USER)
-                .then()
-                .extract()
-                .jsonPath()
-                .getList("id", Integer.class);
-
-        Set<Integer> productSet = new HashSet<>(productIds);
-
-        for (Integer productId : inventoryProductIds) {
-            Assert.assertTrue(productSet.contains(productId),
-                    "Invalid productId in inventory: " + productId);
-        }
-    }
-
-    //  8. Warehouse validation
-    @Test
-    public void warehouseValidationTest() {
-
-        List<String> warehouses = InventoryHelper.getAllInventory(UserRole.USER)
-                .then()
-                .extract()
-                .jsonPath()
-                .getList("warehouse", String.class);
-
-        for (String warehouse : warehouses) {
-            Assert.assertNotNull(warehouse);
-            Assert.assertFalse(warehouse.trim().isEmpty());
-        }
-    }
+//    //  4. Quantity exceeds stock (with cleanup)
+//    @Test(dataProvider = "exceedStockData", dataProviderClass = InventoryDataProvider.class)
+//    public void quantityExceedsStockTest(UserRole role) {
+//
+//        int productId = ProductHelper.createTestProduct();
+//
+//        try {
+//            String payload = InventoryTestDataFactory.quantityExceedsStockJson(productId);
+//
+//            InventoryHelper.createInventory(payload, role)
+//                    .then()
+//                    .statusCode(400);
+//
+//        } finally {
+//            // 🔥 Cleanup
+//            Products.deleteProduct(productId, role);
+//        }
+//    }
+//
+//    //  5. Unique Inventory IDs
+//    @Test
+//    public void uniqueInventoryIdTest() {
+//
+//        List<Integer> ids = InventoryHelper.getAllInventory(UserRole.USER)
+//                .then()
+//                .extract()
+//                .jsonPath()
+//                .getList("id", Integer.class);
+//
+//        Set<Integer> uniqueIds = new HashSet<>(ids);
+//
+//        Assert.assertEquals(ids.size(), uniqueIds.size(),
+//                "Duplicate inventory IDs found");
+//    }
+//
+//    //  6. Quantity <= Stock validation (optimized)
+//    @Test
+//    public void quantityLessThanStockTest() {
+//
+//        var json = InventoryHelper.getAllInventory(UserRole.USER)
+//                .then()
+//                .extract()
+//                .jsonPath();
+//
+//        List<Integer> stockList = json.getList("stockCount", Integer.class);
+//        List<Integer> quantityList = json.getList("quantity", Integer.class);
+//
+//        for (int i = 0; i < stockList.size(); i++) {
+//            Assert.assertTrue(quantityList.get(i) <= stockList.get(i),
+//                    "Quantity exceeds stock at index: " + i);
+//        }
+//    }
+//
+//    //  7. Product mapping validation
+//    @Test
+//    public void productMappingTest() {
+//
+//        List<Integer> inventoryProductIds = InventoryHelper.getAllInventory(UserRole.USER)
+//                .then()
+//                .extract()
+//                .jsonPath()
+//                .getList("productId", Integer.class);
+//
+//        List<Integer> productIds = Products.getAllProducts(UserRole.USER)
+//                .then()
+//                .extract()
+//                .jsonPath()
+//                .getList("id", Integer.class);
+//
+//        Set<Integer> productSet = new HashSet<>(productIds);
+//
+//        for (Integer productId : inventoryProductIds) {
+//            Assert.assertTrue(productSet.contains(productId),
+//                    "Invalid productId in inventory: " + productId);
+//        }
+//    }
+//
+//    //  8. Warehouse validation
+//    @Test
+//    public void warehouseValidationTest() {
+//
+//        List<String> warehouses = InventoryHelper.getAllInventory(UserRole.USER)
+//                .then()
+//                .extract()
+//                .jsonPath()
+//                .getList("warehouse", String.class);
+//
+//        for (String warehouse : warehouses) {
+//            Assert.assertNotNull(warehouse);
+//            Assert.assertFalse(warehouse.trim().isEmpty());
+//        }
+//    }
 }

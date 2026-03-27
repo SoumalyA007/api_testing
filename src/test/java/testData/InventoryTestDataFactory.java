@@ -1,5 +1,7 @@
 package testData;
 
+import payloads.request.InventoryPOJO;
+
 public class InventoryTestDataFactory {
 
     public static String validInventoryJson(int productId, int stock, String warehouse, int threshold, int quantity) {
@@ -12,6 +14,19 @@ public class InventoryTestDataFactory {
                     "quantity": %d
                 }
                 """, productId, stock, warehouse, threshold, quantity);
+    }
+
+
+    public static InventoryPOJO validInventoryPayload(int productId, int stock, String warehouse, int threshold, int quantity) {
+
+        InventoryPOJO inventory = InventoryPOJO.builder()
+                .productId(productId)
+                .warehouse(warehouse)
+                .minThreshold(threshold)
+                .stockCount(quantity)
+                .build();
+
+        return inventory;
     }
 
     public static String invalidInventoryJson() {

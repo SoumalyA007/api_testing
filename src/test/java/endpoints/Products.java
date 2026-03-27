@@ -25,6 +25,16 @@ public class Products {
                 .get();
     }
 
+    public static Response getProductByProductId(Object productId,UserRole role){
+        return given()
+                .spec(BaseClass.get(role))
+                .basePath("/products")
+                .queryParam("productId", productId)
+                .when()
+                .get();
+    }
+
+
     public static Response getProductsByCategory(String categoryName , UserRole role){
         return given()
                 .spec(BaseClass.get(role))

@@ -22,4 +22,9 @@ public class InventoryHelper {
     public static Response createInventory(String payload, UserRole role) {
         return Inventory.createInventory(payload, role);
     }
+
+    public static int getInventoryIdByProductId(int productId){
+        return Inventory.getInventoryByFiltering("productId",productId,UserRole.ADMIN).then().extract().jsonPath().getInt("id");
+    }
+
 }

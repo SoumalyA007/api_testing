@@ -2,6 +2,7 @@ package dataproviders;
 
 import enums.UserRole;
 import org.testng.annotations.DataProvider;
+import testBase.BaseClass;
 import utilities.ProductIdGenerator;
 
 public class InventoryDataProvider {
@@ -32,6 +33,26 @@ public class InventoryDataProvider {
                 {"warehouse","North-Zone",UserRole.ADMIN}
         };
     }
+
+    @DataProvider(name = "filteringByInvalidInventoryData")
+    public Object[][] filteringByInvalidInventoryData() {
+        return new Object[][]{
+                {"productId",1010121021,UserRole.ADMIN, BaseClass.fail404()},
+                {"productId","101",UserRole.ADMIN, BaseClass.fail404()},
+                {"warehouse","Physical",UserRole.ADMIN,BaseClass.fail404()},
+                {"warehouseee","Virtual",UserRole.ADMIN,BaseClass.fail400()},
+        };
+    }
+
+    @DataProvider(name = "createInventory")
+    public Object[][] createInventory(){
+        return new Object[][]{
+                {50,"South-West",5,90}
+
+        };
+
+    }
+
 
     @DataProvider(name = "exceedStockData")
     public Object[][] exceedStockData() {
