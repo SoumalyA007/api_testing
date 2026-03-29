@@ -3,6 +3,8 @@ package helpers;
 import endpoints.Categories;
 import endpoints.Products;
 import enums.UserRole;
+import io.restassured.common.mapper.TypeRef;
+import payloads.response.ProductResponsePOJO;
 import testData.ProductTestDataFactory;
 
 import java.util.List;
@@ -12,12 +14,13 @@ public class ProductHelper {
 
     private static List<Integer> cachedProductIds;
     private static List<String> cachedCategories;
+    private static List<ProductResponsePOJO> cachedProductsPayloads;
 
     // ================= PRODUCT IDS =================
 
-    public static List<Integer> getAllProductIds() {
+    public static List<Integer> getAllProductIds(UserRole role) {
         if (cachedProductIds == null) {
-            cachedProductIds = Products.getAllProducts(null)
+            cachedProductIds = Products.getAllProducts(role)
                     .then()
                     .extract()
                     .jsonPath()
@@ -26,8 +29,18 @@ public class ProductHelper {
         return cachedProductIds;
     }
 
-    public static int getRandomProductId() {
-        List<Integer> ids = getAllProductIds();
+    public static List<ProductResponsePOJO> getAllProducts(UserRole role) {
+        if (cachedProductsPayloads == null) {
+            cachedProductsPayloads = Products.getAllProducts(UserRole.ADMIN)
+                    .then()
+                    .extract()
+                    .as(new TypeRef<List<ProductResponsePOJO>>(){});
+        }
+        return cachedProductsPayloads;
+    }
+
+    public static int getRandomProductId(UserRole role) {
+        List<Integer> ids = getAllProductIds(role);
         return ids.get(new Random().nextInt(ids.size()));
     }
 

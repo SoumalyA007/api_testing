@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class InventoryResponsePOJO {
 
-    private int id;
+    private Long id;
     private int productId;
-    private int stockCount;
+    private int quantity;
     private String warehouse;
     private int minThreshold;
 }

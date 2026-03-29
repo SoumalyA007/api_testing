@@ -60,4 +60,22 @@ public class InventoryDataProvider {
                 {ProductIdGenerator.getUniqueProductId(), UserRole.ADMIN}
         };
     }
+
+    @DataProvider(name = "patchInventoryData")
+    public Object[][] patchInventoryData() {
+        return new Object[][]{
+                {"quantity", 200},
+//                {"threshold", 50},
+//                {"warehouse", "B2"}
+        };
+    }
+
+    @DataProvider(name = "deleteInventory")
+    public Object[][] deleteInventory() {
+        return new Object[][]{
+                {UserRole.ADMIN,BaseClass.success200()},
+                {UserRole.USER,BaseClass.fail403()}
+        };
+    }
+
 }

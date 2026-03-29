@@ -27,4 +27,33 @@ public class InventoryHelper {
         return Inventory.getInventoryByFiltering("productId",productId,UserRole.ADMIN).then().extract().jsonPath().getInt("id");
     }
 
+
+    public static Long getInventoryIdByCreatingProduct(){
+        // 1. Create product
+        int productId = ProductHelper.createTestProduct();
+
+        // 2. Get inventoryId
+        Long inventoryId = InventoryHelper.getAllInventory(UserRole.ADMIN).stream()
+                .filter(inv -> inv.getProductId() == productId)
+                .map(InventoryResponsePOJO::getId)
+                .findFirst()
+                .orElse(null);
+
+        return inventoryId;
+    }
+
+    public static InventoryResponsePOJO getInventoryById(Object inventoryId){
+
+        return Inventory.getInventoryById(inventoryId, UserRole.ADMIN)
+                .then()
+                .extract()
+                .as(InventoryResponsePOJO.class);
+    }
+
+    public static int getProductIdByInventoryId(Object inventoryId){
+
+        return Inventory.getInventoryById(inventoryId,UserRole.ADMIN).then().extract().jsonPath().getInt("productId");
+
+    }
+
 }

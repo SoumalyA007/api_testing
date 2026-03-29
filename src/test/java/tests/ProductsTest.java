@@ -30,7 +30,7 @@ public class ProductsTest extends BaseClass {
     @Test
     public void getProductById() {
 
-        int randId = ProductHelper.getRandomProductId();
+        int randId = ProductHelper.getRandomProductId(UserRole.USER);
 
         Products.getProductById(randId, null)
                 .then()

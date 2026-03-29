@@ -89,7 +89,7 @@ public class Inventory {
     }
 
     // ✅ PATCH (optional - partial update)
-    public static Response patchInventory(int id, Object payload, UserRole role) {
+    public static Response patchInventory(Object id, Object payload, UserRole role) {
         return given()
                 .spec(BaseClass.get(role))
                 .basePath("/inventory/{id}")
@@ -100,7 +100,7 @@ public class Inventory {
     }
 
     // ✅ DELETE inventory
-    public static Response deleteInventory(int id, UserRole role) {
+    public static Response deleteInventory(Object id, UserRole role) {
         return given()
                 .spec(BaseClass.get(role))
                 .basePath("/inventory/{id}")

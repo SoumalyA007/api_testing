@@ -10,7 +10,7 @@ public class InventoryPOJO {
 
     private int id;
     private int productId;
-    private int stockCount;
+    private int quantity;
     private String warehouse;
     private int minThreshold;
 }
