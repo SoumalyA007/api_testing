@@ -29,7 +29,7 @@ public class OrdersTest extends BaseClass {
 
     // ================= GET ORDERS =================
 
-    @Test
+    @Test(groups = {"smoke", "orders"})
     public void userShouldGetOnlyOwnOrders() {
         int currentUserId = TokenManager.getUserId(UserRole.USER);
 
@@ -39,7 +39,7 @@ public class OrdersTest extends BaseClass {
                 .body("userId", everyItem(equalTo(currentUserId)));
     }
 
-    @Test
+    @Test(groups = {"smoke", "orders"})
     public void adminShouldGetAllOrders() {
         Response response = Orders.getOrders(UserRole.ADMIN);
 
@@ -50,7 +50,7 @@ public class OrdersTest extends BaseClass {
                 "Admin should see multiple users' orders");
     }
 
-    @Test
+    @Test(groups = {"regression", "orders"})
     public void userShouldGetOrdersByUserId() {
         int userId = TokenManager.getUserId(UserRole.USER);
 
@@ -60,7 +60,7 @@ public class OrdersTest extends BaseClass {
                 .body("userId", everyItem(equalTo(userId)));
     }
 
-    @Test
+    @Test(groups = {"security", "orders"})
     public void userShouldNotAccessOtherUsersOrders() {
         int otherUserId = TokenManager.getUserId(UserRole.ADMIN);
 
@@ -69,7 +69,7 @@ public class OrdersTest extends BaseClass {
                 .spec(fail403());
     }
 
-    @Test
+    @Test(groups = {"security", "orders"})
     public void adminCanAccessAnyUsersOrders() {
         int userId = TokenManager.getUserId(UserRole.USER);
 
@@ -79,7 +79,7 @@ public class OrdersTest extends BaseClass {
                 .body("userId", everyItem(equalTo(userId)));
     }
 
-    @Test
+    @Test(groups = {"security", "orders"})
     public void shouldReturn401ForExpiredToken() {
         String expiredToken = TokenManager.generateExpiredToken(UserRole.USER);
 
@@ -88,7 +88,7 @@ public class OrdersTest extends BaseClass {
                 .spec(fail401());
     }
 
-    @Test
+    @Test(groups = {"negative", "orders"})
     public void shouldReturn404ForInvalidOrderId() {
         Orders.getOrderById(Integer.MAX_VALUE, UserRole.ADMIN)
                 .then()
@@ -97,7 +97,7 @@ public class OrdersTest extends BaseClass {
 
     // ================= GET ORDER BY ID =================
 
-    @Test
+    @Test(groups = {"regression", "orders"})
     public void userShouldAccessOwnOrder() {
         int userId = TokenManager.getUserId(UserRole.USER);
 
@@ -116,7 +116,7 @@ public class OrdersTest extends BaseClass {
                 .body("id", equalTo(orderId));
     }
 
-    @Test
+    @Test(groups = {"security", "orders"})
     public void userShouldNotAccessOthersOrderById() {
         int adminUserId = TokenManager.getUserId(UserRole.ADMIN);
 
@@ -135,7 +135,7 @@ public class OrdersTest extends BaseClass {
 
     // ================= CREATE ORDER =================
 
-    @Test
+    @Test(groups = {"crud", "integration", "orders", "smoke"})
     public void userShouldCreateOrder() {
         List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
         int userId = TokenManager.getUserId(UserRole.USER);
@@ -162,7 +162,7 @@ public class OrdersTest extends BaseClass {
         }
     }
 
-    @Test
+    @Test(groups = {"security", "orders"})
     public void userShouldNotCreateOrderForAnotherUser() {
         List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
         int userId = TokenManager.getUserId(UserRole.USER);
@@ -174,7 +174,7 @@ public class OrdersTest extends BaseClass {
                 .spec(fail403());
     }
 
-    @Test
+    @Test(groups = {"crud", "orders"})
     public void adminShouldCreateOrder() {
         List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
         int userId = TokenManager.getUserId(UserRole.USER);
@@ -190,7 +190,7 @@ public class OrdersTest extends BaseClass {
         OrderHelper.deleteOrderIfExists(response.getId());
     }
 
-    @Test
+    @Test(groups = {"negative", "orders"})
     public void createOrderWithoutUserId() {
         List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
 
@@ -211,7 +211,7 @@ public class OrdersTest extends BaseClass {
         }
     }
 
-    @Test
+    @Test(groups = {"security", "orders"})
     public void createOrderWithoutLogin() {
         List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
         int userId = TokenManager.getUserId(UserRole.USER);
@@ -225,7 +225,8 @@ public class OrdersTest extends BaseClass {
 
     // ================= INVALID PAYLOAD =================
 
-    @Test(dataProvider = "invalidOrderPayloads", dataProviderClass = OrdersDataProvider.class)
+    @Test(dataProvider = "invalidOrderPayloads", dataProviderClass = OrdersDataProvider.class,
+            groups = {"negative", "orders"})
     public void createOrderWithInvalidPayload(
             String scenario,
             OrderPOJO order,
@@ -240,7 +241,7 @@ public class OrdersTest extends BaseClass {
 
     // ================= UPDATE =================
 
-    @Test
+    @Test(groups = {"security", "orders"})
     public void userShouldNotUpdateOrder() {
         int userId = TokenManager.getUserId(UserRole.USER);
 
@@ -263,7 +264,7 @@ public class OrdersTest extends BaseClass {
                 .spec(fail403());
     }
 
-    @Test
+    @Test(groups = {"crud", "orders"})
     public void adminShouldUpdateOrderStatus() {
         OrderStatusUpdatePOJO payload = OrderStatusUpdatePOJO.builder()
                 .status(OrderStatus.PAID)
@@ -275,7 +276,7 @@ public class OrdersTest extends BaseClass {
                 .body("status", equalTo("PAID"));
     }
 
-    @Test
+    @Test(groups = {"security", "orders"})
     public void adminUpdateWithExpiredToken() {
         String expiredToken = TokenManager.generateExpiredToken(UserRole.ADMIN);
 
@@ -288,7 +289,7 @@ public class OrdersTest extends BaseClass {
                 .spec(fail401());
     }
 
-    @Test
+    @Test(groups = {"negative", "orders"})
     public void invalidStatusUpdateShouldFail() {
         int userId = TokenManager.getUserId(UserRole.USER);
 
@@ -313,7 +314,7 @@ public class OrdersTest extends BaseClass {
 
     // ================= DELETE =================
 
-    @Test
+    @Test(groups = {"crud", "orders"})
     public void userShouldDeleteOwnOrder() {
         int userId = TokenManager.getUserId(UserRole.USER);
 
@@ -330,7 +331,7 @@ public class OrdersTest extends BaseClass {
                 .spec(success200());
     }
 
-    @Test
+    @Test(groups = {"crud", "orders"})
     public void adminShouldDeleteOrder() {
         int userId = TokenManager.getUserId(UserRole.USER);
 
@@ -347,7 +348,7 @@ public class OrdersTest extends BaseClass {
                 .spec(success200());
     }
 
-    @Test
+    @Test(groups = {"negative", "orders"})
     public void deleteInvalidOrderShouldReturn404() {
         Orders.deleteOrder(Integer.MAX_VALUE, UserRole.ADMIN)
                 .then()

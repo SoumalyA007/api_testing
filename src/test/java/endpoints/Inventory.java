@@ -78,7 +78,7 @@ public class Inventory {
     }
 
     // ✅ UPDATE inventory
-    public static Response updateInventory(int id, InventoryPOJO inventory, UserRole role) {
+    public static Response updateInventory(Long id, InventoryPOJO inventory, UserRole role) {
         return given()
                 .spec(BaseClass.get(role))
                 .basePath("/inventory/{id}")

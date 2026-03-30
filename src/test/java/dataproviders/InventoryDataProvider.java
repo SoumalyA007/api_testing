@@ -10,8 +10,8 @@ public class InventoryDataProvider {
     @DataProvider(name = "validInventoryData")
     public Object[][] validInventoryData() {
         return new Object[][]{
-                {ProductIdGenerator.getUniqueProductId(), 50, "Virtual", 5, 10, UserRole.ADMIN},
-                {ProductIdGenerator.getUniqueProductId(), 100, "North-Zone", 10, 20, UserRole.ADMIN}
+                {ProductIdGenerator.getUniqueProductId(),"Virtual", 5, 99, UserRole.ADMIN},
+                {ProductIdGenerator.getUniqueProductId(),"North-Zone", 10, 90, UserRole.ADMIN}
         };
     }
 
@@ -47,7 +47,7 @@ public class InventoryDataProvider {
     @DataProvider(name = "createInventory")
     public Object[][] createInventory(){
         return new Object[][]{
-                {50,"South-West",5,90}
+                {"South-West",5,90}
 
         };
 
@@ -65,8 +65,8 @@ public class InventoryDataProvider {
     public Object[][] patchInventoryData() {
         return new Object[][]{
                 {"quantity", 200},
-//                {"threshold", 50},
-//                {"warehouse", "B2"}
+                {"minThreshold", 50},
+                {"warehouse", "B2"}
         };
     }
 

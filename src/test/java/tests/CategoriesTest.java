@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.*;
 
 public class CategoriesTest extends BaseClass {
 
-    @Test
+    @Test(groups = {"smoke", "categories"})
     public void getAllCategories() {
 
         Categories.getCategories(UserRole.USER)
@@ -29,7 +29,8 @@ public class CategoriesTest extends BaseClass {
     }
 
     // ✅ Create category (Data Driven)
-    @Test(dataProvider = "validCategoryData", dataProviderClass = CategoriesDataProvider.class)
+    @Test(dataProvider = "validCategoryData", dataProviderClass = CategoriesDataProvider.class,
+            groups = {"crud", "categories"})
     public void createCategories(String name, UserRole role) {
 
         CategoryPOJO category = CategoriesTestDataFactory.validCategory(name);
@@ -40,7 +41,8 @@ public class CategoriesTest extends BaseClass {
     }
 
     // ✅ Duplicate category test
-    @Test(dataProvider = "duplicateCategoryData", dataProviderClass = CategoriesDataProvider.class)
+    @Test(dataProvider = "duplicateCategoryData", dataProviderClass = CategoriesDataProvider.class,
+            groups = {"negative", "categories"})
     public void uniqueCategoriesNameTest(String name, UserRole role) {
 
         // Ensure category already exists
@@ -54,7 +56,8 @@ public class CategoriesTest extends BaseClass {
     }
 
     // ❌ Invalid payload test
-    @Test(dataProvider = "invalidCategoryData", dataProviderClass = CategoriesDataProvider.class)
+    @Test(dataProvider = "invalidCategoryData", dataProviderClass = CategoriesDataProvider.class,
+            groups = {"negative", "categories"})
     public void invalidCategoryTest(CategoryPOJO category, UserRole role) {
 
         Categories.createCategories(category, role)
@@ -63,7 +66,7 @@ public class CategoriesTest extends BaseClass {
     }
 
     // ✅ Cross-check: Product categories vs Categories API
-    @Test
+    @Test(groups = {"integration", "categories"})
     public void productCategoriesMatchesCategories() {
 
         // Get categories from products

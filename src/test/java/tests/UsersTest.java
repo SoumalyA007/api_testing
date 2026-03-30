@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.*;
 
 public class UsersTest extends BaseClass {
 
-    @Test
+    @Test(groups = {"smoke", "users"})
     public void getAllUsers(){
 
         Users.getAllUsers(UserRole.USER)
@@ -35,7 +35,7 @@ public class UsersTest extends BaseClass {
 
     }
 
-    @Test
+    @Test(groups = {"smoke", "users"})
     public void getUserById(){
 
         int randUserId = UserHelper.getRandomUserId();
@@ -44,7 +44,8 @@ public class UsersTest extends BaseClass {
 
     }
 
-    @Test(dataProvider = "createUserData",dataProviderClass = UserDataProvider.class)
+    @Test(dataProvider = "createUserData",dataProviderClass = UserDataProvider.class,
+            groups = {"crud", "regression", "users"})
     public void createUser(String firstname, String lastname,String email, String username,String password){
 
         UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
@@ -64,7 +65,8 @@ public class UsersTest extends BaseClass {
 
     }
 
-    @Test(dataProvider = "updateUserFields", dataProviderClass = UserDataProvider.class)
+    @Test(dataProvider = "updateUserFields", dataProviderClass = UserDataProvider.class,
+            groups = {"crud", "regression", "users"})
     public void updateUserField(String field,String value,String firstname, String lastname,String email, String username,String password){
 
         // create user first
@@ -95,7 +97,8 @@ public class UsersTest extends BaseClass {
     }
 
 
-    @Test(dataProvider = "deleteUserFields", dataProviderClass = UserDataProvider.class)
+    @Test(dataProvider = "deleteUserFields", dataProviderClass = UserDataProvider.class,
+            groups = {"crud", "users"})
     public void deleteUser(String firstname, String lastname, String email, String username, String password, UserRole role , ResponseSpecification resp){
 
         UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
@@ -113,7 +116,7 @@ public class UsersTest extends BaseClass {
 
     }
 
-    @Test
+    @Test(groups = {"negative", "users"})
     public void getUserByInvalidId(){
 
         int invalidId = UserHelper.getLastUserId() + 1 ;
@@ -122,7 +125,8 @@ public class UsersTest extends BaseClass {
 
     }
 
-    @Test(dataProvider = "createUserData",dataProviderClass = UserDataProvider.class)
+    @Test(dataProvider = "createUserData",dataProviderClass = UserDataProvider.class,
+            groups = {"negative", "users"})
     public void createUserWithExistingEmail(String firstname, String lastname,String email, String username,String password){
 
 
@@ -158,7 +162,8 @@ public class UsersTest extends BaseClass {
     }
 
 
-    @Test(dataProvider = "createWithoutEmailField",dataProviderClass = UserDataProvider.class)
+    @Test(dataProvider = "createWithoutEmailField",dataProviderClass = UserDataProvider.class,
+            groups = {"negative", "users"})
     public void createUserWithMissingEmail(String firstname, String lastname,String username , String password){
 
 
@@ -168,12 +173,13 @@ public class UsersTest extends BaseClass {
 
         Users.createUser(userPOJO,UserRole.ADMIN)
                 .then()
-                .spec(fail404());
+                .spec(fail400());
 
 
     }
 
-    @Test(dataProvider = "updateUserFields", dataProviderClass = UserDataProvider.class)
+    @Test(dataProvider = "updateUserFields", dataProviderClass = UserDataProvider.class,
+            groups = {"negative", "users"})
     public void updateNonExistingUser(String field,String value,String firstname, String lastname,String email, String username,String password){
 
 
@@ -203,7 +209,8 @@ public class UsersTest extends BaseClass {
 
     }
 
-    @Test(dataProvider = "deleteUserByInvalidIdFields", dataProviderClass = UserDataProvider.class)
+    @Test(dataProvider = "deleteUserByInvalidIdFields", dataProviderClass = UserDataProvider.class,
+            groups = {"negative", "users"})
     public void deleteUserByInvalidId(String firstname, String lastname, String email, String username, String password , ResponseSpecification resp){
 
 
@@ -219,7 +226,8 @@ public class UsersTest extends BaseClass {
 
     }
 
-    @Test(dataProvider = "validateUserData",dataProviderClass = UserDataProvider.class)
+    @Test(dataProvider = "validateUserData",dataProviderClass = UserDataProvider.class,
+            groups = {"regression", "users"})
     public void validateUserData(String field,String firstname, String lastname,String email, String username,String password, UserRole role, ResponseSpecification spec){
 
         UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);

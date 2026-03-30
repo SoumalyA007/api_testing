@@ -22,7 +22,7 @@ public class CartsTest extends BaseClass {
 
 
 
-    @Test
+    @Test(groups = {"smoke", "carts"})
     public void shouldGetAllCarts() {
         Carts.getCarts(UserRole.USER)
                 .then()
@@ -30,7 +30,7 @@ public class CartsTest extends BaseClass {
                 .body("size()", greaterThanOrEqualTo(0));
     }
 
-    @Test
+    @Test(groups = {"smoke", "carts"})
     public void getCartByValidId(){
 
         List<Integer> cartId = Carts.getCarts(UserRole.USER).then().spec(success200())
@@ -40,7 +40,8 @@ public class CartsTest extends BaseClass {
 
     }
 
-    @Test(dataProvider = "createCart", dataProviderClass = CartDataProvider.class)
+    @Test(dataProvider = "createCart", dataProviderClass = CartDataProvider.class,
+            groups = {"crud", "regression", "carts"})
     public void addToCart(String message , int numberOfProducts , UserRole role , ResponseSpecification resp){
 
         List<CartProductPOJO> products =
@@ -53,7 +54,8 @@ public class CartsTest extends BaseClass {
                 .spec(resp);
     }
 
-    @Test(dataProvider = "negativeTestCart",dataProviderClass = CartDataProvider.class)
+    @Test(dataProvider = "negativeTestCart",dataProviderClass = CartDataProvider.class,
+            groups = {"negative", "carts"})
     public void negativeCartTests(String message,UserRole role,ResponseSpecification resp){
 
         List<CartProductPOJO> products =
@@ -67,7 +69,7 @@ public class CartsTest extends BaseClass {
 
     }
 
-    @Test
+    @Test(groups = {"crud", "carts"})
     public void updateCartQuantity(){
 
         int cartId = Carts.createCart(
@@ -93,7 +95,8 @@ public class CartsTest extends BaseClass {
     }
 
 
-    @Test(dataProvider = "deleteCart", dataProviderClass = CartDataProvider.class)
+    @Test(dataProvider = "deleteCart", dataProviderClass = CartDataProvider.class,
+            groups = {"crud", "carts"})
     public void deleteCart(String message , int numberOfProducts , UserRole role , ResponseSpecification resp) {
 
 
@@ -117,7 +120,8 @@ public class CartsTest extends BaseClass {
                 .statusCode(404);
     }
 
-    @Test(dataProvider = "invalidCartId", dataProviderClass = CartDataProvider.class)
+    @Test(dataProvider = "invalidCartId", dataProviderClass = CartDataProvider.class,
+            groups = {"negative", "carts"})
     public void deleteCartByInvalidId(UserRole role){
 
         int invalidId = new Random().nextInt(100000) + 99999;
@@ -127,7 +131,8 @@ public class CartsTest extends BaseClass {
                 .spec(fail404());
     }
 
-    @Test(dataProvider = "invalidCartId", dataProviderClass = CartDataProvider.class)
+    @Test(dataProvider = "invalidCartId", dataProviderClass = CartDataProvider.class,
+            groups = {"negative", "carts"})
     public void getCartByInvalidId(String message,UserRole role, ResponseSpecification resp){
 
         int invalidId = new Random().nextInt(100000) + 99999;
@@ -138,7 +143,8 @@ public class CartsTest extends BaseClass {
     }
 
 
-    @Test(dataProvider = "AccessTest", dataProviderClass = CartDataProvider.class)
+    @Test(dataProvider = "AccessTest", dataProviderClass = CartDataProvider.class,
+            groups = {"security", "carts"})
     public void CarrtAccessTest(String message , int numberOfProducts , UserRole role , UserRole accessedBy, ResponseSpecification resp ) {
 
         List<CartProductPOJO> products =
@@ -156,7 +162,8 @@ public class CartsTest extends BaseClass {
     }
 
 
-    @Test(dataProvider = "updateByAccessTest", dataProviderClass = CartDataProvider.class)
+    @Test(dataProvider = "updateByAccessTest", dataProviderClass = CartDataProvider.class,
+            groups = {"security", "carts"})
     public void UpdateCartByAccess(int numberOfProducts, UserRole updatingOf , UserRole updatingBy,ResponseSpecification resp) {
 
         List<CartProductPOJO> products =
@@ -173,7 +180,8 @@ public class CartsTest extends BaseClass {
                 .spec(resp);
     }
 
-    @Test(dataProvider = "duplicateProductTest", dataProviderClass = CartDataProvider.class)
+    @Test(dataProvider = "duplicateProductTest", dataProviderClass = CartDataProvider.class,
+            groups = {"security", "carts"})
     public void duplicateProductShouldMergeQuantity(int numberOfProducts, UserRole role) {
 
         List<CartProductPOJO> products =
@@ -200,7 +208,8 @@ public class CartsTest extends BaseClass {
                         equalTo(qty * 2));
     }
 
-    @Test(dataProvider = "numberOfCartsTest", dataProviderClass = CartDataProvider.class)
+    @Test(dataProvider = "numberOfCartsTest", dataProviderClass = CartDataProvider.class,
+            groups = {"integration", "carts"})
     public void userShouldHaveOnlyOneCart(int numberOfProducts , UserRole role) {
 
         List<CartProductPOJO> products =

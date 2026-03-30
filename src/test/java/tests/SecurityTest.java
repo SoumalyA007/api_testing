@@ -12,21 +12,21 @@ import utilities.TokenManager;
 
 public class SecurityTest extends BaseClass {
 
-    @Test
+    @Test(groups = {"security", "smoke"})
     public void OrderWithoutToken(){
 
         Orders.getOrdersWithOutAuth().then().spec(fail401());
 
     }
 
-    @Test
+    @Test(groups = {"security"})
     public void OrderWithoutRole(){
 
         Orders.getOrders(UserRole.USER).then().spec(fail403());
 
     }
 
-    @Test
+    @Test(groups = {"security"})
     public void accessWithExpiredToken(){
 
         String expiredToken = TokenManager.generateExpiredToken(UserRole.ADMIN);
@@ -39,7 +39,7 @@ public class SecurityTest extends BaseClass {
 
     }
 
-    @Test
+    @Test(groups = {"security", "negative"})
     public void tamperedToken(){
 
         String token = TokenManager.getToken(UserRole.ADMIN);

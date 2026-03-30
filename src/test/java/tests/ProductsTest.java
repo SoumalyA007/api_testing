@@ -20,14 +20,14 @@ import static org.hamcrest.Matchers.*;
 
 public class ProductsTest extends BaseClass {
 
-    @Test
+    @Test(groups = {"smoke", "products"})
     public void getAllProductsTest() {
         Products.getAllProducts(null)
                 .then()
                 .spec(success200());
     }
 
-    @Test
+    @Test(groups = {"smoke", "products"})
     public void getProductById() {
 
         int randId = ProductHelper.getRandomProductId(UserRole.USER);

@@ -18,7 +18,7 @@ public class AuthTest extends BaseClass {
 
     // ================= POSITIVE =================
 
-    @Test
+    @Test(groups = {"smoke", "auth"})
     public void loginAdmin() {
 
         LoginRequestPOJO payload =
@@ -33,7 +33,7 @@ public class AuthTest extends BaseClass {
         Assert.assertNotNull(loginResponse.getRole(), "Role should not be null");
     }
 
-    @Test
+    @Test(groups = {"smoke", "auth"})
     public void loginUser() {
 
         LoginRequestPOJO payload =
@@ -50,7 +50,8 @@ public class AuthTest extends BaseClass {
 
     // ================= NEGATIVE =================
 
-    @Test(dataProvider = "invalidLoginPayloads", dataProviderClass = AuthDataProvider.class)
+    @Test(dataProvider = "invalidLoginPayloads", dataProviderClass = AuthDataProvider.class,
+            groups = {"negative", "auth"})
     public void invalidLogins(String message, LoginRequestPOJO payload, ResponseSpecification spec) {
 
         System.out.println("Test: " + message);
@@ -62,7 +63,8 @@ public class AuthTest extends BaseClass {
 
     // ================= SECURITY =================
 
-    @Test(dataProvider = "securityPayloads", dataProviderClass = AuthDataProvider.class)
+    @Test(dataProvider = "securityPayloads", dataProviderClass = AuthDataProvider.class,
+            groups = {"security", "auth"})
     public void securityLoginTests(String message, LoginRequestPOJO payload, ResponseSpecification spec) {
 
         System.out.println("Test: " + message);
@@ -72,7 +74,7 @@ public class AuthTest extends BaseClass {
                 .spec(spec);
     }
 
-    @Test
+    @Test(groups = {"security", "negative", "auth"})
     public void loginJSONInjection() {
 
         Map<String, Object> payload =
@@ -85,7 +87,7 @@ public class AuthTest extends BaseClass {
 
     // ================= HEADERS =================
 
-    @Test
+    @Test(groups = {"negative", "auth"})
     public void loginWrongContentType() {
 
         TestContext.addHeader("Content-Type", "application/xml");
