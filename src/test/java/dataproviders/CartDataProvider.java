@@ -34,8 +34,8 @@ public class CartDataProvider {
     public Object[][] deleteCart(){
 
         return new Object[][]{
-                {"Add 1 product in cart", 1, UserRole.ADMIN, BaseClass.success200or201()},
-                {"Add 2 product in cart", 2, UserRole.ADMIN, BaseClass.success200or201()}
+                {"delete 1 product in cart", 1, UserRole.ADMIN, BaseClass.success200()},
+                {"delete 2 product in cart", 2, UserRole.ADMIN, BaseClass.success200()}
         };
 
     }

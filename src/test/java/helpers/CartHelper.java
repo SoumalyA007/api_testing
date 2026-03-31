@@ -10,6 +10,7 @@ import payloads.request.CartProductPOJO;
 import payloads.response.CartProductResponsePOJO;
 import payloads.response.CartResponsePOJO;
 import testBase.BaseClass;
+import testData.CartTestDataFactory;
 import utilities.TokenManager;
 
 import java.time.LocalDate;
@@ -77,6 +78,18 @@ public class CartHelper extends BaseClass {
         }
 
         return list;
+    }
+
+    public static CartResponsePOJO createCart(int count , UserRole role){
+
+        return Carts.createCart(
+                CartTestDataFactory.createTestCart(
+                        CartHelper.randomProducts(count, role),
+                        role), role)
+                .then()
+                .extract()
+                .as(CartResponsePOJO.class);
+
     }
 
 

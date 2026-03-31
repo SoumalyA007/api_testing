@@ -49,9 +49,16 @@ public class CartsTest extends BaseClass {
 
         CartPOJO cart = CartTestDataFactory.createTestCart(products, role);
 
-        Carts.createCart(cart,role)
+        //creation
+        int id = Carts.createCart(cart,role)
                 .then()
-                .spec(resp);
+                .spec(resp)
+                .extract()
+                .jsonPath()
+                .getInt("id");
+
+        //cleanup
+        Carts.deleteCart(id,UserRole.ADMIN);
     }
 
     @Test(dataProvider = "negativeTestCart",dataProviderClass = CartDataProvider.class,
@@ -72,11 +79,8 @@ public class CartsTest extends BaseClass {
     @Test(groups = {"crud", "carts"})
     public void updateCartQuantity(){
 
-        int cartId = Carts.createCart(
-                        CartTestDataFactory.createTestCart(
-                                CartHelper.randomProducts(1, UserRole.USER),
-                                UserRole.USER), UserRole.USER)
-                .then().extract().jsonPath().getInt("id");
+        //create cart
+        int cartId = CartHelper.createCart(1,UserRole.USER).getId();
 
         CartResponsePOJO cart =
                 Carts.getCartById(cartId, UserRole.USER)
@@ -91,29 +95,19 @@ public class CartsTest extends BaseClass {
                 .spec(success200())
                 .body("products[0].quantity", equalTo(oldQty + 1));
 
-
+        //delete cart
+        Carts.deleteCart(cartId,UserRole.ADMIN);
     }
-
 
     @Test(dataProvider = "deleteCart", dataProviderClass = CartDataProvider.class,
             groups = {"crud", "carts"})
     public void deleteCart(String message , int numberOfProducts , UserRole role , ResponseSpecification resp) {
 
-
-        List<CartProductPOJO> products =
-                CartHelper.randomProducts(numberOfProducts, role);
-
-        CartPOJO cart = CartTestDataFactory.createTestCart(products, role);
-
-        Response createCartResponse = Carts.createCart(cart,role);
-
-        int cartId = createCartResponse.jsonPath().getInt("id");
-
+        int cartId = CartHelper.createCart(numberOfProducts,role).getId();
 
         Carts.deleteCart(cartId, UserRole.USER)
                 .then()
-                .statusCode(200);
-
+                .spec(resp);
 
         Carts.getCartById(cartId, UserRole.USER)
                 .then()
@@ -122,13 +116,13 @@ public class CartsTest extends BaseClass {
 
     @Test(dataProvider = "invalidCartId", dataProviderClass = CartDataProvider.class,
             groups = {"negative", "carts"})
-    public void deleteCartByInvalidId(UserRole role){
+    public void deleteCartByInvalidId(UserRole role,ResponseSpecification resp){
 
         int invalidId = new Random().nextInt(100000) + 99999;
 
         Carts.deleteCart(invalidId, role)
                 .then()
-                .spec(fail404());
+                .spec(resp);
     }
 
     @Test(dataProvider = "invalidCartId", dataProviderClass = CartDataProvider.class,
@@ -142,18 +136,12 @@ public class CartsTest extends BaseClass {
                 .spec(resp);
     }
 
-
     @Test(dataProvider = "AccessTest", dataProviderClass = CartDataProvider.class,
             groups = {"security", "carts"})
     public void CarrtAccessTest(String message , int numberOfProducts , UserRole role , UserRole accessedBy, ResponseSpecification resp ) {
 
-        List<CartProductPOJO> products =
-                CartHelper.randomProducts(numberOfProducts, role);
-
-        CartPOJO cart = CartTestDataFactory.createTestCart(products, role);
-
         Response createResp = Carts.createCart(cart, role);
-        int cartId = createResp.jsonPath().getInt("id");
+        int cartId = CartHelper.createCart(numberOfProducts).getId();
 
         // Try accessing as USER (not owner)
         Carts.getCartById(cartId, accessedBy)
@@ -161,19 +149,13 @@ public class CartsTest extends BaseClass {
                 .spec(resp);
     }
 
-
     @Test(dataProvider = "updateByAccessTest", dataProviderClass = CartDataProvider.class,
             groups = {"security", "carts"})
     public void UpdateCartByAccess(int numberOfProducts, UserRole updatingOf , UserRole updatingBy,ResponseSpecification resp) {
 
-        List<CartProductPOJO> products =
-                CartHelper.randomProducts(numberOfProducts, updatingOf);
-
-        CartPOJO cart = CartTestDataFactory.createTestCart(products, updatingOf);
-
-        Response createResp = Carts.createCart(cart, updatingOf);
-        int cartId = createResp.jsonPath().getInt("id");
-        cart.setDate(LocalDate.now().toString());
+        CartResponsePOJO cart=CartHelper.createCart(numberOfProducts,updatingOf);
+        int cartId = CartHelper.createCart(numberOfProducts,updatingOf).getId();
+//        cart.setDate(LocalDate.now().toString());
 
         Carts.updateCart(cartId, cart, updatingBy)
                 .then()
