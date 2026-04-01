@@ -6,6 +6,7 @@ import io.restassured.response.Response;
 import static io.restassured.RestAssured.given;
 
 import payloads.request.CartPOJO;
+import payloads.response.CartResponsePOJO;
 import testBase.BaseClass;
 
 public class Carts {
@@ -36,7 +37,26 @@ public class Carts {
                 .post();
     }
 
+    public static Response createCart(CartResponsePOJO cart,UserRole role){
+        return given()
+                .spec(BaseClass.get(role))
+                .basePath("/carts")
+                .body(cart)
+                .when()
+                .post();
+    }
+
     public static Response updateCart(int id, CartPOJO cart,UserRole role){
+        return given()
+                .spec(BaseClass.get(role))
+                .basePath("/carts/{id}")
+                .pathParam("id", id)
+                .body(cart)
+                .when()
+                .put();
+    }
+
+    public static Response updateCart(int id, CartResponsePOJO cart, UserRole role){
         return given()
                 .spec(BaseClass.get(role))
                 .basePath("/carts/{id}")

@@ -9,6 +9,7 @@ import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.Test;
 import payloads.request.CartPOJO;
 import payloads.request.CartProductPOJO;
+import payloads.response.CartProductResponsePOJO;
 import payloads.response.CartResponsePOJO;
 import testBase.BaseClass;
 import testData.CartTestDataFactory;
@@ -140,8 +141,7 @@ public class CartsTest extends BaseClass {
             groups = {"security", "carts"})
     public void CarrtAccessTest(String message , int numberOfProducts , UserRole role , UserRole accessedBy, ResponseSpecification resp ) {
 
-        Response createResp = Carts.createCart(cart, role);
-        int cartId = CartHelper.createCart(numberOfProducts).getId();
+        int cartId = CartHelper.createCart(numberOfProducts,role).getId();
 
         // Try accessing as USER (not owner)
         Carts.getCartById(cartId, accessedBy)
@@ -155,7 +155,7 @@ public class CartsTest extends BaseClass {
 
         CartResponsePOJO cart=CartHelper.createCart(numberOfProducts,updatingOf);
         int cartId = CartHelper.createCart(numberOfProducts,updatingOf).getId();
-//        cart.setDate(LocalDate.now().toString());
+        cart.setDate(LocalDate.now().toString());
 
         Carts.updateCart(cartId, cart, updatingBy)
                 .then()
@@ -194,20 +194,20 @@ public class CartsTest extends BaseClass {
             groups = {"integration", "carts"})
     public void userShouldHaveOnlyOneCart(int numberOfProducts , UserRole role) {
 
-        List<CartProductPOJO> products =
-                CartHelper.randomProducts(numberOfProducts, role);
+        //List<CartProductPOJO> products =
+                //CartHelper.randomProducts(numberOfProducts, role);
 
-        CartPOJO cart = CartTestDataFactory.createTestCart(products, role);
+        //CartPOJO cart = CartTestDataFactory.createTestCart(products, role);
 
         // First creation
-        Carts.createCart(cart, role).then().spec(success200());
+        CartResponsePOJO cartResponse = CartHelper.createCart(numberOfProducts, role);
 
         // Modify quantity
-        CartProductPOJO first = cart.getProducts().get(0);
+        CartProductResponsePOJO first = cartResponse.getProducts().get(0);
         first.setQuantity(first.getQuantity() + 1);
 
         // Second creation (should update, not create new)
-        Carts.createCart(cart, role).then().spec(success200());
+        Carts.createCart(cartResponse, role).then().spec(success200());
 
         // Verify only 1 cart exists
         Carts.getCarts(role)

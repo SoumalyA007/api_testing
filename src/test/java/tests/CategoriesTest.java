@@ -35,9 +35,14 @@ public class CategoriesTest extends BaseClass {
 
         CategoryPOJO category = CategoriesTestDataFactory.validCategory(name);
 
-        Categories.createCategories(category, role)
+        int catergoryId = Categories.createCategories(category, role)
                 .then().spec(success200())
-                .body("name", equalTo(name));
+                .body("name", equalTo(name))
+                        .extract()
+                                .jsonPath()
+                                        .getInt("id");
+
+        Categories.deleteCategories(catergoryId,role);
     }
 
     // ✅ Duplicate category test
@@ -47,6 +52,8 @@ public class CategoriesTest extends BaseClass {
 
         // Ensure category already exists
         CategoriesHelper.ensureCategoryExists(name, role);
+
+        CategoriesHelper.createCategory()
 
         String body = CategoriesTestDataFactory.duplicateCategoryJson(name);
 

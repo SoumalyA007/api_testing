@@ -48,4 +48,15 @@ public class Categories {
 
     }
 
+    public static Response deleteCategories(int id, UserRole role){
+
+        return given()
+                .spec(BaseClass.get(role))
+                .basePath("/products/categories/{id}")
+                .pathParam("id",id)
+                .when()
+                .delete();
+
+    }
+
 }
