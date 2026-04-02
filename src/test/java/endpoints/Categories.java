@@ -5,6 +5,7 @@ import io.restassured.response.Response;
 import static io.restassured.RestAssured.given;
 
 import payloads.request.CategoryPOJO;
+import payloads.response.CategoryResponsePOJO;
 import testBase.BaseClass;
 
 public class Categories {
@@ -37,6 +38,7 @@ public class Categories {
 
     }
 
+
     public static Response createCategories(UserRole role , String body){
 
         return given()
@@ -48,11 +50,11 @@ public class Categories {
 
     }
 
-    public static Response deleteCategories(int id, UserRole role){
+    public static Response deleteCategories(String id, UserRole role){
 
         return given()
                 .spec(BaseClass.get(role))
-                .basePath("/products/categories/{id}")
+                .basePath("/categories/{id}")
                 .pathParam("id",id)
                 .when()
                 .delete();

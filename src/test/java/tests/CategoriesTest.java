@@ -8,6 +8,7 @@ import helpers.CategoriesHelper;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import payloads.request.CategoryPOJO;
+import payloads.response.CategoryResponsePOJO;
 import testBase.BaseClass;
 import testData.CategoriesTestDataFactory;
 
@@ -35,12 +36,12 @@ public class CategoriesTest extends BaseClass {
 
         CategoryPOJO category = CategoriesTestDataFactory.validCategory(name);
 
-        int catergoryId = Categories.createCategories(category, role)
-                .then().spec(success200())
+        String catergoryId = Categories.createCategories(category, role)
+                .then().spec(success201())
                 .body("name", equalTo(name))
                         .extract()
                                 .jsonPath()
-                                        .getInt("id");
+                                        .get("id");
 
         Categories.deleteCategories(catergoryId,role);
     }
@@ -50,16 +51,15 @@ public class CategoriesTest extends BaseClass {
             groups = {"negative", "categories"})
     public void uniqueCategoriesNameTest(String name, UserRole role) {
 
-        // Ensure category already exists
-        CategoriesHelper.ensureCategoryExists(name, role);
+        CategoryResponsePOJO responseCategories =  CategoriesHelper.createCategory(CategoriesTestDataFactory.validCategory(name),UserRole.ADMIN);
 
-        CategoriesHelper.createCategory()
+        String categoriesId = responseCategories.getId();
+        CategoryPOJO body = CategoriesTestDataFactory.validCategory(name);
 
-        String body = CategoriesTestDataFactory.duplicateCategoryJson(name);
+        Categories.createCategories(body, role)
+                .then().spec(fail409());
 
-        Categories.createCategories(role, body)
-                .then().spec(fail409())
-                .body("name", equalTo(name));
+        Categories.deleteCategories(categoriesId,UserRole.ADMIN);
     }
 
     // ❌ Invalid payload test
