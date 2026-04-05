@@ -2,7 +2,6 @@ package tests;
 
 import dataproviders.CategoriesDataProvider;
 import endpoints.Categories;
-import endpoints.Products;
 import enums.UserRole;
 import helpers.CategoriesHelper;
 import helpers.ProductHelper;
@@ -47,7 +46,9 @@ public class CategoriesTest extends BaseClass {
                     .jsonPath()
                     .get("id");
         }finally {
-            Categories.deleteCategories(catergoryId,role);
+            if (catergoryId != null) {
+                Categories.deleteCategories(catergoryId,role);
+            }
         }
 
 

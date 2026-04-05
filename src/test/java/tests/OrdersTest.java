@@ -176,18 +176,26 @@ public class OrdersTest extends BaseClass {
 
     @Test(groups = {"crud", "orders"})
     public void adminShouldCreateOrder() {
-        List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
-        int userId = TokenManager.getUserId(UserRole.USER);
 
-        OrderPOJO order = OrderTestDataFactory.validOrder(userId, items);
-
-        OrderResponsePOJO response = Orders.createOrder(order, UserRole.ADMIN)
-                .then()
-                .statusCode(201)
-                .extract()
-                .as(OrderResponsePOJO.class);
-
-        OrderHelper.deleteOrderIfExists(response.getId());
+        Integer orderId = null;
+        try{
+                List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
+                int userId = TokenManager.getUserId(UserRole.USER);
+        
+                OrderPOJO order = OrderTestDataFactory.validOrder(userId, items);
+        
+                orderId = Orders.createOrder(order, UserRole.ADMIN)
+                        .then()
+                        .statusCode(201)
+                        .extract()
+                        .jsonPath()
+                        .getInt("id");
+        }finally{
+                if (orderId != null) {
+                    Orders.deleteOrder(orderId, UserRole.ADMIN);
+                }
+        }
+        
     }
 
     @Test(groups = {"negative", "orders"})

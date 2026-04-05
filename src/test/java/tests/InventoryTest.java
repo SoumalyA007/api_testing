@@ -9,7 +9,6 @@ import helpers.ProductHelper;
 import io.restassured.response.Response;
 import io.restassured.specification.ResponseSpecification;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import payloads.request.InventoryPOJO;
 import payloads.response.InventoryResponsePOJO;
@@ -90,8 +89,6 @@ public class InventoryTest extends BaseClass {
             groups = {"regression", "inventory"})
     public void getInventoryByFiltering(String paramKey , String value, UserRole role){
 
-        int productId = ProductHelper.getRandomProductId(role);
-
         Inventory.getInventoryByFiltering(paramKey,value,role)
                 .then()
                 .spec(success200())
@@ -103,8 +100,6 @@ public class InventoryTest extends BaseClass {
     @Test(dataProvider = "filteringByInvalidInventoryData",dataProviderClass = InventoryDataProvider.class,
             groups = {"negative", "inventory"})
     public void getInventoryByFilteringWithInvalidValue(String paramKey , String value, UserRole role, ResponseSpecification responseStatus){
-
-        int productId = ProductHelper.getRandomProductId(role);
 
         Inventory.getInventoryByFiltering(paramKey,value,role)
                 .then()
