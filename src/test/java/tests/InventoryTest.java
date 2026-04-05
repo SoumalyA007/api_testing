@@ -9,6 +9,7 @@ import helpers.ProductHelper;
 import io.restassured.response.Response;
 import io.restassured.specification.ResponseSpecification;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import payloads.request.InventoryPOJO;
 import payloads.response.InventoryResponsePOJO;

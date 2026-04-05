@@ -92,5 +92,18 @@ public class CartHelper extends BaseClass {
 
     }
 
+    public static int getRandomCartId(){
+        List<Integer> cartId = Carts.getCarts(UserRole.USER).then()
+                .extract().jsonPath().getList("id",Integer.class);
+        if (cartId.isEmpty()) {
+            throw new RuntimeException("No carts found for user");
+        }
+
+        Random random = new Random();
+        int randomCartId = cartId.get(random.nextInt(cartId.size()));
+        return randomCartId;
+
+    }
+
 
 }

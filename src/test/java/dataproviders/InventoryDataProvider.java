@@ -7,6 +7,8 @@ import utilities.ProductIdGenerator;
 
 public class InventoryDataProvider {
 
+
+
     @DataProvider(name = "validInventoryData")
     public Object[][] validInventoryData() {
         return new Object[][]{

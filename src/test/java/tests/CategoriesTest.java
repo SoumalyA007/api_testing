@@ -5,6 +5,8 @@ import endpoints.Categories;
 import endpoints.Products;
 import enums.UserRole;
 import helpers.CategoriesHelper;
+import helpers.ProductHelper;
+import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import payloads.request.CategoryPOJO;
@@ -33,17 +35,22 @@ public class CategoriesTest extends BaseClass {
     @Test(dataProvider = "validCategoryData", dataProviderClass = CategoriesDataProvider.class,
             groups = {"crud", "categories"})
     public void createCategories(String name, UserRole role) {
+        String catergoryId=null;
 
-        CategoryPOJO category = CategoriesTestDataFactory.validCategory(name);
+        try{
+            CategoryPOJO category = CategoriesTestDataFactory.createCategory(name);
 
-        String catergoryId = Categories.createCategories(category, role)
-                .then().spec(success201())
-                .body("name", equalTo(name))
-                        .extract()
-                                .jsonPath()
-                                        .get("id");
+            catergoryId = Categories.createCategories(category, role)
+                    .then().spec(success201())
+                    .body("name", equalTo(name))
+                    .extract()
+                    .jsonPath()
+                    .get("id");
+        }finally {
+            Categories.deleteCategories(catergoryId,role);
+        }
 
-        Categories.deleteCategories(catergoryId,role);
+
     }
 
     // ✅ Duplicate category test
@@ -51,25 +58,31 @@ public class CategoriesTest extends BaseClass {
             groups = {"negative", "categories"})
     public void uniqueCategoriesNameTest(String name, UserRole role) {
 
-        CategoryResponsePOJO responseCategories =  CategoriesHelper.createCategory(CategoriesTestDataFactory.validCategory(name),UserRole.ADMIN);
+        String categoriesId=null;
+        try{
+             Response resp=  CategoriesHelper.createCategory(name,UserRole.ADMIN);
+            CategoryResponsePOJO responseCategories = resp.then().extract().as(CategoryResponsePOJO.class);
 
-        String categoriesId = responseCategories.getId();
-        CategoryPOJO body = CategoriesTestDataFactory.validCategory(name);
+            categoriesId = responseCategories.getId();
+            CategoryPOJO body = CategoriesTestDataFactory.createCategory(name);
 
-        Categories.createCategories(body, role)
-                .then().spec(fail409());
+            Categories.createCategories(body, role)
+                    .then().spec(fail409());
 
-        Categories.deleteCategories(categoriesId,UserRole.ADMIN);
+        }finally {
+            Categories.deleteCategories(categoriesId,UserRole.ADMIN);
+        }
+
     }
 
     // ❌ Invalid payload test
     @Test(dataProvider = "invalidCategoryData", dataProviderClass = CategoriesDataProvider.class,
             groups = {"negative", "categories"})
-    public void invalidCategoryTest(CategoryPOJO category, UserRole role) {
+    public void invalidCategoryTest(String name, UserRole role) {
 
-        Categories.createCategories(category, role)
-                .then()
-                .statusCode(400);
+        Response resp = CategoriesHelper.createCategory(name,role);
+        resp.then().spec(fail400());
+
     }
 
     // ✅ Cross-check: Product categories vs Categories API
@@ -78,11 +91,7 @@ public class CategoriesTest extends BaseClass {
 
         // Get categories from products
         List<String> categoriesProduct =
-                Products.getAllProducts(UserRole.USER)
-                        .then()
-                        .extract()
-                        .jsonPath()
-                        .getList("category", String.class);
+                ProductHelper.getAllCategories();
 
         Set<String> uniqueProductCategories = new HashSet<>(categoriesProduct);
 

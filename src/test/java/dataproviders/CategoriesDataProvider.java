@@ -26,8 +26,8 @@ public class CategoriesDataProvider {
     @DataProvider(name = "invalidCategoryData")
     public Object[][] invalidCategoryData() {
         return new Object[][]{
-                {CategoriesTestDataFactory.emptyNameCategory(), UserRole.ADMIN},
-                {CategoriesTestDataFactory.nullNameCategory(), UserRole.ADMIN}
+                {"", UserRole.ADMIN},
+                {null, UserRole.ADMIN}
         };
     }
 }

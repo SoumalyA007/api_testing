@@ -4,7 +4,6 @@ import dataproviders.CartDataProvider;
 import endpoints.Carts;
 import enums.UserRole;
 import helpers.CartHelper;
-import io.restassured.response.Response;
 import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.Test;
 import payloads.request.CartPOJO;
@@ -34,9 +33,7 @@ public class CartsTest extends BaseClass {
     @Test(groups = {"smoke", "carts"})
     public void getCartByValidId(){
 
-        List<Integer> cartId = Carts.getCarts(UserRole.USER).then().spec(success200())
-                .extract().jsonPath().getList("id",Integer.class);
-        int randId = cartId.get(0);
+        int randId = CartHelper.getRandomCartId();
         Carts.getCartById(randId, UserRole.USER).then().spec(success200());
 
     }
@@ -45,21 +42,29 @@ public class CartsTest extends BaseClass {
             groups = {"crud", "regression", "carts"})
     public void addToCart(String message , int numberOfProducts , UserRole role , ResponseSpecification resp){
 
-        List<CartProductPOJO> products =
-                CartHelper.randomProducts(numberOfProducts, role);
+        Integer id = null;
+        try{
+            List<CartProductPOJO> products =
+                    CartHelper.randomProducts(numberOfProducts, role);
 
-        CartPOJO cart = CartTestDataFactory.createTestCart(products, role);
+            CartPOJO cart = CartTestDataFactory.createTestCart(products, role);
 
-        //creation
-        int id = Carts.createCart(cart,role)
-                .then()
-                .spec(resp)
-                .extract()
-                .jsonPath()
-                .getInt("id");
+            //creation
+            id = Carts.createCart(cart,role)
+                    .then()
+                    .spec(resp)
+                    .extract()
+                    .jsonPath()
+                    .getInt("id");
+        }finally {
+            //cleanup
+            if(id!=null){
+                Carts.deleteCart(id,UserRole.ADMIN);
+            }
 
-        //cleanup
-        Carts.deleteCart(id,UserRole.ADMIN);
+        }
+
+
     }
 
     @Test(dataProvider = "negativeTestCart",dataProviderClass = CartDataProvider.class,
