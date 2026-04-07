@@ -32,12 +32,6 @@ public class OrderHelper {
                 .path("id");
     }
 
-    public static void deleteOrderIfExists(int orderId) {
-        try {
-            Orders.deleteOrder(orderId, UserRole.ADMIN);
-        } catch (Exception ignored) {}
-    }
-
     // ================= VALIDATION =================
 
     public static double calculateTotal(List<OrderItemResponsePOJO> items) {
@@ -76,4 +70,11 @@ public class OrderHelper {
             }
         }
     }
+
+    public static void deleteOrderIfExists(int orderId) {
+        try {
+            Orders.deleteOrder(orderId, UserRole.ADMIN);
+        } catch (Exception ignored) {}
+    }
+
 }

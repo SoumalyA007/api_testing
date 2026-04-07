@@ -1,6 +1,7 @@
 package helpers;
 
 import endpoints.Categories;
+import endpoints.Orders;
 import endpoints.Products;
 import enums.UserRole;
 import io.restassured.common.mapper.TypeRef;
@@ -9,6 +10,8 @@ import testData.ProductTestDataFactory;
 
 import java.util.List;
 import java.util.Random;
+
+import org.apache.commons.math3.stat.descriptive.summary.Product;
 
 public class ProductHelper {
 
@@ -76,11 +79,10 @@ public class ProductHelper {
 
     // ================= CLEANUP =================
 
-    public static void deleteProductIfExists(int productId) {
+    public static void deleteOrderIfExists(int productId) {
         try {
             Products.deleteProduct(productId, UserRole.ADMIN);
-        } catch (Exception ignored) {
-            // Safe cleanup (avoid test failure)
-        }
+        } catch (Exception ignored) {}
     }
+
 }

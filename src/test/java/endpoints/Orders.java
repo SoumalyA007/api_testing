@@ -72,6 +72,26 @@ public class Orders {
                 .put();
     }
 
+    public static Response patchOrder(int id, OrderStatusUpdatePOJO order, UserRole role){
+        return given()
+                .spec(BaseClass.get(role))
+                .basePath("/orders/{id}")
+                .pathParam("id", id)
+                .body(order)
+                .when()
+                .patch();
+    }
+
+    public static Response patchOrderWithString(int id, String order, UserRole role){
+        return given()
+                .spec(BaseClass.get(role))
+                .basePath("/orders/{id}")
+                .pathParam("id", id)
+                .body(order)
+                .when()
+                .patch();
+    }
+
     public static Response updateOrderWithString(int id, String order, UserRole role){
         return given()
                 .spec(BaseClass.get(role))
