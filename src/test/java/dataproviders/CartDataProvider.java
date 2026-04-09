@@ -7,7 +7,7 @@ import testBase.BaseClass;
 
 public class CartDataProvider {
 
-    @DataProvider(name = "createCart")
+    @DataProvider(name = "createCart",parallel = true)
     public Object[][] createCart(){
 
         return new Object[][]{
@@ -20,7 +20,7 @@ public class CartDataProvider {
 
     }
 
-    @DataProvider(name = "negativeTestCart")
+    @DataProvider(name = "negativeTestCart",parallel = true)
     public Object[][] negativeTestCart(){
 
         return new Object[][]{
@@ -30,7 +30,7 @@ public class CartDataProvider {
         };
     }
 
-    @DataProvider(name = "deleteCart")
+    @DataProvider(name = "deleteCart",parallel = true)
     public Object[][] deleteCart(){
 
         return new Object[][]{
@@ -40,7 +40,7 @@ public class CartDataProvider {
 
     }
 
-    @DataProvider(name = "invalidCartId")
+    @DataProvider(name = "invalidCartId",parallel = true)
     public Object[][] invalidCartId(){
 
         return new Object[][]{
@@ -50,7 +50,7 @@ public class CartDataProvider {
 
     }
 
-    @DataProvider(name = "AccessTest")
+    @DataProvider(name = "AccessTest",parallel = true)
     public Object[][] unauthorisedAccess(){
 
         return new Object[][]{
@@ -60,7 +60,7 @@ public class CartDataProvider {
 
     }
 
-    @DataProvider(name = "updateByAccessTest")
+    @DataProvider(name = "updateByAccessTest",parallel = true)
     public Object[][] updateByAccessTest(){
 
         return new Object[][]{
@@ -70,7 +70,7 @@ public class CartDataProvider {
 
     }
 
-    @DataProvider(name = "duplicateProductTest")
+    @DataProvider(name = "duplicateProductTest",parallel = true)
     public Object[][] duplicateProductTest(){
 
         return new Object[][]{
@@ -80,7 +80,7 @@ public class CartDataProvider {
 
     }
 
-    @DataProvider(name = "numberOfCartsTest")
+    @DataProvider(name = "numberOfCartsTest",parallel = true)
     public Object[][] numberOfCartsTest(){
 
         return new Object[][]{

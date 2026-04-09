@@ -9,7 +9,7 @@ public class InventoryDataProvider {
 
 
 
-    @DataProvider(name = "validInventoryData")
+    @DataProvider(name = "validInventoryData",parallel = true)
     public Object[][] validInventoryData() {
         return new Object[][]{
                 {ProductIdGenerator.getUniqueProductId(),"Virtual", 5, 99, UserRole.ADMIN},
@@ -17,7 +17,7 @@ public class InventoryDataProvider {
         };
     }
 
-    @DataProvider(name = "invalidInventoryData")
+    @DataProvider(name = "invalidInventoryData",parallel = true)
     public Object[][] invalidInventoryData() {
         return new Object[][]{
                 {99999999,UserRole.ADMIN},
@@ -27,7 +27,7 @@ public class InventoryDataProvider {
         };
     }
 
-    @DataProvider(name = "filteringInventoryData")
+    @DataProvider(name = "filteringInventoryData",parallel = true)
     public Object[][] filteringInventoryData() {
         return new Object[][]{
                 {"productId",101,UserRole.ADMIN},
@@ -36,7 +36,7 @@ public class InventoryDataProvider {
         };
     }
 
-    @DataProvider(name = "filteringByInvalidInventoryData")
+    @DataProvider(name = "filteringByInvalidInventoryData",parallel = true)
     public Object[][] filteringByInvalidInventoryData() {
         return new Object[][]{
                 {"productId",1010121021,UserRole.ADMIN, BaseClass.fail404()},
@@ -46,7 +46,7 @@ public class InventoryDataProvider {
         };
     }
 
-    @DataProvider(name = "createInventory")
+    @DataProvider(name = "createInventory",parallel = true)
     public Object[][] createInventory(){
         return new Object[][]{
                 {"South-West",5,90}
@@ -56,14 +56,14 @@ public class InventoryDataProvider {
     }
 
 
-    @DataProvider(name = "exceedStockData")
+    @DataProvider(name = "exceedStockData",parallel = true)
     public Object[][] exceedStockData() {
         return new Object[][]{
                 {ProductIdGenerator.getUniqueProductId(), UserRole.ADMIN}
         };
     }
 
-    @DataProvider(name = "patchInventoryData")
+    @DataProvider(name = "patchInventoryData",parallel = true)
     public Object[][] patchInventoryData() {
         return new Object[][]{
                 {"quantity", 200},
@@ -72,7 +72,7 @@ public class InventoryDataProvider {
         };
     }
 
-    @DataProvider(name = "deleteInventory")
+    @DataProvider(name = "deleteInventory",parallel = true)
     public Object[][] deleteInventory() {
         return new Object[][]{
                 {UserRole.ADMIN,BaseClass.success200()},

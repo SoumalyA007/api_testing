@@ -5,21 +5,23 @@ import java.util.Map;
 
 public class TestContext {
 
-    private static Map<String, Object> data = new HashMap<>();
+    // 🔥 Thread-safe data storage
+    private static ThreadLocal<Map<String, Object>> data =
+            ThreadLocal.withInitial(HashMap::new);
 
     public static void set(String key, Object value){
-        data.put(key, value);
+        data.get().put(key, value);
     }
 
     public static Object get(String key){
-        return data.get(key);
+        return data.get().get(key);
     }
 
     public static void clear(){
-        data.clear();
+        data.get().clear();
     }
 
-    //header
+    // 🔥 Thread-safe headers (already correct)
     private static ThreadLocal<Map<String, String>> headers =
             ThreadLocal.withInitial(HashMap::new);
 
@@ -35,7 +37,9 @@ public class TestContext {
         headers.get().clear();
     }
 
-
-
-
+    // 🔥 VERY IMPORTANT (memory leak prevention)
+    public static void remove() {
+        data.remove();
+        headers.remove();
+    }
 }

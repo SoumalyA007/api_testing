@@ -7,7 +7,7 @@ import testBase.BaseClass;
 
 public class OrdersDataProvider {
 
-    @DataProvider(name = "invalidOrderPayloads")
+    @DataProvider(name = "invalidOrderPayloads", parallel = true)
     public Object[][] invalidOrderPayloads() {
 
         ResponseSpecification spec = BaseClass.fail400();

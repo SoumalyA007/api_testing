@@ -17,32 +17,42 @@ import java.util.Map;
 
 public class TokenManager {
 
-    private static Map<UserRole, String> tokenStore = new HashMap<>();
-    private static Map<UserRole, Integer> userIdStore = new HashMap<>();
-    private static ThreadLocal<String> token = new ThreadLocal<>();
+    // 🔥 Thread-safe storage
+    private static ThreadLocal<Map<UserRole, String>> tokenStore =
+            ThreadLocal.withInitial(HashMap::new);
+
+    private static ThreadLocal<Map<UserRole, Integer>> userIdStore =
+            ThreadLocal.withInitial(HashMap::new);
 
     private static final String SECRET =
             "my_super_secret_key_which_is_long_enough_12345";
 
+    // ================= GET TOKEN =================
     public static String getToken(UserRole role) {
 
-        if (!tokenStore.containsKey(role)) {
+        Map<UserRole, String> tokens = tokenStore.get();
+
+        if (!tokens.containsKey(role)) {
             generateToken(role);
         }
 
-        return tokenStore.get(role);
+        return tokens.get(role);
     }
 
+    // ================= GET USER ID =================
     public static int getUserId(UserRole role) {
 
-        if (!userIdStore.containsKey(role)) {
+        Map<UserRole, Integer> users = userIdStore.get();
+
+        if (!users.containsKey(role)) {
             generateToken(role);
         }
 
-        return userIdStore.get(role);
+        return users.get(role);
     }
 
-    public static void generateToken(UserRole role){
+    // ================= GENERATE TOKEN =================
+    private static void generateToken(UserRole role){
 
         String username="";
         String password="";
@@ -73,10 +83,18 @@ public class TokenManager {
         String token = loginResponsePOJO.getToken();
         int userId = loginResponsePOJO.getUserId();
 
-        tokenStore.put(role, token);
-        userIdStore.put(role, userId);
+        // 🔥 Store in THREAD LOCAL
+        tokenStore.get().put(role, token);
+        userIdStore.get().put(role, userId);
     }
 
+    // ================= CLEAR AFTER TEST =================
+    public static void clear() {
+        tokenStore.remove();
+        userIdStore.remove();
+    }
+
+    // ================= EXPIRED TOKEN =================
     public static String generateExpiredToken(UserRole role) {
 
         Key key = Keys.hmacShaKeyFor(

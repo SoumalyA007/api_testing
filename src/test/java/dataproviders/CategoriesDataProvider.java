@@ -7,7 +7,7 @@ import testData.CategoriesTestDataFactory;
 
 public class CategoriesDataProvider {
 
-    @DataProvider(name = "validCategoryData")
+    @DataProvider(name = "validCategoryData",parallel = true)
     public Object[][] validCategoryData() {
         return new Object[][]{
                 {"Health and Household", UserRole.ADMIN},
@@ -16,14 +16,14 @@ public class CategoriesDataProvider {
         };
     }
 
-    @DataProvider(name = "duplicateCategoryData")
+    @DataProvider(name = "duplicateCategoryData",parallel = true)
     public Object[][] duplicateCategoryData() {
         return new Object[][]{
                 {"Health and Household", UserRole.ADMIN}
         };
     }
 
-    @DataProvider(name = "invalidCategoryData")
+    @DataProvider(name = "invalidCategoryData",parallel = true)
     public Object[][] invalidCategoryData() {
         return new Object[][]{
                 {"", UserRole.ADMIN},

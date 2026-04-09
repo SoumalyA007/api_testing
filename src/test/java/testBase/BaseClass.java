@@ -137,10 +137,12 @@ public class BaseClass {
 
 
 
-    @AfterSuite
+    @AfterMethod(alwaysRun = true)
     public void cleanUp(){
         TestContext.clearHeaders();
         TestContext.clear();
+        TokenManager.clear(); // 🔥 THIS IS CRITICAL
+        TestContext.remove();
     }
 
 }

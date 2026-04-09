@@ -1,5 +1,9 @@
 <suite name="API Automation Suite" parallel="tests" thread-count="3">
 
+<listeners>
+    <listener class-name="listeners.RetryListener"/>
+</listeners>
+
     <!-- 🔥 Smoke Tests (Fast Feedback) -->
     <test name="Smoke Tests">
         <groups>

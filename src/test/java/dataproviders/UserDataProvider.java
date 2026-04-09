@@ -9,7 +9,7 @@ public class UserDataProvider extends BaseClass {
 
     private static final Faker faker = new Faker();
 
-    @DataProvider(name = "createUserData")
+    @DataProvider(name = "createUserData",parallel = true)
     public Object[][] createUserData(){
 
         int numberOfUsers = Integer.parseInt(p.getProperty("numberOfCreateUser"));   // number of datasets you want
@@ -28,7 +28,7 @@ public class UserDataProvider extends BaseClass {
         return data;
     }
 
-    @DataProvider(name = "updateUserFields")
+    @DataProvider(name = "updateUserFields",parallel = true)
     public Object[][] updateUserFields(){
 
         return new Object[][]{
@@ -42,7 +42,7 @@ public class UserDataProvider extends BaseClass {
         };
     }
 
-    @DataProvider(name = "deleteUserFields")
+    @DataProvider(name = "deleteUserFields",parallel = true)
     public Object[][] deleteUserFields(){
 
         return new Object[][]{
@@ -53,7 +53,7 @@ public class UserDataProvider extends BaseClass {
         };
     }
 
-    @DataProvider(name = "deleteUserByInvalidIdFields")
+    @DataProvider(name = "deleteUserByInvalidIdFields",parallel = true)
     public Object[][] deleteUserByInvalidIdFields(){
 
         return new Object[][]{
@@ -64,7 +64,7 @@ public class UserDataProvider extends BaseClass {
         };
     }
 
-    @DataProvider(name = "createWithoutEmailField")
+    @DataProvider(name = "createWithoutEmailField",parallel = true)
     public Object[][] createWithoutEmailField(){
 
         return new Object[][]{
@@ -75,7 +75,7 @@ public class UserDataProvider extends BaseClass {
         };
     }
 
-    @DataProvider(name = "validateUserData")
+    @DataProvider(name = "validateUserData",parallel = true)
     public Object[][] validateUserData(){
 
         return new Object[][]{
@@ -88,7 +88,7 @@ public class UserDataProvider extends BaseClass {
         };
     }
 
-    @DataProvider(name = "deleteUserData")
+    @DataProvider(name = "deleteUserData",parallel = true)
     public Object[][] deleteUserData(){
 
         return new Object[][]{
@@ -98,9 +98,6 @@ public class UserDataProvider extends BaseClass {
 
         };
     }
-
-
-
 
 
 }
