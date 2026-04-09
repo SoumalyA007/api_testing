@@ -54,7 +54,9 @@ public class UserHelper {
 
     public static void deleteUserIfExists(int userId) {
         try {
-            Users.deleteUser(userId, UserRole.ADMIN);
+            if(userId != 0) {
+                Users.deleteUser(userId, UserRole.ADMIN);
+            }
         } catch (Exception ignored) {
             // safe cleanup
         }

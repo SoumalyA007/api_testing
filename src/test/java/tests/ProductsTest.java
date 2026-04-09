@@ -20,14 +20,14 @@ import static org.hamcrest.Matchers.*;
 
 public class ProductsTest extends BaseClass {
 
-    @Test(groups = {"smoke", "products"})
+    @Test(groups = {"smoke", "products"}, priority = 1)
     public void getAllProductsTest() {
         Products.getAllProducts(null)
                 .then()
                 .spec(success200());
     }
 
-    @Test(groups = {"smoke", "products"})
+    @Test(groups = {"smoke", "products"}, priority = 2)
     public void getProductById() {
 
         int randId = ProductHelper.getRandomProductId(UserRole.USER);
@@ -38,7 +38,7 @@ public class ProductsTest extends BaseClass {
                 .body("id", equalTo(randId));
     }
 
-    @Test
+    @Test(groups = {"smoke", "products"}, priority = 3)
     public void getProductByCategory() {
 
         String randCategory = ProductHelper.getRandomCategory();
@@ -49,7 +49,7 @@ public class ProductsTest extends BaseClass {
                 .body("id", notNullValue());
     }
 
-    @Test
+    @Test(groups = {"negative", "products"}, priority = 4)
     public void getProductByInvalidId() {
 
         int invalidId = 9999999;
@@ -59,7 +59,7 @@ public class ProductsTest extends BaseClass {
                 .spec(fail404());
     }
 
-    @Test
+    @Test(groups = {"negative", "products"}, priority = 5)
     public void getProductByInvalidCategory() {
 
         String invalidCategory = "invalid_category";
@@ -69,7 +69,7 @@ public class ProductsTest extends BaseClass {
                 .spec(fail400());
     }
 
-    @Test
+    @Test(groups = {"regression", "products"}, priority = 6)
     public void verifyProductFields() {
 
         Products.getAllProducts(null)
@@ -83,7 +83,7 @@ public class ProductsTest extends BaseClass {
                 .body("image", everyItem(startsWith("https://")));
     }
 
-    @Test
+    @Test(groups = {"integration", "products"}, priority = 7)
     public void categoryExistsTest() {
 
         List<String> categories = Categories.getCategories(null)
@@ -103,11 +103,15 @@ public class ProductsTest extends BaseClass {
 
     // ================= CREATE =================
 
-    @Test(dataProvider = "createProductPayloads", dataProviderClass = ProductDataProvider.class)
+    @Test(
+        dataProvider = "createProductPayloads",
+        dataProviderClass = ProductDataProvider.class,
+        groups = {"crud", "products"},
+        priority = 8
+    )
     public void createProduct(String message, ProductsPOJO payload, UserRole role, ResponseSpecification spec) {
 
-        System.out.println("Test: " + message);
-
+        logger.info("Test: " + message);
         Response response = Products.createProduct(payload, role);
         response.then().spec(spec);
 
@@ -117,7 +121,7 @@ public class ProductsTest extends BaseClass {
         }
     }
 
-    @Test
+    @Test(groups = {"negative", "products"}, priority = 9)
     public void createProductPriceAsString() {
 
         Products.createProduct(ProductTestDataFactory.productPriceAsString(), UserRole.ADMIN)
@@ -125,7 +129,7 @@ public class ProductsTest extends BaseClass {
                 .spec(fail400());
     }
 
-    @Test
+    @Test(groups = {"security", "products"}, priority = 10)
     public void createProductXSSInDescription() {
 
         Products.createProduct(ProductTestDataFactory.xssProduct(), UserRole.ADMIN)
@@ -135,12 +139,19 @@ public class ProductsTest extends BaseClass {
 
     // ================= UPDATE =================
 
-    @Test(dataProvider = "updateProductPayloads", dataProviderClass = ProductDataProvider.class)
+    
+    @Test(
+        dataProvider = "updateProductPayloads",
+        dataProviderClass = ProductDataProvider.class,
+        groups = {"crud", "products"},
+        priority = 11
+    )
     public void updateProducts(String message, ProductsPOJO payload, UserRole role, ResponseSpecification spec) {
 
-        int createdId = ProductHelper.createTestProduct();
-
-        System.out.println("Test: " + message);
+        int createdId = 0;
+        try{
+            createdId = ProductHelper.createTestProduct();
+            logger.info("Test: " + message);
 
         Response response = Products.updateProduct(createdId, payload, role);
         response.then().spec(spec);
@@ -150,11 +161,14 @@ public class ProductsTest extends BaseClass {
                     .then()
                     .body("title", equalTo(payload.getTitle()));
         }
+        }finally{
+            ProductHelper.deleteProductIfExists(createdId);
+        }
 
-        Products.deleteProduct(createdId, UserRole.ADMIN);
+        
     }
 
-    @Test
+    @Test(groups = {"negative", "products"}, priority = 12)
     public void updateNonExistingProduct() {
 
         int invalidId = 9999999;
@@ -166,19 +180,24 @@ public class ProductsTest extends BaseClass {
 
     // ================= DELETE =================
 
-    @Test(dataProvider = "deleteProduct", dataProviderClass = ProductDataProvider.class)
+    @Test(
+        dataProvider = "deleteProduct",
+        dataProviderClass = ProductDataProvider.class,
+        groups = {"crud", "products"},
+        priority = 13
+    )
     public void deleteProductTest(String message, UserRole role, ResponseSpecification spec) {
 
         int createdId = ProductHelper.createTestProduct();
 
-        System.out.println("Test: " + message);
+        logger.info("Test: " + message);
 
         Products.deleteProduct(createdId, role)
                 .then()
                 .spec(spec);
     }
 
-    @Test
+    @Test(groups = {"negative", "products"}, priority = 14)
     public void deleteProductWithInvalidId() {
 
         int invalidId = 9999999;

@@ -5,9 +5,11 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
-import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.annotations.*;
 import utilities.*;
 import static org.hamcrest.Matchers.*;
@@ -15,21 +17,18 @@ import static org.hamcrest.Matchers.*;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
-
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
-
-
 public class BaseClass {
     public static Properties p;
+    public Logger logger;
 
-
-    @BeforeClass
+    @BeforeSuite
     public void setUp() throws IOException {
 
         FileReader file = new FileReader("./src//test//resources//config.properties");
         p = new Properties();
         p.load(file);
 
+        logger = LogManager.getLogger(this.getClass());
 
 
     }
@@ -138,7 +137,7 @@ public class BaseClass {
 
 
 
-    @AfterMethod
+    @AfterSuite
     public void cleanUp(){
         TestContext.clearHeaders();
         TestContext.clear();

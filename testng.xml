@@ -1,60 +1,57 @@
-<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-
 <suite name="API Automation Suite" parallel="tests" thread-count="3">
 
-    <!-- 🔥 Extent Report Listener -->
-    <listeners>
-        <listener class-name="utilities.ExtentReportManager"/>
-    </listeners>
-
-    <!-- ================= SMOKE ================= -->
+    <!-- 🔥 Smoke Tests (Fast Feedback) -->
     <test name="Smoke Tests">
         <groups>
             <run>
                 <include name="smoke"/>
             </run>
         </groups>
-        <packages>
-            <package name="tests"/>
-        </packages>
+        <classes>
+            <class name="tests.AuthTest"/>
+            <class name="tests.ProductsTest"/>
+            <class name="tests.CartsTest"/>
+            <class name="tests.UsersTest"/>
+            <class name="tests.InventoryTest"/>
+            <class name="tests.OrdersTest"/>
+        </classes>
     </test>
 
-    <!-- ================= REGRESSION ================= -->
-    <test name="Regression Tests">
+    <!-- 🔥 CRUD + Regression -->
+    <test name="CRUD & Regression Tests">
         <groups>
             <run>
-                <include name="regression"/>
                 <include name="crud"/>
+                <include name="regression"/>
                 <include name="integration"/>
             </run>
         </groups>
-        <packages>
-            <package name="tests"/>
-        </packages>
+        <classes>
+            <class name="tests.ProductsTest"/>
+            <class name="tests.CartsTest"/>
+            <class name="tests.UsersTest"/>
+            <class name="tests.InventoryTest"/>
+            <class name="tests.OrdersTest"/>
+            <class name="tests.CategoriesTest"/>
+        </classes>
     </test>
 
-    <!-- ================= NEGATIVE ================= -->
-    <test name="Negative Tests">
+    <!-- 🔥 Negative + Security -->
+    <test name="Negative & Security Tests">
         <groups>
             <run>
                 <include name="negative"/>
-            </run>
-        </groups>
-        <packages>
-            <package name="tests"/>
-        </packages>
-    </test>
-
-    <!-- ================= SECURITY ================= -->
-    <test name="Security Tests">
-        <groups>
-            <run>
                 <include name="security"/>
             </run>
         </groups>
-        <packages>
-            <package name="tests"/>
-        </packages>
+        <classes>
+            <class name="tests.AuthTest"/>
+            <class name="tests.SecurityTest"/>
+            <class name="tests.ProductsTest"/>
+            <class name="tests.UsersTest"/>
+            <class name="tests.InventoryTest"/>
+            <class name="tests.OrdersTest"/>
+        </classes>
     </test>
 
 </suite>

@@ -11,8 +11,6 @@ import testData.ProductTestDataFactory;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.math3.stat.descriptive.summary.Product;
-
 public class ProductHelper {
 
     private static List<Integer> cachedProductIds;
@@ -79,9 +77,11 @@ public class ProductHelper {
 
     // ================= CLEANUP =================
 
-    public static void deleteOrderIfExists(int productId) {
+    public static void deleteProductIfExists(int productId) {
         try {
-            Products.deleteProduct(productId, UserRole.ADMIN);
+            if(productId != 0){
+                Products.deleteProduct(productId, UserRole.ADMIN);
+            }
         } catch (Exception ignored) {}
     }
 

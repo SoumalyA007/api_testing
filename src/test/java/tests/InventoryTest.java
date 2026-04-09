@@ -24,7 +24,7 @@ import static org.hamcrest.Matchers.*;
 public class InventoryTest extends BaseClass {
 
     //  1. Get all inventory as Admin
-    @Test(groups = {"smoke", "inventory"})
+    @Test(groups = {"smoke", "inventory"}, priority = 1)
     public void getAllInventoryAsAdmin() {
 
         Inventory.getInventory(UserRole.ADMIN)
@@ -37,7 +37,7 @@ public class InventoryTest extends BaseClass {
     }
 
     //  2. Get all inventory as User
-    @Test(groups = {"negative", "inventory"})
+    @Test(groups = {"negative", "inventory"}, priority = 2)
     public void getAllInventoryAsUser() {
 
         Inventory.getInventory(UserRole.USER)
@@ -46,7 +46,7 @@ public class InventoryTest extends BaseClass {
     }
 
     //  3. Get all inventory with Invalid Token
-    @Test(groups = {"security", "inventory"})
+    @Test(groups = {"security", "inventory"}, priority = 3)
     public void getAllInventoryWithInvalidToken() {
 
         String expiredToken = TokenManager.generateExpiredToken(UserRole.ADMIN);
@@ -57,7 +57,7 @@ public class InventoryTest extends BaseClass {
     }
 
     // 4. Get Inventory by Valid Id
-    @Test(groups = {"smoke", "inventory"})
+    @Test(groups = {"smoke", "inventory"}, priority = 4)
     public void getInventoryByValidId(){
 
         List<InventoryResponsePOJO> inventory = InventoryHelper.getAllInventory(UserRole.ADMIN);
@@ -75,8 +75,12 @@ public class InventoryTest extends BaseClass {
     }
 
     // 5. Get Inventory by Invalid Id
-    @Test(dataProvider = "invalidInventoryData",dataProviderClass = InventoryDataProvider.class,
-            groups = {"negative", "inventory"})
+    @Test(
+        dataProvider = "invalidInventoryData",
+        dataProviderClass = InventoryDataProvider.class,
+        groups = {"negative", "inventory"},
+        priority = 5
+      )
     public void getInventoryByInvalidId(Object obj,UserRole role){
 
         Inventory.getInventoryById(obj,role)
@@ -84,9 +88,13 @@ public class InventoryTest extends BaseClass {
                 .spec(fail404());
     }
 
-    // 5. Get Inventory by Filtering with ProductID as query parameter
-    @Test(dataProvider = "filteringInventoryData",dataProviderClass = InventoryDataProvider.class,
-            groups = {"regression", "inventory"})
+    // 6. Get Inventory by Filtering with ProductID as query parameter
+    @Test(
+        dataProvider = "filteringInventoryData",
+        dataProviderClass = InventoryDataProvider.class,
+        groups = {"regression", "inventory"},
+        priority = 6
+      )
     public void getInventoryByFiltering(String paramKey , String value, UserRole role){
 
         Inventory.getInventoryByFiltering(paramKey,value,role)
@@ -96,9 +104,13 @@ public class InventoryTest extends BaseClass {
 
     }
 
-    // 6. Get Inventory by Filtering with invalid values as query parameter
-    @Test(dataProvider = "filteringByInvalidInventoryData",dataProviderClass = InventoryDataProvider.class,
-            groups = {"negative", "inventory"})
+    // 7. Get Inventory by Filtering with invalid values as query parameter
+    @Test(
+        dataProvider = "filteringByInvalidInventoryData",
+        dataProviderClass = InventoryDataProvider.class,
+        groups = {"negative", "inventory"},
+        priority = 7
+      )
     public void getInventoryByFilteringWithInvalidValue(String paramKey , String value, UserRole role, ResponseSpecification responseStatus){
 
         Inventory.getInventoryByFiltering(paramKey,value,role)
@@ -107,8 +119,8 @@ public class InventoryTest extends BaseClass {
 
     }
 
-    //  7. Inventory should be created automatically on product creation
-    @Test(groups = {"integration", "inventory", "smoke"})
+    //  8. Inventory should be created automatically on product creation
+    @Test(groups = {"integration", "inventory", "smoke"}, priority = 8)
     public void inventoryShouldBeCreatedAutomatically(){
 
         int productId = -1;
@@ -135,9 +147,13 @@ public class InventoryTest extends BaseClass {
 
     }
 
-    // 8. Creating inventory with already existing inventory of productId
-    @Test(dataProvider = "createInventory",dataProviderClass = InventoryDataProvider.class,
-            groups = {"negative", "inventory"})
+    // 9. Creating inventory with already existing inventory of productId
+    @Test(
+        dataProvider = "createInventory",
+        dataProviderClass = InventoryDataProvider.class,
+        groups = {"negative", "inventory"},
+        priority = 9
+      )
     public void inventoryCreationOfAlreadyExistingProductId(String warehouse, int threshold, int quantity){
 
         boolean isPass = false;
@@ -166,9 +182,13 @@ public class InventoryTest extends BaseClass {
 
     }
 
-    // 9. Creating inventory with  nonexisting  productId
-    @Test(dataProvider = "createInventory",dataProviderClass = InventoryDataProvider.class,
-            groups = {"negative", "inventory"})
+    // 10. Creating inventory with  nonexisting  productId
+    @Test(
+        dataProvider = "createInventory",
+        dataProviderClass = InventoryDataProvider.class,
+        groups = {"negative", "inventory"},
+        priority = 10
+      )
     public void inventoryCreationWithNonExistingProductId(int stock, String warehouse, int threshold, int quantity){
 
         boolean isPass = false;
@@ -197,8 +217,8 @@ public class InventoryTest extends BaseClass {
 
     }
 
-    //10. Unique Inventory IDs
-    @Test(groups = {"regression", "inventory"})
+    //11. Unique Inventory IDs
+    @Test(groups = {"regression", "inventory"}, priority = 11)
     public void uniqueInventoryIdTest(){
 
         List<Integer> inventoryId = Inventory.getInventory(UserRole.ADMIN).then().extract().jsonPath().getList("id", Integer.class);
@@ -209,8 +229,8 @@ public class InventoryTest extends BaseClass {
 
     }
 
-    //11. Check for productId of inventory available in inventory or not
-    @Test(groups = {"integration", "inventory"})
+    //12. Check for productId of inventory available in inventory or not
+    @Test(groups = {"integration", "inventory"}, priority = 12)
     public void everyProductShouldHaveInventory() {
 
         // 1. Get all products
@@ -238,8 +258,8 @@ public class InventoryTest extends BaseClass {
                 "Missing inventory for productIds: " + missingProductIds);
     }
 
-    //  12. Warehouse validation
-    @Test(groups = {"regression", "inventory"})
+    //  13. Warehouse validation
+    @Test(groups = {"regression", "inventory"}, priority = 13)
     public void warehouseValidationTest() {
 
         List<String> warehouses = Inventory.getInventory(UserRole.USER)
@@ -254,9 +274,14 @@ public class InventoryTest extends BaseClass {
         }
     }
 
-    //13. Update a field of inventory data
-    @Test(dataProvider = "patchInventoryData",dataProviderClass = InventoryDataProvider.class,
-            groups = {"crud", "regression", "inventory"})
+    //14. Update a field of inventory data
+    @Test(
+        dataProvider = "patchInventoryData",
+        dataProviderClass = InventoryDataProvider.class,
+        groups = {"crud", "regression", "inventory"},
+        dependsOnMethods = "inventoryShouldBeCreatedAutomatically",
+        priority = 14
+      )
     public void patchInventory(String field, Object value) {
 
         Long inventoryId = null;
@@ -298,9 +323,14 @@ public class InventoryTest extends BaseClass {
 
     }
 
-    //13. Update a field of inventory data
-    @Test(dataProvider = "putInventoryData",dataProviderClass = InventoryDataProvider.class,
-            groups = {"crud", "regression", "inventory"})
+    //15. Update a field of inventory data
+    @Test(
+        dataProvider = "putInventoryData",
+        dataProviderClass = InventoryDataProvider.class,
+        groups = {"crud", "regression", "inventory"},
+        dependsOnMethods = "inventoryShouldBeCreatedAutomatically",
+        priority = 15
+      )
     public void putInventory(String warehouse,int threshold,int quantity) {
 
         Long inventoryId = null;
@@ -330,9 +360,13 @@ public class InventoryTest extends BaseClass {
         }
     }
 
-    //13. Delete inventory ( data provider to handle positive and negative tests in a single method
-    @Test(dataProvider = "deleteInventory", dataProviderClass = InventoryDataProvider.class,
-            groups = {"crud", "inventory"})
+    //14. Delete inventory ( data provider to handle positive and negative tests in a single method
+    @Test(
+        dataProvider = "deleteInventory",
+        dataProviderClass = InventoryDataProvider.class,
+        groups = {"crud", "inventory"},
+        priority = 16
+      )
     public void deleteInventory (UserRole role, ResponseSpecification resp){
 
         Long inventoryId = InventoryHelper.getInventoryIdByCreatingProduct();

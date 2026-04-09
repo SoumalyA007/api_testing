@@ -73,7 +73,9 @@ public class OrderHelper {
 
     public static void deleteOrderIfExists(int orderId) {
         try {
-            Orders.deleteOrder(orderId, UserRole.ADMIN);
+            if(orderId != 0){
+                Orders.deleteOrder(orderId, UserRole.ADMIN);
+            }
         } catch (Exception ignored) {}
     }
 

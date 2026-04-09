@@ -19,6 +19,7 @@ public class TokenManager {
 
     private static Map<UserRole, String> tokenStore = new HashMap<>();
     private static Map<UserRole, Integer> userIdStore = new HashMap<>();
+    private static ThreadLocal<String> token = new ThreadLocal<>();
 
     private static final String SECRET =
             "my_super_secret_key_which_is_long_enough_12345";

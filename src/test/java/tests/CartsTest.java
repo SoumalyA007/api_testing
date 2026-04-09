@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.*;
 
 public class CartsTest extends BaseClass {
 
-    @Test(groups = {"smoke", "carts"})
+    @Test(groups = {"smoke", "carts"}, priority = 1)
     public void shouldGetAllCarts() {
         Carts.getCarts(UserRole.USER)
                 .then()
@@ -29,7 +29,7 @@ public class CartsTest extends BaseClass {
                 .body("size()", greaterThanOrEqualTo(0));
     }
 
-    @Test(groups = {"smoke", "carts"})
+    @Test(groups = {"smoke", "carts"}, priority = 2)
     public void getCartByValidId(){
 
         int randId = CartHelper.getRandomCartId();
@@ -37,8 +37,12 @@ public class CartsTest extends BaseClass {
 
     }
 
-    @Test(dataProvider = "createCart", dataProviderClass = CartDataProvider.class,
-            groups = {"crud", "regression", "carts"})
+    @Test(
+        dataProvider = "createCart",
+        dataProviderClass = CartDataProvider.class,
+        groups = {"crud", "regression", "carts"},
+        priority = 3
+      )
     public void addToCart(String message , int numberOfProducts , UserRole role , ResponseSpecification resp){
 
         Integer id = null;
@@ -66,8 +70,12 @@ public class CartsTest extends BaseClass {
 
     }
 
-    @Test(dataProvider = "negativeTestCart",dataProviderClass = CartDataProvider.class,
-            groups = {"negative", "carts"})
+    @Test(
+        dataProvider = "negativeTestCart",
+        dataProviderClass = CartDataProvider.class,
+        groups = {"negative", "carts"},
+        priority = 4
+      )
     public void negativeCartTests(String message,UserRole role,ResponseSpecification resp){
 
         Integer cartId =  null;
@@ -90,7 +98,11 @@ public class CartsTest extends BaseClass {
 
     }
 
-    @Test(groups = {"crud", "carts"})
+    @Test(
+        groups = {"crud", "carts"},
+        dependsOnMethods = "addToCart",
+        priority = 5
+      )
     public void updateCartQuantity(){
 
         Integer cartId = null;
@@ -118,8 +130,12 @@ public class CartsTest extends BaseClass {
         
     }
 
-    @Test(dataProvider = "deleteCart", dataProviderClass = CartDataProvider.class,
-            groups = {"crud", "carts"})
+    @Test(
+        dataProvider = "deleteCart",
+        dataProviderClass = CartDataProvider.class,
+        groups = {"crud", "carts"},
+        priority = 6
+      )
     public void deleteCart(String message , int numberOfProducts , UserRole role , ResponseSpecification resp) {
 
         int cartId = CartHelper.createCart(numberOfProducts,role).getId();
@@ -133,8 +149,12 @@ public class CartsTest extends BaseClass {
                 .statusCode(404);
     }
 
-    @Test(dataProvider = "invalidCartId", dataProviderClass = CartDataProvider.class,
-            groups = {"negative", "carts"})
+    @Test(
+        dataProvider = "invalidCartId",
+        dataProviderClass = CartDataProvider.class,
+        groups = {"negative", "carts"},
+        priority = 7
+      )
     public void deleteCartByInvalidId(UserRole role,ResponseSpecification resp){
 
         int invalidId = new Random().nextInt(100000) + 99999;
@@ -144,8 +164,12 @@ public class CartsTest extends BaseClass {
                 .spec(resp);
     }
 
-    @Test(dataProvider = "invalidCartId", dataProviderClass = CartDataProvider.class,
-            groups = {"negative", "carts"})
+    @Test(
+        dataProvider = "invalidCartId",
+        dataProviderClass = CartDataProvider.class,
+        groups = {"negative", "carts"},
+        priority = 8
+      )
     public void getCartByInvalidId(String message,UserRole role, ResponseSpecification resp){
 
         int invalidId = new Random().nextInt(100000) + 99999;
@@ -155,9 +179,13 @@ public class CartsTest extends BaseClass {
                 .spec(resp);
     }
 
-    @Test(dataProvider = "AccessTest", dataProviderClass = CartDataProvider.class,
-            groups = {"security", "carts"})
-    public void CarrtAccessTest(String message , int numberOfProducts , UserRole role , UserRole accessedBy, ResponseSpecification resp ) {
+    @Test(
+        dataProvider = "AccessTest",
+        dataProviderClass = CartDataProvider.class,
+        groups = {"security", "carts"},
+        priority = 9
+      )
+    public void CartAccessTest(String message , int numberOfProducts , UserRole role , UserRole accessedBy, ResponseSpecification resp ) {
 
         int cartId = CartHelper.createCart(numberOfProducts,role).getId();
 
@@ -167,8 +195,12 @@ public class CartsTest extends BaseClass {
                 .spec(resp);
     }
 
-    @Test(dataProvider = "updateByAccessTest", dataProviderClass = CartDataProvider.class,
-            groups = {"security", "carts"})
+    @Test(
+        dataProvider = "updateByAccessTest",
+        dataProviderClass = CartDataProvider.class,
+        groups = {"security", "carts"},
+        priority = 10
+      )
     public void UpdateCartByAccess(int numberOfProducts, UserRole updatingOf , UserRole updatingBy,ResponseSpecification resp) {
 
         Integer cartId = null;
@@ -188,8 +220,12 @@ public class CartsTest extends BaseClass {
         
     }
 
-    @Test(dataProvider = "duplicateProductTest", dataProviderClass = CartDataProvider.class,
-            groups = {"security", "carts"})
+    @Test(
+        dataProvider = "duplicateProductTest",
+        dataProviderClass = CartDataProvider.class,
+        groups = {"security", "carts"},
+        priority = 11
+      )
     public void duplicateProductShouldMergeQuantity(int numberOfProducts, UserRole role) {
 
         Integer cartId = null;
@@ -224,8 +260,12 @@ public class CartsTest extends BaseClass {
         }
     }
 
-    @Test(dataProvider = "numberOfCartsTest", dataProviderClass = CartDataProvider.class,
-            groups = {"integration", "carts"})
+    @Test(
+        dataProvider = "numberOfCartsTest",
+        dataProviderClass = CartDataProvider.class,
+        groups = {"integration", "carts"},
+        priority = 12
+      )
     public void userShouldHaveOnlyOneCart(int numberOfProducts , UserRole role) {
 
         Integer cartId = null;

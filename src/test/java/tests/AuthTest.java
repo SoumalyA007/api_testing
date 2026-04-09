@@ -18,7 +18,7 @@ public class AuthTest extends BaseClass {
 
     // ================= POSITIVE =================
 
-    @Test(groups = {"smoke", "auth"})
+    @Test(groups = {"smoke", "auth"}, priority = 1)
     public void loginAdmin() {
 
         LoginRequestPOJO payload =
@@ -33,7 +33,7 @@ public class AuthTest extends BaseClass {
         Assert.assertNotNull(loginResponse.getRole(), "Role should not be null");
     }
 
-    @Test(groups = {"smoke", "auth"})
+    @Test(groups = {"smoke", "auth"}, priority = 2)
     public void loginUser() {
 
         LoginRequestPOJO payload =
@@ -50,8 +50,12 @@ public class AuthTest extends BaseClass {
 
     // ================= NEGATIVE =================
 
-    @Test(dataProvider = "invalidLoginPayloads", dataProviderClass = AuthDataProvider.class,
-            groups = {"negative", "auth"})
+    @Test(
+        dataProvider = "invalidLoginPayloads",
+        dataProviderClass = AuthDataProvider.class,
+        groups = {"negative", "auth"},
+        priority = 3
+      )
     public void invalidLogins(String message, LoginRequestPOJO payload, ResponseSpecification spec) {
 
         System.out.println("Test: " + message);
@@ -63,8 +67,12 @@ public class AuthTest extends BaseClass {
 
     // ================= SECURITY =================
 
-    @Test(dataProvider = "securityPayloads", dataProviderClass = AuthDataProvider.class,
-            groups = {"security", "auth"})
+    @Test(
+        dataProvider = "securityPayloads",
+        dataProviderClass = AuthDataProvider.class,
+        groups = {"security", "auth"},
+        priority = 4
+      )
     public void securityLoginTests(String message, LoginRequestPOJO payload, ResponseSpecification spec) {
 
         System.out.println("Test: " + message);
@@ -74,7 +82,7 @@ public class AuthTest extends BaseClass {
                 .spec(spec);
     }
 
-    @Test(groups = {"security", "negative", "auth"})
+    @Test(groups = {"security", "negative", "auth"}, priority = 5)
     public void loginJSONInjection() {
 
         Map<String, Object> payload =
@@ -87,7 +95,7 @@ public class AuthTest extends BaseClass {
 
     // ================= HEADERS =================
 
-    @Test(groups = {"negative", "auth"})
+    @Test(groups = {"negative", "auth"}, priority = 6)
     public void loginWrongContentType() {
 
         TestContext.addHeader("Content-Type", "application/xml");

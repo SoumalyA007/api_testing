@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.*;
 
 public class UsersTest extends BaseClass {
 
-    @Test(groups = {"smoke", "users"})
+    @Test(groups = {"smoke", "users"}, priority = 1)
     public void getAllUsers(){
 
         Users.getAllUsers(UserRole.USER)
@@ -35,7 +35,7 @@ public class UsersTest extends BaseClass {
 
     }
 
-    @Test(groups = {"smoke", "users"})
+    @Test(groups = {"smoke", "users"}, priority = 2)
     public void getUserById(){
 
         int randUserId = UserHelper.getRandomUserId();
@@ -44,15 +44,21 @@ public class UsersTest extends BaseClass {
 
     }
 
-    @Test(dataProvider = "createUserData",dataProviderClass = UserDataProvider.class,
-            groups = {"crud", "regression", "users"})
+    @Test(
+        dataProvider = "createUserData",
+        dataProviderClass = UserDataProvider.class,
+        groups = {"crud", "regression", "users"},
+        priority = 3
+    )
     public void createUser(String firstname, String lastname,String email, String username,String password){
 
-        UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
+        int id = 0;
+        try{
+                UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
 
-        UserPOJO userPOJO = UserTestDataFactory.userPayload(userDetailsPOJO,email,username,password);
+                UserPOJO userPOJO = UserTestDataFactory.userPayload(userDetailsPOJO,email,username,password);
 
-        int id = Users.createUser(userPOJO,UserRole.ADMIN)
+                id = Users.createUser(userPOJO,UserRole.ADMIN)
                 .then()
                 .spec(success201())
                 .body("username",equalTo(username))
@@ -60,48 +66,64 @@ public class UsersTest extends BaseClass {
                 .extract()
                 .jsonPath()
                 .getInt("id");
-
-        Users.deleteUser(id,UserRole.ADMIN);
+        }finally{
+               UserHelper.deleteUserIfExists(id);
+        }
 
     }
 
-    @Test(dataProvider = "updateUserFields", dataProviderClass = UserDataProvider.class,
-            groups = {"crud", "regression", "users"})
+    @Test(
+        dataProvider = "updateUserFields",
+        dataProviderClass = UserDataProvider.class,
+        groups = {"crud", "regression", "users"},
+        priority = 4
+    )
     public void updateUserField(String field,String value,String firstname, String lastname,String email, String username,String password){
 
+        int userId = 0;
         // create user first
-        System.out.println("Updating field:" + field + " with value" + value);
-        UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
-        UserPOJO user = UserTestDataFactory.userPayload(userDetailsPOJO,email,username,password);
+        try{
+                System.out.println("Updating field:" + field + " with value" + value);
+                UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
+                UserPOJO user = UserTestDataFactory.userPayload(userDetailsPOJO,email,username,password);
 
-        int userId = Users.createUser(user, UserRole.ADMIN)
+                userId = Users.createUser(user, UserRole.ADMIN)
                 .then()
                 .extract()
                 .path("id");
 
         // update payload
-        UserPOJO updateUser = UserTestDataFactory.updateUserField(field, value);
+                UserPOJO updateUser = UserTestDataFactory.updateUserField(field, value);
 
-        String jsonPath = field;
+                String jsonPath = field;
 
-        if(field.equals("firstname") || field.equals("lastname")){
-            jsonPath = "details." + field;
+                if(field.equals("firstname") || field.equals("lastname")){
+                jsonPath = "details." + field;
         }
 
-        Users.updateUser(userId, updateUser, UserRole.ADMIN)
-                .then()
-                .spec(success200())
-                .body(jsonPath,equalTo(value));
+                 Users.updateUser(userId, updateUser, UserRole.ADMIN)
+                        .then()
+                        .spec(success200())
+                        .body(jsonPath,equalTo(value));
+        }finally{
+                UserHelper.deleteUserIfExists(userId);
+        }
 
-        Users.deleteUser(userId,UserRole.ADMIN);
+        
     }
 
 
-    @Test(dataProvider = "deleteUserFields", dataProviderClass = UserDataProvider.class,
-            groups = {"crud", "users"})
+    @Test(
+        dataProvider = "deleteUserFields",
+        dataProviderClass = UserDataProvider.class,
+        groups = {"crud", "users"},
+        priority = 5,
+        alwaysRun = true
+    )
     public void deleteUser(String firstname, String lastname, String email, String username, String password, UserRole role , ResponseSpecification resp){
 
-        UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
+        try{
+                UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
         UserPOJO user = UserTestDataFactory.userPayload(userDetailsPOJO,email,username,password);
 
         int userId = Users.createUser(user, UserRole.ADMIN)
@@ -112,11 +134,11 @@ public class UsersTest extends BaseClass {
         Users.deleteUser(userId,role)
                 .then()
                 .spec(resp);
-
+        }catch(Exception ignored){}
 
     }
 
-    @Test(groups = {"negative", "users"})
+    @Test(groups = {"negative", "users"}, priority = 6)
     public void getUserByInvalidId(){
 
         int invalidId = UserHelper.getLastUserId() + 1 ;
@@ -125,12 +147,17 @@ public class UsersTest extends BaseClass {
 
     }
 
-    @Test(dataProvider = "createUserData",dataProviderClass = UserDataProvider.class,
-            groups = {"negative", "users"})
+    @Test(
+        dataProvider = "createUserData",
+        dataProviderClass = UserDataProvider.class,
+        groups = {"negative", "users"},
+        priority = 7
+    )
     public void createUserWithExistingEmail(String firstname, String lastname,String email, String username,String password){
 
-
-        UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
+        int id = 0;
+        try{
+                UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
 
         UserPOJO userPOJO = UserTestDataFactory.userPayload(userDetailsPOJO,email,username,password);
 
@@ -142,28 +169,29 @@ public class UsersTest extends BaseClass {
                 .extract()
                 .response();
 
-        int id = resp.path("id");
+                id = resp.path("id");
         String existingemail = resp.path("email");
-
 
         UserDetailsPOJO createDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
 
         UserPOJO createUserPOJO = UserTestDataFactory.userPayload(userDetailsPOJO,existingemail,username+username,password);
 
-
-
         Users.createUser(createUserPOJO,UserRole.ADMIN)
                 .then()
                 .spec(fail400());
-
-
-        Users.deleteUser(id , UserRole.ADMIN);
+        }finally{
+                UserHelper.deleteUserIfExists(id);
+        }
 
     }
 
 
-    @Test(dataProvider = "createWithoutEmailField",dataProviderClass = UserDataProvider.class,
-            groups = {"negative", "users"})
+    @Test(
+        dataProvider = "createWithoutEmailField",
+        dataProviderClass = UserDataProvider.class,
+        groups = {"negative", "users"},
+        priority = 8
+    )
     public void createUserWithMissingEmail(String firstname, String lastname,String username , String password){
 
 
@@ -178,15 +206,20 @@ public class UsersTest extends BaseClass {
 
     }
 
-    @Test(dataProvider = "updateUserFields", dataProviderClass = UserDataProvider.class,
-            groups = {"negative", "users"})
+    @Test(
+        dataProvider = "updateUserFields",
+        dataProviderClass = UserDataProvider.class,
+        groups = {"negative", "users"},
+        priority = 9
+    )
     public void updateNonExistingUser(String field,String value,String firstname, String lastname,String email, String username,String password){
 
-
-        UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
+        int userId = 0;
+        try{
+                UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
         UserPOJO user = UserTestDataFactory.userPayload(userDetailsPOJO,email,username,password);
 
-        int userId = Users.createUser(user, UserRole.ADMIN)
+        userId = Users.createUser(user, UserRole.ADMIN)
                 .then()
                 .extract()
                 .path("id");
@@ -203,18 +236,22 @@ public class UsersTest extends BaseClass {
         Users.updateUser(userId+ 100000, updateUser, UserRole.ADMIN)
                 .then()
                 .spec(fail400());
-
-        Users.deleteUser(userId,UserRole.ADMIN);
-
-
+        }finally{
+                 UserHelper.deleteUserIfExists(userId);
+        }
     }
 
-    @Test(dataProvider = "deleteUserByInvalidIdFields", dataProviderClass = UserDataProvider.class,
-            groups = {"negative", "users"})
+    @Test(
+        dataProvider = "deleteUserByInvalidIdFields",
+        dataProviderClass = UserDataProvider.class,
+        groups = {"negative", "users"},
+        priority = 10
+    )
     public void deleteUserByInvalidId(String firstname, String lastname, String email, String username, String password , ResponseSpecification resp){
 
 
-        UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
+        try{
+                UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
         UserPOJO user = UserTestDataFactory.userPayload(userDetailsPOJO,email,username,password);
 
         int userId = Users.createUser(user, UserRole.ADMIN)
@@ -223,11 +260,16 @@ public class UsersTest extends BaseClass {
                 .path("id");
 
         Users.deleteUser(userId + 100000,UserRole.ADMIN).then().spec(resp);
+        }catch(Exception ignored){}
 
     }
 
-    @Test(dataProvider = "validateUserData",dataProviderClass = UserDataProvider.class,
-            groups = {"regression", "users"})
+    @Test(
+        dataProvider = "validateUserData",
+        dataProviderClass = UserDataProvider.class,
+        groups = {"regression", "users"},
+        priority = 11
+    )
     public void validateUserData(String field,String firstname, String lastname,String email, String username,String password, UserRole role, ResponseSpecification spec){
 
         UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);

@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.*;
 
 public class CategoriesTest extends BaseClass {
 
-    @Test(groups = {"smoke", "categories"})
+    @Test(groups = {"smoke", "categories"}, priority = 1)
     public void getAllCategories() {
 
         Categories.getCategories(UserRole.USER)
@@ -31,8 +31,12 @@ public class CategoriesTest extends BaseClass {
     }
 
     // ✅ Create category (Data Driven)
-    @Test(dataProvider = "validCategoryData", dataProviderClass = CategoriesDataProvider.class,
-            groups = {"crud", "categories"})
+    @Test(
+        dataProvider = "validCategoryData",
+        dataProviderClass = CategoriesDataProvider.class,
+        groups = {"crud", "categories"},
+        priority = 2
+      )
     public void createCategories(String name, UserRole role) {
         String catergoryId=null;
 
@@ -55,8 +59,12 @@ public class CategoriesTest extends BaseClass {
     }
 
     // ✅ Duplicate category test
-    @Test(dataProvider = "duplicateCategoryData", dataProviderClass = CategoriesDataProvider.class,
-            groups = {"negative", "categories"})
+    @Test(
+        dataProvider = "duplicateCategoryData",
+        dataProviderClass = CategoriesDataProvider.class,
+        groups = {"negative", "categories"},
+        priority = 3
+      )
     public void uniqueCategoriesNameTest(String name, UserRole role) {
 
         String categoriesId=null;
@@ -77,8 +85,12 @@ public class CategoriesTest extends BaseClass {
     }
 
     // ❌ Invalid payload test
-    @Test(dataProvider = "invalidCategoryData", dataProviderClass = CategoriesDataProvider.class,
-            groups = {"negative", "categories"})
+    @Test(
+        dataProvider = "invalidCategoryData",
+        dataProviderClass = CategoriesDataProvider.class,
+        groups = {"negative", "categories"},
+        priority = 4
+      )
     public void invalidCategoryTest(String name, UserRole role) {
 
         Response resp = CategoriesHelper.createCategory(name,role);
@@ -87,7 +99,7 @@ public class CategoriesTest extends BaseClass {
     }
 
     // ✅ Cross-check: Product categories vs Categories API
-    @Test(groups = {"integration", "categories"})
+    @Test(groups = {"integration", "regression", "categories"}, priority = 5)
     public void productCategoriesMatchesCategories() {
 
         // Get categories from products
