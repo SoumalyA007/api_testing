@@ -3,7 +3,6 @@ package tests;
 import endpoints.Orders;
 import endpoints.Products;
 import enums.UserRole;
-import helpers.ProductHelper;
 import org.testng.annotations.Test;
 import payloads.request.ProductsPOJO;
 import testBase.BaseClass;

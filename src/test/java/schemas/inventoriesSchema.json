@@ -1,0 +1,36 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Generated Schema",
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "productId": {
+          "type": "integer"
+        },
+        "stockCount": {
+          "type": "integer"
+        },
+        "warehouse": {
+          "type": "string"
+        },
+        "minThreshold": {
+          "type": "integer"
+        },
+        "quantity": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "productId",
+        "stockCount",
+        "warehouse",
+        "minThreshold",
+        "quantity"
+      ]
+    }
+  }

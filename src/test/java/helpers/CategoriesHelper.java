@@ -4,7 +4,6 @@ import endpoints.Categories;
 import enums.UserRole;
 import io.restassured.response.Response;
 import payloads.request.CategoryPOJO;
-import payloads.response.CategoryResponsePOJO;
 import testData.CategoriesTestDataFactory;
 
 public class CategoriesHelper {

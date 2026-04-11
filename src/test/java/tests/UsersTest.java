@@ -172,7 +172,7 @@ public class UsersTest extends BaseClass {
                 id = resp.path("id");
         String existingemail = resp.path("email");
 
-        UserDetailsPOJO createDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
+        //UserDetailsPOJO createDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
 
         UserPOJO createUserPOJO = UserTestDataFactory.userPayload(userDetailsPOJO,existingemail,username+username,password);
 
@@ -227,11 +227,11 @@ public class UsersTest extends BaseClass {
         // update payload
         UserPOJO updateUser = UserTestDataFactory.updateUserField(field, value);
 
-        String jsonPath = field;
+        // String jsonPath = null;
 
-        if(field.equals("firstname") || field.equals("lastname")){
-            jsonPath = "details." + field;
-        }
+        // if(field.equals("firstname") || field.equals("lastname")){
+        //     jsonPath = "details." + field;
+        // }
 
         Users.updateUser(userId+ 100000, updateUser, UserRole.ADMIN)
                 .then()

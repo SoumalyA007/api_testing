@@ -2,9 +2,7 @@ package endpoints;
 
 import io.restassured.response.Response;
 import payloads.request.LoginRequestPOJO;
-import payloads.response.LoginResponsePOJO;
 import testBase.BaseClass;
-
 import static io.restassured.RestAssured.given;
 
 public class Auth {

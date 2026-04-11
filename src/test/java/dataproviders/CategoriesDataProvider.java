@@ -2,8 +2,6 @@ package dataproviders;
 
 import enums.UserRole;
 import org.testng.annotations.DataProvider;
-import payloads.request.CategoryPOJO;
-import testData.CategoriesTestDataFactory;
 
 public class CategoriesDataProvider {
 

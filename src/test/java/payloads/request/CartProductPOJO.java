@@ -1,6 +1,7 @@
 package payloads.request;
 
 import lombok.*;
+import lombok.Builder;
 
 @Data
 @Builder

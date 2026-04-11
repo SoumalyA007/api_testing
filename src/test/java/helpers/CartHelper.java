@@ -4,16 +4,10 @@ import endpoints.Carts;
 import endpoints.Inventory;
 import endpoints.Products;
 import enums.UserRole;
-import io.restassured.response.Response;
-import payloads.request.CartPOJO;
 import payloads.request.CartProductPOJO;
-import payloads.response.CartProductResponsePOJO;
 import payloads.response.CartResponsePOJO;
 import testBase.BaseClass;
 import testData.CartTestDataFactory;
-import utilities.TokenManager;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

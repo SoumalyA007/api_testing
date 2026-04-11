@@ -6,6 +6,7 @@ import java.util.List;
 import enums.OrderStatus;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)

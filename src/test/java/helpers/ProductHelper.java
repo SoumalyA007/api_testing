@@ -1,7 +1,6 @@
 package helpers;
 
 import endpoints.Categories;
-import endpoints.Orders;
 import endpoints.Products;
 import enums.UserRole;
 import io.restassured.common.mapper.TypeRef;

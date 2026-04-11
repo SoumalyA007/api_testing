@@ -1,8 +1,6 @@
 package dataproviders;
 
 import enums.UserRole;
-import helpers.ProductHelper;
-import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.DataProvider;
 import testBase.BaseClass;
 import testData.ProductTestDataFactory;

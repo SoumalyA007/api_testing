@@ -308,8 +308,8 @@ public class InventoryTest extends BaseClass {
             response.then().statusCode(200);
 
             // 4. Get updated inventory
-            InventoryResponsePOJO updated =
-                    InventoryHelper.getInventoryById(inventoryId);
+            // InventoryResponsePOJO updated =
+            //         InventoryHelper.getInventoryById(inventoryId);
 
             // 6. Dynamic assertion
             Object actualValue = response.jsonPath().get(field);

@@ -1,7 +1,6 @@
 package dataproviders;
 
 import enums.UserRole;
-import helpers.CartHelper;
 import org.testng.annotations.DataProvider;
 import testBase.BaseClass;
 

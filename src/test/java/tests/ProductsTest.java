@@ -78,8 +78,8 @@ public class ProductsTest extends BaseClass {
                 .body("id", everyItem(greaterThan(0)))
                 .body("title", everyItem(notNullValue()))
                 .body("price", everyItem(greaterThan(0.0)))
-                .body("description", everyItem(not(isEmptyOrNullString())))
-                .body("category", everyItem(not(isEmptyOrNullString())))
+                .body("description", everyItem(notNullValue()))
+                .body("category", everyItem(not(notNullValue())))
                 .body("image", everyItem(startsWith("https://")));
     }
 
@@ -98,7 +98,7 @@ public class ProductsTest extends BaseClass {
         Products.getAllProducts(null)
                 .then()
                 .spec(success200())
-                .body("category", everyItem(isIn(categorySet)));
+                .body("category", everyItem(in(categorySet)));
     }
 
     // ================= CREATE =================

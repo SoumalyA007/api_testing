@@ -107,7 +107,7 @@ public class TokenManager {
                 .claim("role", role.name().toLowerCase())
                 .setIssuedAt(new Date(now - 10000))
                 .setExpiration(new Date(now - 5000))
-                .signWith(SignatureAlgorithm.HS256, key)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 }

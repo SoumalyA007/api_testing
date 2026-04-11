@@ -1,0 +1,49 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Generated Schema",
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "userId": {
+        "type": "integer"
+      },
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "productId": {
+              "type": "integer"
+            },
+            "quantity": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "productId",
+            "quantity"
+          ]
+        }
+      },
+      "totalAmount": {
+        "type": "number"
+      },
+      "status": {
+        "type": "string"
+      },
+      "orderDate": {
+        "type": "string",
+        "format": "date-time"
+      }
+    },
+    "required": [
+      "id",
+      "userId",
+      "items",
+      "totalAmount",
+      "status",
+      "orderDate"
+    ]
+  }

@@ -3,10 +3,6 @@ package helpers;
 import endpoints.Users;
 import enums.UserRole;
 import java.util.Comparator;
-import payloads.request.UserDetailsPOJO;
-import payloads.request.UserPOJO;
-import testBase.BaseClass;
-
 import java.util.List;
 import java.util.Random;
 

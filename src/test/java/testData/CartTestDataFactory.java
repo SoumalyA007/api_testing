@@ -1,19 +1,14 @@
 package testData;
 
 
-import endpoints.Inventory;
-import endpoints.Products;
+
 import enums.UserRole;
 import payloads.request.CartPOJO;
 import payloads.request.CartProductPOJO;
 import payloads.response.CartResponsePOJO;
 import utilities.TokenManager;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class CartTestDataFactory {
 

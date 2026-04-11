@@ -5,7 +5,6 @@ import io.restassured.response.Response;
 import static io.restassured.RestAssured.given;
 
 import payloads.request.CategoryPOJO;
-import payloads.response.CategoryResponsePOJO;
 import testBase.BaseClass;
 
 public class Categories {
