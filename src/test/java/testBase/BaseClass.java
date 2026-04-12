@@ -18,19 +18,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 public class BaseClass {
-    public static Properties p;
-    public Logger logger;
+    public static Properties p = new Properties();
+    public Logger logger = LogManager.getLogger(this.getClass());
 
-    @BeforeSuite
-    public void setUp() throws IOException {
-
-        FileReader file = new FileReader("./src//test//resources//config.properties");
-        p = new Properties();
-        p.load(file);
-
-        logger = LogManager.getLogger(this.getClass());
-
-
+    static {
+        try {
+            FileReader file = new FileReader("./src/test/resources/config.properties");
+            p.load(file);
+        } catch (Exception e) {
+            throw new RuntimeException("❌ Failed to load config.properties", e);
+        }
     }
 
     public static RequestSpecification get(UserRole role){

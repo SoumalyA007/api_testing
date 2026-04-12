@@ -1,17 +1,18 @@
 
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
-<suite name="Regression Suite" parallel="methods" thread-count="10">
+<suite name="Regression Suite">
 
     <listeners>
         <listener class-name="listeners.RetryListener"/>
+        <listener class-name="utilities.ExtentReportManager"></listener>
     </listeners>
 
     <test name="UsersTest">
 
         <groups>
             <run>
-                <include name="regression"/>
+                <include name="negative"/>
             </run>
         </groups>
 

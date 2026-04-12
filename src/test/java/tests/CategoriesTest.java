@@ -79,7 +79,10 @@ public class CategoriesTest extends BaseClass {
                     .then().spec(fail409());
 
         }finally {
-            Categories.deleteCategories(categoriesId,UserRole.ADMIN);
+            if(categoriesId != null){
+                Categories.deleteCategories(categoriesId,UserRole.ADMIN);
+            }
+
         }
 
     }

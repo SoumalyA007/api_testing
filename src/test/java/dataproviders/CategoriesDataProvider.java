@@ -5,7 +5,7 @@ import org.testng.annotations.DataProvider;
 
 public class CategoriesDataProvider {
 
-    @DataProvider(name = "validCategoryData",parallel = true)
+    @DataProvider(name = "validCategoryData")
     public Object[][] validCategoryData() {
         return new Object[][]{
                 {"Health and Household", UserRole.ADMIN},
@@ -14,14 +14,14 @@ public class CategoriesDataProvider {
         };
     }
 
-    @DataProvider(name = "duplicateCategoryData",parallel = true)
+    @DataProvider(name = "duplicateCategoryData")
     public Object[][] duplicateCategoryData() {
         return new Object[][]{
                 {"Health and Household", UserRole.ADMIN}
         };
     }
 
-    @DataProvider(name = "invalidCategoryData",parallel = true)
+    @DataProvider(name = "invalidCategoryData")
     public Object[][] invalidCategoryData() {
         return new Object[][]{
                 {"", UserRole.ADMIN},

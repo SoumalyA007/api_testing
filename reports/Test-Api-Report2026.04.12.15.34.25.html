@@ -1,0 +1,4841 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>RestAssuredAutomationProject</title>
+<link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/extent-framework/extent-github-cdn@b00a2d0486596e73dd7326beacf352c639623a0e/commons/img/logo.png">
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/extent-framework/extent-github-cdn@b00a2d0486596e73dd7326beacf352c639623a0e/commons/img/logo.png">
+<link href="https://cdn.jsdelivr.net/gh/extent-framework/extent-github-cdn@ce8b10435bcbae260c334c0d0c6b61d2c19b6168/spark/css/spark-style.css" rel="stylesheet" />
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/gh/extent-framework/extent-github-cdn@7cc78ce/spark/js/jsontree.js"></script>
+<style type="text/css"></style></head><body class="spa -report dark">
+  <div class="app">
+    <div class="layout">
+<div class="header navbar">
+<div class="vheader">
+<div class="nav-logo">
+<a href="#">
+<div class="logo" style="background-image: url('https://cdn.jsdelivr.net/gh/extent-framework/extent-github-cdn@b00a2d0486596e73dd7326beacf352c639623a0e/commons/img/logo.png')"></div>
+</a>
+</div>
+<ul class="nav-left">
+<li class="search-box">
+<a class="search-toggle" href="#">
+<i class="search-icon fa fa-search"></i>
+<i class="search-icon-close fa fa-close"></i>
+</a>
+</li>
+<li class="search-input"><input id="search-tests" class="form-control" type="text" placeholder="Search..."></li>
+</ul>
+<ul class="nav-right">
+<li class="m-r-10">
+<a href="#"><span class="badge badge-primary">Pet Store Users API</span></a>
+</li>
+<li class="m-r-10">
+<a href="#"><span class="badge badge-primary">Apr 12, 2026 03:34:25 pm</span></a>
+</li>
+</ul>
+</div>
+</div><div class="side-nav">
+<div class="side-nav-inner">
+<ul class="side-nav-menu">
+<li class="nav-item dropdown" onclick="toggleView('test-view')">
+<a id="nav-test" class="dropdown-toggle" href="#">
+<span class="ico"><i class="fa fa-list"></i></span>
+</a>
+</li>
+<li class="nav-item dropdown" onclick="toggleView('category-view')">
+<a id="nav-category" class="dropdown-toggle" href="#">
+<span class="ico"><i class="fa fa-tag"></i></span>
+</a>
+</li>
+<li class="nav-item dropdown" onclick="toggleView('dashboard-view')">
+<a id="nav-dashboard" class="dropdown-toggle" href="#">
+<span class="ico"><i class="fa fa-bar-chart"></i></span>
+</a>
+</li>
+</ul>
+</div>
+</div>      <div class="vcontainer">
+        <div class="main-content">
+<div class="test-wrapper row view test-view">
+  <div class="test-list">
+    <div class="test-list-tools">
+<ul class="tools pull-left">
+<li><a href="#"><span class="font-size-14">Tests</span></a></li>
+</ul>
+<ul class="tools text-right">
+<li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-exclamation-circle"></i></a>
+<ul id="status-toggle" class="dropdown-menu dropdown-md p-v-0">
+<a class="dropdown-item" status="pass" href="#"><span>Pass</span><span class="status success"></span></a>
+<div class="dropdown-divider"></div>
+<a status="clear" class="dropdown-item" href="#"><span>Clear</span><span class="pull-right"><i class="fa fa-close"></i></span></a>
+</ul>
+</li>
+<li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-tag"></i></a>
+<ul id="tag-toggle" class="dropdown-menu dropdown-md p-v-0">
+<a class="dropdown-item" href="#">products</a><a class="dropdown-item" href="#">users</a><a class="dropdown-item" href="#">negative</a><a class="dropdown-item" href="#">inventory</a><a class="dropdown-item" href="#">carts</a><a class="dropdown-item" href="#">orders</a><a class="dropdown-item" href="#">auth</a><a class="dropdown-item" href="#">security</a><a class="dropdown-item" href="#">categories</a>
+</ul>
+</li>
+</ul>
+</div>    <div class="test-list-wrapper scrollable">
+      <ul class="test-list-item">
+        <li class="test-item"  status="pass" test-id="1"
+          author=""
+          tag="negative auth"
+          device="">
+          <div class="test-detail">
+            <p class="name">invalidLogins</p>
+            <p class="text-sm">
+              <span>3:34:28 pm</span> / <span>00:00:00:010</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">invalidLogins</h5>
+<span class='badge badge-success'>04.12.2026 3:34:28 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:28 pm</span>
+<span class='badge badge-default'>00:00:00:010</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=1</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:28 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="2"><span>invalidLogins</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="3"
+          author=""
+          tag="negative auth"
+          device="">
+          <div class="test-detail">
+            <p class="name">invalidLogins</p>
+            <p class="text-sm">
+              <span>3:34:28 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">invalidLogins</h5>
+<span class='badge badge-success'>04.12.2026 3:34:28 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:28 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=3</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:28 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="4"><span>invalidLogins</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="5"
+          author=""
+          tag="negative auth"
+          device="">
+          <div class="test-detail">
+            <p class="name">invalidLogins</p>
+            <p class="text-sm">
+              <span>3:34:28 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">invalidLogins</h5>
+<span class='badge badge-success'>04.12.2026 3:34:28 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:28 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=5</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:28 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="6"><span>invalidLogins</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="7"
+          author=""
+          tag="negative auth"
+          device="">
+          <div class="test-detail">
+            <p class="name">invalidLogins</p>
+            <p class="text-sm">
+              <span>3:34:28 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">invalidLogins</h5>
+<span class='badge badge-success'>04.12.2026 3:34:28 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:28 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=7</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:28 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="8"><span>invalidLogins</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="9"
+          author=""
+          tag="negative auth"
+          device="">
+          <div class="test-detail">
+            <p class="name">invalidLogins</p>
+            <p class="text-sm">
+              <span>3:34:28 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">invalidLogins</h5>
+<span class='badge badge-success'>04.12.2026 3:34:28 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:28 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=9</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:28 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="10"><span>invalidLogins</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="11"
+          author=""
+          tag="negative auth"
+          device="">
+          <div class="test-detail">
+            <p class="name">invalidLogins</p>
+            <p class="text-sm">
+              <span>3:34:28 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">invalidLogins</h5>
+<span class='badge badge-success'>04.12.2026 3:34:28 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:28 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=11</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:28 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="12"><span>invalidLogins</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="13"
+          author=""
+          tag="negative auth"
+          device="">
+          <div class="test-detail">
+            <p class="name">invalidLogins</p>
+            <p class="text-sm">
+              <span>3:34:28 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">invalidLogins</h5>
+<span class='badge badge-success'>04.12.2026 3:34:28 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:28 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=13</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:28 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="14"><span>invalidLogins</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="15"
+          author=""
+          tag="negative auth"
+          device="">
+          <div class="test-detail">
+            <p class="name">invalidLogins</p>
+            <p class="text-sm">
+              <span>3:34:28 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">invalidLogins</h5>
+<span class='badge badge-success'>04.12.2026 3:34:28 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:28 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=15</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:28 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="16"><span>invalidLogins</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="17"
+          author=""
+          tag="negative security auth"
+          device="">
+          <div class="test-detail">
+            <p class="name">loginJSONInjection</p>
+            <p class="text-sm">
+              <span>3:34:29 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">loginJSONInjection</h5>
+<span class='badge badge-success'>04.12.2026 3:34:29 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:29 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=17</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">security</span>
+<span class="badge badge-pill badge-default">auth</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:29 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="18"><span>loginJSONInjection</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">security</span>
+<span class="badge badge-pill badge-default">auth</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="19"
+          author=""
+          tag="negative auth"
+          device="">
+          <div class="test-detail">
+            <p class="name">loginWrongContentType</p>
+            <p class="text-sm">
+              <span>3:34:29 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">loginWrongContentType</h5>
+<span class='badge badge-success'>04.12.2026 3:34:29 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:29 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=19</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:29 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="20"><span>loginWrongContentType</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">auth</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="21"
+          author=""
+          tag="negative carts"
+          device="">
+          <div class="test-detail">
+            <p class="name">negativeCartTests</p>
+            <p class="text-sm">
+              <span>3:34:29 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">negativeCartTests</h5>
+<span class='badge badge-success'>04.12.2026 3:34:29 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:29 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=21</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">carts</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:29 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="22"><span>negativeCartTests</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">carts</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="23"
+          author=""
+          tag="negative carts"
+          device="">
+          <div class="test-detail">
+            <p class="name">negativeCartTests</p>
+            <p class="text-sm">
+              <span>3:34:30 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">negativeCartTests</h5>
+<span class='badge badge-success'>04.12.2026 3:34:30 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:30 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=23</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">carts</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:30 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="24"><span>negativeCartTests</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">carts</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="25"
+          author=""
+          tag="negative carts"
+          device="">
+          <div class="test-detail">
+            <p class="name">deleteCartByInvalidId</p>
+            <p class="text-sm">
+              <span>3:34:30 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">deleteCartByInvalidId</h5>
+<span class='badge badge-success'>04.12.2026 3:34:30 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:30 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=25</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">carts</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:30 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="26"><span>deleteCartByInvalidId</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">carts</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="27"
+          author=""
+          tag="negative carts"
+          device="">
+          <div class="test-detail">
+            <p class="name">deleteCartByInvalidId</p>
+            <p class="text-sm">
+              <span>3:34:30 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">deleteCartByInvalidId</h5>
+<span class='badge badge-success'>04.12.2026 3:34:30 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:30 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=27</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">carts</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:30 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="28"><span>deleteCartByInvalidId</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">carts</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="29"
+          author=""
+          tag="negative carts"
+          device="">
+          <div class="test-detail">
+            <p class="name">getCartByInvalidId</p>
+            <p class="text-sm">
+              <span>3:34:30 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">getCartByInvalidId</h5>
+<span class='badge badge-success'>04.12.2026 3:34:30 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:30 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=29</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">carts</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:30 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="30"><span>getCartByInvalidId</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">carts</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="31"
+          author=""
+          tag="negative carts"
+          device="">
+          <div class="test-detail">
+            <p class="name">getCartByInvalidId</p>
+            <p class="text-sm">
+              <span>3:34:30 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">getCartByInvalidId</h5>
+<span class='badge badge-success'>04.12.2026 3:34:30 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:30 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=31</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">carts</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:30 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="32"><span>getCartByInvalidId</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">carts</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="33"
+          author=""
+          tag="categories negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">uniqueCategoriesNameTest</p>
+            <p class="text-sm">
+              <span>3:34:30 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">uniqueCategoriesNameTest</h5>
+<span class='badge badge-success'>04.12.2026 3:34:30 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:30 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=33</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">categories</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:30 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="34"><span>uniqueCategoriesNameTest</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">categories</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="35"
+          author=""
+          tag="categories negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">invalidCategoryTest</p>
+            <p class="text-sm">
+              <span>3:34:30 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">invalidCategoryTest</h5>
+<span class='badge badge-success'>04.12.2026 3:34:30 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:30 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=35</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">categories</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:30 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="36"><span>invalidCategoryTest</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">categories</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="37"
+          author=""
+          tag="categories negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">invalidCategoryTest</p>
+            <p class="text-sm">
+              <span>3:34:30 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">invalidCategoryTest</h5>
+<span class='badge badge-success'>04.12.2026 3:34:30 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:30 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=37</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">categories</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:30 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="38"><span>invalidCategoryTest</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">categories</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="39"
+          author=""
+          tag="negative inventory"
+          device="">
+          <div class="test-detail">
+            <p class="name">getAllInventoryAsUser</p>
+            <p class="text-sm">
+              <span>3:34:31 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">getAllInventoryAsUser</h5>
+<span class='badge badge-success'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=39</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:31 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="40"><span>getAllInventoryAsUser</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="41"
+          author=""
+          tag="negative inventory"
+          device="">
+          <div class="test-detail">
+            <p class="name">getInventoryByInvalidId</p>
+            <p class="text-sm">
+              <span>3:34:31 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">getInventoryByInvalidId</h5>
+<span class='badge badge-success'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=41</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:31 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="42"><span>getInventoryByInvalidId</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="43"
+          author=""
+          tag="negative inventory"
+          device="">
+          <div class="test-detail">
+            <p class="name">getInventoryByInvalidId</p>
+            <p class="text-sm">
+              <span>3:34:31 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">getInventoryByInvalidId</h5>
+<span class='badge badge-success'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=43</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:31 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="44"><span>getInventoryByInvalidId</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="45"
+          author=""
+          tag="negative inventory"
+          device="">
+          <div class="test-detail">
+            <p class="name">getInventoryByInvalidId</p>
+            <p class="text-sm">
+              <span>3:34:31 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">getInventoryByInvalidId</h5>
+<span class='badge badge-success'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=45</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:31 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="46"><span>getInventoryByInvalidId</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="47"
+          author=""
+          tag="negative inventory"
+          device="">
+          <div class="test-detail">
+            <p class="name">getInventoryByInvalidId</p>
+            <p class="text-sm">
+              <span>3:34:31 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">getInventoryByInvalidId</h5>
+<span class='badge badge-success'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=47</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:31 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="48"><span>getInventoryByInvalidId</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="49"
+          author=""
+          tag="negative inventory"
+          device="">
+          <div class="test-detail">
+            <p class="name">getInventoryByFilteringWithInvalidValue</p>
+            <p class="text-sm">
+              <span>3:34:31 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">getInventoryByFilteringWithInvalidValue</h5>
+<span class='badge badge-success'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=49</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:31 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="50"><span>getInventoryByFilteringWithInvalidValue</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="51"
+          author=""
+          tag="negative inventory"
+          device="">
+          <div class="test-detail">
+            <p class="name">getInventoryByFilteringWithInvalidValue</p>
+            <p class="text-sm">
+              <span>3:34:31 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">getInventoryByFilteringWithInvalidValue</h5>
+<span class='badge badge-success'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=51</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:31 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="52"><span>getInventoryByFilteringWithInvalidValue</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="53"
+          author=""
+          tag="negative inventory"
+          device="">
+          <div class="test-detail">
+            <p class="name">getInventoryByFilteringWithInvalidValue</p>
+            <p class="text-sm">
+              <span>3:34:31 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">getInventoryByFilteringWithInvalidValue</h5>
+<span class='badge badge-success'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=53</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:31 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="54"><span>getInventoryByFilteringWithInvalidValue</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="55"
+          author=""
+          tag="negative inventory"
+          device="">
+          <div class="test-detail">
+            <p class="name">inventoryCreationOfAlreadyExistingProductId</p>
+            <p class="text-sm">
+              <span>3:34:31 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">inventoryCreationOfAlreadyExistingProductId</h5>
+<span class='badge badge-success'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:31 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=55</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:31 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="56"><span>inventoryCreationOfAlreadyExistingProductId</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="57"
+          author=""
+          tag="negative inventory"
+          device="">
+          <div class="test-detail">
+            <p class="name">inventoryCreationWithNonExistingProductId</p>
+            <p class="text-sm">
+              <span>3:34:32 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">inventoryCreationWithNonExistingProductId</h5>
+<span class='badge badge-success'>04.12.2026 3:34:32 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:32 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=57</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:32 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="58"><span>inventoryCreationWithNonExistingProductId</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">inventory</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="59"
+          author=""
+          tag="negative orders"
+          device="">
+          <div class="test-detail">
+            <p class="name">shouldReturn404ForInvalidOrderId</p>
+            <p class="text-sm">
+              <span>3:34:32 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">shouldReturn404ForInvalidOrderId</h5>
+<span class='badge badge-success'>04.12.2026 3:34:32 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:32 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=59</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">orders</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:32 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="60"><span>shouldReturn404ForInvalidOrderId</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">orders</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="61"
+          author=""
+          tag="negative orders"
+          device="">
+          <div class="test-detail">
+            <p class="name">createOrderWithoutUserId</p>
+            <p class="text-sm">
+              <span>3:34:32 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">createOrderWithoutUserId</h5>
+<span class='badge badge-success'>04.12.2026 3:34:32 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:32 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=61</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">orders</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:32 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="62"><span>createOrderWithoutUserId</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">orders</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="63"
+          author=""
+          tag="negative orders"
+          device="">
+          <div class="test-detail">
+            <p class="name">createOrderWithInvalidPayload</p>
+            <p class="text-sm">
+              <span>3:34:32 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">createOrderWithInvalidPayload</h5>
+<span class='badge badge-success'>04.12.2026 3:34:32 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:32 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=63</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">orders</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:32 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="64"><span>createOrderWithInvalidPayload</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">orders</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="65"
+          author=""
+          tag="negative orders"
+          device="">
+          <div class="test-detail">
+            <p class="name">createOrderWithInvalidPayload</p>
+            <p class="text-sm">
+              <span>3:34:32 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">createOrderWithInvalidPayload</h5>
+<span class='badge badge-success'>04.12.2026 3:34:32 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:32 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=65</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">orders</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:32 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="66"><span>createOrderWithInvalidPayload</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">orders</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="67"
+          author=""
+          tag="negative orders"
+          device="">
+          <div class="test-detail">
+            <p class="name">createOrderWithInvalidPayload</p>
+            <p class="text-sm">
+              <span>3:34:32 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">createOrderWithInvalidPayload</h5>
+<span class='badge badge-success'>04.12.2026 3:34:32 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:32 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=67</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">orders</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:32 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="68"><span>createOrderWithInvalidPayload</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">orders</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="69"
+          author=""
+          tag="negative orders"
+          device="">
+          <div class="test-detail">
+            <p class="name">createOrderWithInvalidPayload</p>
+            <p class="text-sm">
+              <span>3:34:32 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">createOrderWithInvalidPayload</h5>
+<span class='badge badge-success'>04.12.2026 3:34:32 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:32 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=69</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">orders</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:32 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="70"><span>createOrderWithInvalidPayload</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">orders</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="71"
+          author=""
+          tag="negative orders"
+          device="">
+          <div class="test-detail">
+            <p class="name">invalidStatusUpdateShouldFail</p>
+            <p class="text-sm">
+              <span>3:34:32 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">invalidStatusUpdateShouldFail</h5>
+<span class='badge badge-success'>04.12.2026 3:34:32 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:32 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=71</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">orders</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:32 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="72"><span>invalidStatusUpdateShouldFail</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">orders</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="73"
+          author=""
+          tag="negative orders"
+          device="">
+          <div class="test-detail">
+            <p class="name">deleteInvalidOrderShouldReturn404</p>
+            <p class="text-sm">
+              <span>3:34:33 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">deleteInvalidOrderShouldReturn404</h5>
+<span class='badge badge-success'>04.12.2026 3:34:33 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:33 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=73</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">orders</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:33 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="74"><span>deleteInvalidOrderShouldReturn404</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">orders</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="75"
+          author=""
+          tag="products negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">getProductByInvalidId</p>
+            <p class="text-sm">
+              <span>3:34:33 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">getProductByInvalidId</h5>
+<span class='badge badge-success'>04.12.2026 3:34:33 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:33 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=75</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">products</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:33 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="76"><span>getProductByInvalidId</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">products</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="77"
+          author=""
+          tag="products negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">getProductByInvalidCategory</p>
+            <p class="text-sm">
+              <span>3:34:33 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">getProductByInvalidCategory</h5>
+<span class='badge badge-success'>04.12.2026 3:34:33 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:33 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=77</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">products</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:33 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="78"><span>getProductByInvalidCategory</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">products</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="79"
+          author=""
+          tag="products negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">createProductPriceAsString</p>
+            <p class="text-sm">
+              <span>3:34:33 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">createProductPriceAsString</h5>
+<span class='badge badge-success'>04.12.2026 3:34:33 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:33 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=79</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">products</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:33 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="80"><span>createProductPriceAsString</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">products</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="81"
+          author=""
+          tag="products negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">updateNonExistingProduct</p>
+            <p class="text-sm">
+              <span>3:34:33 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">updateNonExistingProduct</h5>
+<span class='badge badge-success'>04.12.2026 3:34:33 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:33 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=81</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">products</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:33 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="82"><span>updateNonExistingProduct</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">products</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="83"
+          author=""
+          tag="products negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">deleteProductWithInvalidId</p>
+            <p class="text-sm">
+              <span>3:34:33 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">deleteProductWithInvalidId</h5>
+<span class='badge badge-success'>04.12.2026 3:34:33 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:33 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=83</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">products</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:33 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="84"><span>deleteProductWithInvalidId</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">products</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="85"
+          author=""
+          tag="negative security"
+          device="">
+          <div class="test-detail">
+            <p class="name">tamperedToken</p>
+            <p class="text-sm">
+              <span>3:34:33 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">tamperedToken</h5>
+<span class='badge badge-success'>04.12.2026 3:34:33 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:33 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=85</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">security</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:33 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="86"><span>tamperedToken</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">negative</span>
+<span class="badge badge-pill badge-default">security</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="87"
+          author=""
+          tag="users negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">getUserByInvalidId</p>
+            <p class="text-sm">
+              <span>3:34:33 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">getUserByInvalidId</h5>
+<span class='badge badge-success'>04.12.2026 3:34:33 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:33 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=87</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:33 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="88"><span>getUserByInvalidId</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="89"
+          author=""
+          tag="users negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">createUserWithExistingEmail</p>
+            <p class="text-sm">
+              <span>3:34:34 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">createUserWithExistingEmail</h5>
+<span class='badge badge-success'>04.12.2026 3:34:34 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:34 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=89</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:34 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="90"><span>createUserWithExistingEmail</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="91"
+          author=""
+          tag="users negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">createUserWithExistingEmail</p>
+            <p class="text-sm">
+              <span>3:34:34 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">createUserWithExistingEmail</h5>
+<span class='badge badge-success'>04.12.2026 3:34:34 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:34 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=91</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:34 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="92"><span>createUserWithExistingEmail</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="93"
+          author=""
+          tag="users negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">createUserWithMissingEmail</p>
+            <p class="text-sm">
+              <span>3:34:34 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">createUserWithMissingEmail</h5>
+<span class='badge badge-success'>04.12.2026 3:34:34 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:34 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=93</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:34 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="94"><span>createUserWithMissingEmail</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="95"
+          author=""
+          tag="users negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">createUserWithMissingEmail</p>
+            <p class="text-sm">
+              <span>3:34:34 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">createUserWithMissingEmail</h5>
+<span class='badge badge-success'>04.12.2026 3:34:34 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:34 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=95</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:34 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="96"><span>createUserWithMissingEmail</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="97"
+          author=""
+          tag="users negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">updateNonExistingUser</p>
+            <p class="text-sm">
+              <span>3:34:34 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">updateNonExistingUser</h5>
+<span class='badge badge-success'>04.12.2026 3:34:34 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:34 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=97</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:34 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="98"><span>updateNonExistingUser</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="99"
+          author=""
+          tag="users negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">updateNonExistingUser</p>
+            <p class="text-sm">
+              <span>3:34:35 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">updateNonExistingUser</h5>
+<span class='badge badge-success'>04.12.2026 3:34:35 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:35 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=99</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:35 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="100"><span>updateNonExistingUser</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="101"
+          author=""
+          tag="users negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">updateNonExistingUser</p>
+            <p class="text-sm">
+              <span>3:34:35 pm</span> / <span>00:00:00:001</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">updateNonExistingUser</h5>
+<span class='badge badge-success'>04.12.2026 3:34:35 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:35 pm</span>
+<span class='badge badge-default'>00:00:00:001</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=101</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:35 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="102"><span>updateNonExistingUser</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="103"
+          author=""
+          tag="users negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">updateNonExistingUser</p>
+            <p class="text-sm">
+              <span>3:34:35 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">updateNonExistingUser</h5>
+<span class='badge badge-success'>04.12.2026 3:34:35 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:35 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=103</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:35 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="104"><span>updateNonExistingUser</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="105"
+          author=""
+          tag="users negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">updateNonExistingUser</p>
+            <p class="text-sm">
+              <span>3:34:35 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">updateNonExistingUser</h5>
+<span class='badge badge-success'>04.12.2026 3:34:35 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:35 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=105</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:35 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="106"><span>updateNonExistingUser</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="107"
+          author=""
+          tag="users negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">deleteUserByInvalidId</p>
+            <p class="text-sm">
+              <span>3:34:35 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">deleteUserByInvalidId</h5>
+<span class='badge badge-success'>04.12.2026 3:34:35 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:35 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=107</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:35 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="108"><span>deleteUserByInvalidId</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="pass" test-id="109"
+          author=""
+          tag="users negative"
+          device="">
+          <div class="test-detail">
+            <p class="name">deleteUserByInvalidId</p>
+            <p class="text-sm">
+              <span>3:34:35 pm</span> / <span>00:00:00:000</span>
+              <span class="badge pass-bg log float-right">Pass</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-pass">deleteUserByInvalidId</h5>
+<span class='badge badge-success'>04.12.2026 3:34:35 pm</span>
+<span class='badge badge-danger'>04.12.2026 3:34:35 pm</span>
+<span class='badge badge-default'>00:00:00:000</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=109</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>3:34:35 pm</td>
+        <td>
+          Passed Successfully
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+  <div class="mt-4">  <div class="accordion" role="tablist">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-toolbar node-info">
+            <ul class="list-inline d-none d-sm-block">
+              <li><span class="badge pass-bg log ">Pass</span></li>
+              <li><span class='badge badge-default'>30:00:000</span></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="card-title">
+            <a class="node " id="110"><span>deleteUserByInvalidId</span></a>
+            <div class="node-attr">
+<span class="badge badge-pill badge-default">users</span>
+<span class="badge badge-pill badge-default">negative</span>            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+<div class="test-content scrollable">
+<div class="test-content-tools">
+<ul><li><a class="back-to-test" href="#"><i class="fa fa-arrow-left"></i></a></li></ul>
+</div>
+<div class="test-content-detail"><div class="detail-body"></div></div>
+</div></div>
+<div class="test-wrapper row view category-view attributes-view">
+<div class="test-list">
+<div class="test-list-tools">
+<ul class="tools pull-left"><li><a href=""><span class="font-size-14">Category</span></a></li></ul>
+<ul class="tools text-right"><li><a href="#"><span class="badge badge-primary">9</span></a></li></ul>
+</div>
+<div class="test-list-wrapper scrollable">
+<ul class="test-list-item">
+<li class="test-item">
+<div class="test-detail">
+<span class="meta">
+<span class='badge log pass-bg'>5</span>
+</span>
+<p class="name">products</p>
+<p class="duration text-sm">5 tests</p>
+</div>
+<div class="test-contents d-none">
+<div class="info">
+<h4>products</h4>
+<span status="pass" class='badge log pass-bg'>5 passed</span>
+</div>
+<table class='table table-sm mt-4'>
+<thead>
+<tr>
+<th class="status-col">Status</th>
+<th class="timestamp-col">Timestamp</th>
+<th>TestName</th>
+</tr>
+</thead>
+<tbody>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:33 pm</td>
+<td>
+<a href="#" class="linked" test-id='75' id='75'>getProductByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:33 pm</td>
+<td>
+<a href="#" class="linked" test-id='77' id='77'>getProductByInvalidCategory</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:33 pm</td>
+<td>
+<a href="#" class="linked" test-id='79' id='79'>createProductPriceAsString</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:33 pm</td>
+<td>
+<a href="#" class="linked" test-id='81' id='81'>updateNonExistingProduct</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:33 pm</td>
+<td>
+<a href="#" class="linked" test-id='83' id='83'>deleteProductWithInvalidId</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li class="test-item">
+<div class="test-detail">
+<span class="meta">
+<span class='badge log pass-bg'>12</span>
+</span>
+<p class="name">users</p>
+<p class="duration text-sm">12 tests</p>
+</div>
+<div class="test-contents d-none">
+<div class="info">
+<h4>users</h4>
+<span status="pass" class='badge log pass-bg'>12 passed</span>
+</div>
+<table class='table table-sm mt-4'>
+<thead>
+<tr>
+<th class="status-col">Status</th>
+<th class="timestamp-col">Timestamp</th>
+<th>TestName</th>
+</tr>
+</thead>
+<tbody>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:33 pm</td>
+<td>
+<a href="#" class="linked" test-id='87' id='87'>getUserByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:34 pm</td>
+<td>
+<a href="#" class="linked" test-id='89' id='89'>createUserWithExistingEmail</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:34 pm</td>
+<td>
+<a href="#" class="linked" test-id='91' id='91'>createUserWithExistingEmail</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:34 pm</td>
+<td>
+<a href="#" class="linked" test-id='93' id='93'>createUserWithMissingEmail</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:34 pm</td>
+<td>
+<a href="#" class="linked" test-id='95' id='95'>createUserWithMissingEmail</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:34 pm</td>
+<td>
+<a href="#" class="linked" test-id='97' id='97'>updateNonExistingUser</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:35 pm</td>
+<td>
+<a href="#" class="linked" test-id='99' id='99'>updateNonExistingUser</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:35 pm</td>
+<td>
+<a href="#" class="linked" test-id='101' id='101'>updateNonExistingUser</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:35 pm</td>
+<td>
+<a href="#" class="linked" test-id='103' id='103'>updateNonExistingUser</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:35 pm</td>
+<td>
+<a href="#" class="linked" test-id='105' id='105'>updateNonExistingUser</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:35 pm</td>
+<td>
+<a href="#" class="linked" test-id='107' id='107'>deleteUserByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:35 pm</td>
+<td>
+<a href="#" class="linked" test-id='109' id='109'>deleteUserByInvalidId</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li class="test-item">
+<div class="test-detail">
+<span class="meta">
+<span class='badge log pass-bg'>55</span>
+</span>
+<p class="name">negative</p>
+<p class="duration text-sm">55 tests</p>
+</div>
+<div class="test-contents d-none">
+<div class="info">
+<h4>negative</h4>
+<span status="pass" class='badge log pass-bg'>55 passed</span>
+</div>
+<table class='table table-sm mt-4'>
+<thead>
+<tr>
+<th class="status-col">Status</th>
+<th class="timestamp-col">Timestamp</th>
+<th>TestName</th>
+</tr>
+</thead>
+<tbody>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:28 pm</td>
+<td>
+<a href="#" class="linked" test-id='1' id='1'>invalidLogins</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:28 pm</td>
+<td>
+<a href="#" class="linked" test-id='3' id='3'>invalidLogins</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:28 pm</td>
+<td>
+<a href="#" class="linked" test-id='5' id='5'>invalidLogins</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:28 pm</td>
+<td>
+<a href="#" class="linked" test-id='7' id='7'>invalidLogins</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:28 pm</td>
+<td>
+<a href="#" class="linked" test-id='9' id='9'>invalidLogins</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:28 pm</td>
+<td>
+<a href="#" class="linked" test-id='11' id='11'>invalidLogins</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:28 pm</td>
+<td>
+<a href="#" class="linked" test-id='13' id='13'>invalidLogins</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:28 pm</td>
+<td>
+<a href="#" class="linked" test-id='15' id='15'>invalidLogins</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:29 pm</td>
+<td>
+<a href="#" class="linked" test-id='17' id='17'>loginJSONInjection</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:29 pm</td>
+<td>
+<a href="#" class="linked" test-id='19' id='19'>loginWrongContentType</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:29 pm</td>
+<td>
+<a href="#" class="linked" test-id='21' id='21'>negativeCartTests</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:30 pm</td>
+<td>
+<a href="#" class="linked" test-id='23' id='23'>negativeCartTests</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:30 pm</td>
+<td>
+<a href="#" class="linked" test-id='25' id='25'>deleteCartByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:30 pm</td>
+<td>
+<a href="#" class="linked" test-id='27' id='27'>deleteCartByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:30 pm</td>
+<td>
+<a href="#" class="linked" test-id='29' id='29'>getCartByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:30 pm</td>
+<td>
+<a href="#" class="linked" test-id='31' id='31'>getCartByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:30 pm</td>
+<td>
+<a href="#" class="linked" test-id='33' id='33'>uniqueCategoriesNameTest</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:30 pm</td>
+<td>
+<a href="#" class="linked" test-id='35' id='35'>invalidCategoryTest</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:30 pm</td>
+<td>
+<a href="#" class="linked" test-id='37' id='37'>invalidCategoryTest</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='39' id='39'>getAllInventoryAsUser</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='41' id='41'>getInventoryByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='43' id='43'>getInventoryByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='45' id='45'>getInventoryByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='47' id='47'>getInventoryByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='49' id='49'>getInventoryByFilteringWithInvalidValue</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='51' id='51'>getInventoryByFilteringWithInvalidValue</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='53' id='53'>getInventoryByFilteringWithInvalidValue</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='55' id='55'>inventoryCreationOfAlreadyExistingProductId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:32 pm</td>
+<td>
+<a href="#" class="linked" test-id='57' id='57'>inventoryCreationWithNonExistingProductId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:32 pm</td>
+<td>
+<a href="#" class="linked" test-id='59' id='59'>shouldReturn404ForInvalidOrderId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:32 pm</td>
+<td>
+<a href="#" class="linked" test-id='61' id='61'>createOrderWithoutUserId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:32 pm</td>
+<td>
+<a href="#" class="linked" test-id='63' id='63'>createOrderWithInvalidPayload</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:32 pm</td>
+<td>
+<a href="#" class="linked" test-id='65' id='65'>createOrderWithInvalidPayload</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:32 pm</td>
+<td>
+<a href="#" class="linked" test-id='67' id='67'>createOrderWithInvalidPayload</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:32 pm</td>
+<td>
+<a href="#" class="linked" test-id='69' id='69'>createOrderWithInvalidPayload</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:32 pm</td>
+<td>
+<a href="#" class="linked" test-id='71' id='71'>invalidStatusUpdateShouldFail</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:33 pm</td>
+<td>
+<a href="#" class="linked" test-id='73' id='73'>deleteInvalidOrderShouldReturn404</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:33 pm</td>
+<td>
+<a href="#" class="linked" test-id='75' id='75'>getProductByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:33 pm</td>
+<td>
+<a href="#" class="linked" test-id='77' id='77'>getProductByInvalidCategory</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:33 pm</td>
+<td>
+<a href="#" class="linked" test-id='79' id='79'>createProductPriceAsString</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:33 pm</td>
+<td>
+<a href="#" class="linked" test-id='81' id='81'>updateNonExistingProduct</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:33 pm</td>
+<td>
+<a href="#" class="linked" test-id='83' id='83'>deleteProductWithInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:33 pm</td>
+<td>
+<a href="#" class="linked" test-id='85' id='85'>tamperedToken</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:33 pm</td>
+<td>
+<a href="#" class="linked" test-id='87' id='87'>getUserByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:34 pm</td>
+<td>
+<a href="#" class="linked" test-id='89' id='89'>createUserWithExistingEmail</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:34 pm</td>
+<td>
+<a href="#" class="linked" test-id='91' id='91'>createUserWithExistingEmail</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:34 pm</td>
+<td>
+<a href="#" class="linked" test-id='93' id='93'>createUserWithMissingEmail</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:34 pm</td>
+<td>
+<a href="#" class="linked" test-id='95' id='95'>createUserWithMissingEmail</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:34 pm</td>
+<td>
+<a href="#" class="linked" test-id='97' id='97'>updateNonExistingUser</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:35 pm</td>
+<td>
+<a href="#" class="linked" test-id='99' id='99'>updateNonExistingUser</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:35 pm</td>
+<td>
+<a href="#" class="linked" test-id='101' id='101'>updateNonExistingUser</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:35 pm</td>
+<td>
+<a href="#" class="linked" test-id='103' id='103'>updateNonExistingUser</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:35 pm</td>
+<td>
+<a href="#" class="linked" test-id='105' id='105'>updateNonExistingUser</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:35 pm</td>
+<td>
+<a href="#" class="linked" test-id='107' id='107'>deleteUserByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:35 pm</td>
+<td>
+<a href="#" class="linked" test-id='109' id='109'>deleteUserByInvalidId</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li class="test-item">
+<div class="test-detail">
+<span class="meta">
+<span class='badge log pass-bg'>10</span>
+</span>
+<p class="name">inventory</p>
+<p class="duration text-sm">10 tests</p>
+</div>
+<div class="test-contents d-none">
+<div class="info">
+<h4>inventory</h4>
+<span status="pass" class='badge log pass-bg'>10 passed</span>
+</div>
+<table class='table table-sm mt-4'>
+<thead>
+<tr>
+<th class="status-col">Status</th>
+<th class="timestamp-col">Timestamp</th>
+<th>TestName</th>
+</tr>
+</thead>
+<tbody>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='39' id='39'>getAllInventoryAsUser</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='41' id='41'>getInventoryByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='43' id='43'>getInventoryByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='45' id='45'>getInventoryByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='47' id='47'>getInventoryByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='49' id='49'>getInventoryByFilteringWithInvalidValue</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='51' id='51'>getInventoryByFilteringWithInvalidValue</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='53' id='53'>getInventoryByFilteringWithInvalidValue</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:31 pm</td>
+<td>
+<a href="#" class="linked" test-id='55' id='55'>inventoryCreationOfAlreadyExistingProductId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:32 pm</td>
+<td>
+<a href="#" class="linked" test-id='57' id='57'>inventoryCreationWithNonExistingProductId</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li class="test-item">
+<div class="test-detail">
+<span class="meta">
+<span class='badge log pass-bg'>6</span>
+</span>
+<p class="name">carts</p>
+<p class="duration text-sm">6 tests</p>
+</div>
+<div class="test-contents d-none">
+<div class="info">
+<h4>carts</h4>
+<span status="pass" class='badge log pass-bg'>6 passed</span>
+</div>
+<table class='table table-sm mt-4'>
+<thead>
+<tr>
+<th class="status-col">Status</th>
+<th class="timestamp-col">Timestamp</th>
+<th>TestName</th>
+</tr>
+</thead>
+<tbody>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:29 pm</td>
+<td>
+<a href="#" class="linked" test-id='21' id='21'>negativeCartTests</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:30 pm</td>
+<td>
+<a href="#" class="linked" test-id='23' id='23'>negativeCartTests</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:30 pm</td>
+<td>
+<a href="#" class="linked" test-id='25' id='25'>deleteCartByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:30 pm</td>
+<td>
+<a href="#" class="linked" test-id='27' id='27'>deleteCartByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:30 pm</td>
+<td>
+<a href="#" class="linked" test-id='29' id='29'>getCartByInvalidId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:30 pm</td>
+<td>
+<a href="#" class="linked" test-id='31' id='31'>getCartByInvalidId</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li class="test-item">
+<div class="test-detail">
+<span class="meta">
+<span class='badge log pass-bg'>8</span>
+</span>
+<p class="name">orders</p>
+<p class="duration text-sm">8 tests</p>
+</div>
+<div class="test-contents d-none">
+<div class="info">
+<h4>orders</h4>
+<span status="pass" class='badge log pass-bg'>8 passed</span>
+</div>
+<table class='table table-sm mt-4'>
+<thead>
+<tr>
+<th class="status-col">Status</th>
+<th class="timestamp-col">Timestamp</th>
+<th>TestName</th>
+</tr>
+</thead>
+<tbody>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:32 pm</td>
+<td>
+<a href="#" class="linked" test-id='59' id='59'>shouldReturn404ForInvalidOrderId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:32 pm</td>
+<td>
+<a href="#" class="linked" test-id='61' id='61'>createOrderWithoutUserId</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:32 pm</td>
+<td>
+<a href="#" class="linked" test-id='63' id='63'>createOrderWithInvalidPayload</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:32 pm</td>
+<td>
+<a href="#" class="linked" test-id='65' id='65'>createOrderWithInvalidPayload</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:32 pm</td>
+<td>
+<a href="#" class="linked" test-id='67' id='67'>createOrderWithInvalidPayload</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:32 pm</td>
+<td>
+<a href="#" class="linked" test-id='69' id='69'>createOrderWithInvalidPayload</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:32 pm</td>
+<td>
+<a href="#" class="linked" test-id='71' id='71'>invalidStatusUpdateShouldFail</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:33 pm</td>
+<td>
+<a href="#" class="linked" test-id='73' id='73'>deleteInvalidOrderShouldReturn404</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li class="test-item">
+<div class="test-detail">
+<span class="meta">
+<span class='badge log pass-bg'>10</span>
+</span>
+<p class="name">auth</p>
+<p class="duration text-sm">10 tests</p>
+</div>
+<div class="test-contents d-none">
+<div class="info">
+<h4>auth</h4>
+<span status="pass" class='badge log pass-bg'>10 passed</span>
+</div>
+<table class='table table-sm mt-4'>
+<thead>
+<tr>
+<th class="status-col">Status</th>
+<th class="timestamp-col">Timestamp</th>
+<th>TestName</th>
+</tr>
+</thead>
+<tbody>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:28 pm</td>
+<td>
+<a href="#" class="linked" test-id='1' id='1'>invalidLogins</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:28 pm</td>
+<td>
+<a href="#" class="linked" test-id='3' id='3'>invalidLogins</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:28 pm</td>
+<td>
+<a href="#" class="linked" test-id='5' id='5'>invalidLogins</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:28 pm</td>
+<td>
+<a href="#" class="linked" test-id='7' id='7'>invalidLogins</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:28 pm</td>
+<td>
+<a href="#" class="linked" test-id='9' id='9'>invalidLogins</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:28 pm</td>
+<td>
+<a href="#" class="linked" test-id='11' id='11'>invalidLogins</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:28 pm</td>
+<td>
+<a href="#" class="linked" test-id='13' id='13'>invalidLogins</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:28 pm</td>
+<td>
+<a href="#" class="linked" test-id='15' id='15'>invalidLogins</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:29 pm</td>
+<td>
+<a href="#" class="linked" test-id='17' id='17'>loginJSONInjection</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:29 pm</td>
+<td>
+<a href="#" class="linked" test-id='19' id='19'>loginWrongContentType</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li class="test-item">
+<div class="test-detail">
+<span class="meta">
+<span class='badge log pass-bg'>2</span>
+</span>
+<p class="name">security</p>
+<p class="duration text-sm">2 tests</p>
+</div>
+<div class="test-contents d-none">
+<div class="info">
+<h4>security</h4>
+<span status="pass" class='badge log pass-bg'>2 passed</span>
+</div>
+<table class='table table-sm mt-4'>
+<thead>
+<tr>
+<th class="status-col">Status</th>
+<th class="timestamp-col">Timestamp</th>
+<th>TestName</th>
+</tr>
+</thead>
+<tbody>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:29 pm</td>
+<td>
+<a href="#" class="linked" test-id='17' id='17'>loginJSONInjection</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:33 pm</td>
+<td>
+<a href="#" class="linked" test-id='85' id='85'>tamperedToken</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li class="test-item">
+<div class="test-detail">
+<span class="meta">
+<span class='badge log pass-bg'>3</span>
+</span>
+<p class="name">categories</p>
+<p class="duration text-sm">3 tests</p>
+</div>
+<div class="test-contents d-none">
+<div class="info">
+<h4>categories</h4>
+<span status="pass" class='badge log pass-bg'>3 passed</span>
+</div>
+<table class='table table-sm mt-4'>
+<thead>
+<tr>
+<th class="status-col">Status</th>
+<th class="timestamp-col">Timestamp</th>
+<th>TestName</th>
+</tr>
+</thead>
+<tbody>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:30 pm</td>
+<td>
+<a href="#" class="linked" test-id='33' id='33'>uniqueCategoriesNameTest</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:30 pm</td>
+<td>
+<a href="#" class="linked" test-id='35' id='35'>invalidCategoryTest</a>
+</td>
+</tr>
+<tr class="tag-test-status" status="pass">
+<td><span class="badge log pass-bg">Pass</span></td>
+<td>15:34:30 pm</td>
+<td>
+<a href="#" class="linked" test-id='37' id='37'>invalidCategoryTest</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="test-content scrollable">
+<div class="test-content-detail">
+<div class="detail-body"></div>
+</div>
+</div>
+</div><div class="container-fluid p-4 view dashboard-view">
+<div class="row">
+<div class="col-md-3">
+<div class="card"><div class="card-body">
+<p class="m-b-0">Started</p>
+<h3>Apr 12, 2026 03:34:25 pm</h3>
+</div></div>
+</div>
+<div class="col-md-3">
+<div class="card"><div class="card-body">
+<p class="m-b-0">Ended</p>
+<h3>Apr 12, 2026 03:34:35 pm</h3>
+</div></div>
+</div>
+<div class="col-md-3">
+<div class="card"><div class="card-body">
+<p class="m-b-0 text-pass">Tests Passed</p>
+<h3>55</h3>
+</div></div>
+</div>
+<div class="col-md-3">
+<div class="card"><div class="card-body">
+<p class="m-b-0 text-fail">Tests Failed</p>
+<h3>0</h3>
+</div></div>
+</div>
+</div>
+<div class="row">
+<div class="col-md-4">
+<div class="card">
+<div class="card-header">
+<h6 class="card-title">Tests</h6>
+</div>
+<div class="card-body">
+<div class="">
+<canvas id='parent-analysis' width='115' height='90'></canvas>
+</div>
+</div>
+<div class="card-footer">
+<div><small data-tooltip='100%'>
+<b>55</b> tests passed
+</small>
+</div>
+<div>
+<small data-tooltip='0%'><b>0</b> tests failed,
+<b>0</b> skipped, <b data-tooltip='0%'>0</b> others
+</small>
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="card">
+<div class="card-header">
+<h6 class="card-title">Steps</h6>
+</div>
+<div class="card-body">
+<div class="">
+<canvas id='child-analysis' width='115' height='90'></canvas>
+</div>
+</div>
+<div class="card-footer">
+<div><small data-tooltip='100%'><b>55</b> steps passed</small></div>
+<div>
+<small data-tooltip='0%'><b>0</b> steps failed,
+<b>0</b> skipped, <b data-tooltip='%'>0</b> others
+</small>
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="card">
+<div class="card-header">
+<h6 class="card-title">Log events</h6>
+</div>
+<div class="card-body">
+<div class="">
+<canvas id='events-analysis' width='115' height='90'></canvas>
+</div>
+</div>
+<div class="card-footer">
+<div><small data-tooltip='100%'><b>55</b> events passed</small></div>
+<div>
+<small data-tooltip='0%'><b>0</b> events failed,
+<b data-tooltip='%'>0</b> others
+</small>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><div class="col-md-12">
+<div class="card"><div class="card-header"><p>Timeline</p></div>
+<div class="card-body pt-0"><div>
+<canvas id="timeline" height="120"></canvas>
+</div></div>
+</div>
+</div></div>
+<script>
+var timeline = {
+"invalidLogins":0.01,"invalidLogins":0.001,"invalidLogins":0.001,"invalidLogins":0,"invalidLogins":0.001,"invalidLogins":0.001,"invalidLogins":0,"invalidLogins":0,"loginJSONInjection":0.001,"loginWrongContentType":0,"negativeCartTests":0.001,"negativeCartTests":0,"deleteCartByInvalidId":0.001,"deleteCartByInvalidId":0.001,"getCartByInvalidId":0,"getCartByInvalidId":0.001,"uniqueCategoriesNameTest":0.001,"invalidCategoryTest":0,"invalidCategoryTest":0.001,"getAllInventoryAsUser":0.001,"getInventoryByInvalidId":0,"getInventoryByInvalidId":0,"getInventoryByInvalidId":0,"getInventoryByInvalidId":0.001,"getInventoryByFilteringWithInvalidValue":0.001,"getInventoryByFilteringWithInvalidValue":0.001,"getInventoryByFilteringWithInvalidValue":0,"inventoryCreationOfAlreadyExistingProductId":0,"inventoryCreationWithNonExistingProductId":0,"shouldReturn404ForInvalidOrderId":0,"createOrderWithoutUserId":0,"createOrderWithInvalidPayload":0,"createOrderWithInvalidPayload":0,"createOrderWithInvalidPayload":0.001,"createOrderWithInvalidPayload":0,"invalidStatusUpdateShouldFail":0.001,"deleteInvalidOrderShouldReturn404":0,"getProductByInvalidId":0,"getProductByInvalidCategory":0,"createProductPriceAsString":0,"updateNonExistingProduct":0,"deleteProductWithInvalidId":0,"tamperedToken":0,"getUserByInvalidId":0,"createUserWithExistingEmail":0.001,"createUserWithExistingEmail":0,"createUserWithMissingEmail":0.001,"createUserWithMissingEmail":0,"updateNonExistingUser":0,"updateNonExistingUser":0.001,"updateNonExistingUser":0.001,"updateNonExistingUser":0,"updateNonExistingUser":0,"deleteUserByInvalidId":0,"deleteUserByInvalidId":0
+};
+</script>
+<div class="row">
+<div class="col-lg-6 col-md-12 category-container">
+<div class="card">
+<div class="card-header"><p>Tags</p></div>
+<div class="card-body pb-0 pt-0"><table class="table table-sm table-bordered">
+<thead><tr class="bg-gray"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th><th>Others</th><th>Passed %</th></tr></thead><tbody>
+<tr>
+<td>products</td>
+<td>5</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>users</td>
+<td>12</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>negative</td>
+<td>55</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>inventory</td>
+<td>10</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>carts</td>
+<td>6</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>orders</td>
+<td>8</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>auth</td>
+<td>10</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>security</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>categories</td>
+<td>3</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="col-lg-6 col-md-12 sysenv-container">
+<div class="card">
+<div class="card-header"><p>System/Environment</p></div>
+<div class="card-body pb-0 pt-0"><table class="table table-sm table-bordered">
+<thead><tr class="bg-gray"><th>Name</th><th>Value</th></tr></thead>
+<tbody>
+<tr>
+<td>Application</td>
+<td>Fakestore API </td>
+</tr>
+<tr>
+<td>Operating System</td>
+<td>Windows 11</td>
+</tr>
+<tr>
+<td>User Name</td>
+<td>Souma</td>
+</tr>
+<tr>
+<td>Environemnt</td>
+<td>QA</td>
+</tr>
+<tr>
+<td>user</td>
+<td>Soumalya</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+</div>
+<script>
+var statusGroup = {
+parentCount: 5,
+passParent: 55,
+failParent: 0,
+warningParent: 0,
+skipParent: 0,
+childCount: 5,
+passChild: 55,
+failChild: 0,
+warningChild: 0,
+skipChild: 0,
+infoChild: 0,
+grandChildCount: 5,
+passGrandChild: 0,
+failGrandChild: 0,
+warningGrandChild: 0,
+skipGrandChild: 0,
+infoGrandChild: 0,
+eventsCount: 5,
+passEvents: 55,
+failEvents: 0,
+warningEvents: 0,
+skipEvents: 0,
+infoEvents: 0
+};
+</script>        </div>
+      </div>
+    </div>
+  </div>
+<script src="https://cdn.jsdelivr.net/gh/extent-framework/extent-github-cdn@c05cd28cde1617b9d0c05a831daff6cb97fd9fd5/spark/js/spark-script.js"></script>
+<script type="text/javascript"></script></body>
+</html>

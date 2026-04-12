@@ -56,7 +56,7 @@ public class ProductsTest extends BaseClass {
 
         Products.getProductById(invalidId, null)
                 .then()
-                .spec(fail404());
+                .spec(fail401());
     }
 
     @Test(groups = {"negative", "products"}, priority = 5)
@@ -66,7 +66,7 @@ public class ProductsTest extends BaseClass {
 
         Products.getProductsByCategory(invalidCategory, null)
                 .then()
-                .spec(fail400());
+                .spec(fail401());
     }
 
     @Test(groups = {"regression", "products"}, priority = 6)

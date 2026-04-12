@@ -97,12 +97,14 @@ public class AuthTest extends BaseClass {
 
     @Test(groups = {"negative", "auth"}, priority = 6)
     public void loginWrongContentType() {
+        String payload = """
+            {
+                "username": "testuser",
+                "password": "password123"
+            }
+        """;
 
-        TestContext.addHeader("Content-Type", "application/xml");
-
-        LoginRequestPOJO payload =
-                AuthTestDataFactory.validLogin("testuser", "password123");
-
+        TestContext.addHeader("Content-Type","application/xml");
         Auth.login(payload)
                 .then()
                 .spec(fail415());

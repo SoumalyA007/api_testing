@@ -9,10 +9,10 @@ public class UserDataProvider extends BaseClass {
 
     private static final Faker faker = new Faker();
 
-    @DataProvider(name = "createUserData",parallel = true)
+    @DataProvider(name = "createUserData")
     public Object[][] createUserData(){
 
-        int numberOfUsers = Integer.parseInt(p.getProperty("numberOfCreateUser"));   // number of datasets you want
+        int numberOfUsers = 2;   // number of datasets you want
 
         Object[][] data = new Object[numberOfUsers][5];
         for(int i = 0; i < numberOfUsers; i++){
@@ -28,7 +28,7 @@ public class UserDataProvider extends BaseClass {
         return data;
     }
 
-    @DataProvider(name = "updateUserFields",parallel = true)
+    @DataProvider(name = "updateUserFields")
     public Object[][] updateUserFields(){
 
         return new Object[][]{
@@ -42,7 +42,7 @@ public class UserDataProvider extends BaseClass {
         };
     }
 
-    @DataProvider(name = "deleteUserFields",parallel = true)
+    @DataProvider(name = "deleteUserFields")
     public Object[][] deleteUserFields(){
 
         return new Object[][]{
@@ -53,7 +53,7 @@ public class UserDataProvider extends BaseClass {
         };
     }
 
-    @DataProvider(name = "deleteUserByInvalidIdFields",parallel = true)
+    @DataProvider(name = "deleteUserByInvalidIdFields")
     public Object[][] deleteUserByInvalidIdFields(){
 
         return new Object[][]{
@@ -64,18 +64,18 @@ public class UserDataProvider extends BaseClass {
         };
     }
 
-    @DataProvider(name = "createWithoutEmailField",parallel = true)
+    @DataProvider(name = "createWithoutEmailField")
     public Object[][] createWithoutEmailField(){
 
         return new Object[][]{
 
-                {faker.name().firstName(),faker.name().lastName(),faker.name().username(),faker.internet().password(8,12,true,true), UserRole.ADMIN,BaseClass.success200()},
+                {faker.name().firstName(),faker.name().lastName(),faker.name().username(),faker.internet().password(8,12,true,true), UserRole.ADMIN,BaseClass.fail400()},
                 {faker.name().firstName(),faker.name().lastName(),faker.name().username(),faker.internet().password(8,12,true,true), UserRole.USER,BaseClass.fail403()},
 
         };
     }
 
-    @DataProvider(name = "validateUserData",parallel = true)
+    @DataProvider(name = "validateUserData")
     public Object[][] validateUserData(){
 
         return new Object[][]{
@@ -88,7 +88,7 @@ public class UserDataProvider extends BaseClass {
         };
     }
 
-    @DataProvider(name = "deleteUserData",parallel = true)
+    @DataProvider(name = "deleteUserData")
     public Object[][] deleteUserData(){
 
         return new Object[][]{

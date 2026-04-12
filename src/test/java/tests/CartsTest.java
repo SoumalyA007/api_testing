@@ -87,10 +87,11 @@ public class CartsTest extends BaseClass {
 
                 Response response = Carts.createCart(cart,role);
                 response.then().spec(resp);
-                cartId = response.then().extract().jsonPath().getInt("id");
+                if(response.statusCode()==200) {
+                    cartId = response.then().extract().jsonPath().getInt("id");
+                }
 
         }finally{
-
                 if(cartId!=null){
                     Carts.deleteCart(cartId,UserRole.ADMIN);
                 }
@@ -155,7 +156,7 @@ public class CartsTest extends BaseClass {
         groups = {"negative", "carts"},
         priority = 7
       )
-    public void deleteCartByInvalidId(UserRole role,ResponseSpecification resp){
+    public void deleteCartByInvalidId(String message, UserRole role,ResponseSpecification resp){
 
         int invalidId = new Random().nextInt(100000) + 99999;
 

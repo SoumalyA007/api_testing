@@ -4,9 +4,14 @@ import endpoints.Carts;
 import endpoints.Orders;
 import endpoints.Products;
 import enums.UserRole;
+import io.restassured.response.Response;
+import payloads.request.CartPOJO;
+import payloads.request.CartProductPOJO;
 import payloads.request.OrderItemPOJO;
 import payloads.request.OrderPOJO;
 import payloads.response.OrderItemResponsePOJO;
+import testData.CartTestDataFactory;
+import testData.OrderTestDataFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -24,12 +29,14 @@ public class OrderHelper {
                 .getList("[0].products", OrderItemPOJO.class);
     }
 
-    public static int createTestOrder(OrderPOJO order, UserRole role) {
-        
-        return Orders.createOrder(order, role)
+    public static Response createTestOrder(Integer userId, Integer productId, Integer quantity) {
+
+        OrderPOJO orderPOJO = OrderTestDataFactory.invalidOrder(userId,productId,quantity);
+
+        return Orders.createOrder(orderPOJO, UserRole.ADMIN)
                 .then()
                 .extract()
-                .path("id");
+                .response();
     }
 
     // ================= VALIDATION =================
@@ -79,4 +86,21 @@ public class OrderHelper {
         } catch (Exception ignored) {}
     }
 
+    public static List<OrderItemPOJO> checkAvailabilityOfCartProducts(UserRole role){
+        List<OrderItemPOJO> items = getCartProducts(UserRole.USER)  ;
+        if(items.isEmpty()){
+            List<CartProductPOJO> products =
+                    CartHelper.randomProducts(2, role);
+
+            CartPOJO cart = CartTestDataFactory.createTestCart(products, role);
+
+            //creation
+            Carts.createCart(cart,role);
+            return getCartProducts(role);
+        }
+        return items;
+
+
+
+    }
 }

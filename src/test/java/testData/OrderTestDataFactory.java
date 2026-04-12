@@ -20,7 +20,7 @@ public class OrderTestDataFactory {
                 .build();
     }
 
-    public static OrderPOJO invalidOrder(int userId, int productId, int quantity) {
+    public static OrderPOJO invalidOrder(Integer userId, Integer productId, Integer quantity) {
         return OrderPOJO.builder()
                 .userId(userId)
                 .items(List.of(new OrderItemPOJO(productId, quantity)))

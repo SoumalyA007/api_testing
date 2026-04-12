@@ -7,7 +7,7 @@ import testData.ProductTestDataFactory;
 
 public class ProductDataProvider {
 
-    @DataProvider(name = "createProductPayloads",parallel = true)
+    @DataProvider(name = "createProductPayloads")
     public Object[][] createProductPayloads() {
         return new Object[][]{
 
@@ -18,7 +18,7 @@ public class ProductDataProvider {
         };
     }
 
-    @DataProvider(name = "updateProductPayloads",parallel = true)
+    @DataProvider(name = "updateProductPayloads")
     public Object[][] updateProductPayloads() {
         return new Object[][]{
 
@@ -28,7 +28,7 @@ public class ProductDataProvider {
         };
     }
 
-    @DataProvider(name = "deleteProduct",parallel = true)
+    @DataProvider(name = "deleteProduct")
     public Object[][] deleteProductPayloads() {
         return new Object[][]{
 
@@ -37,7 +37,7 @@ public class ProductDataProvider {
         };
     }
 
-    @DataProvider(name = "invalidProductPayloads",parallel = true)
+    @DataProvider(name = "invalidProductPayloads")
     public Object[][] invalidProductPayloads() {
         return new Object[][]{
 

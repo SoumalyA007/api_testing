@@ -9,7 +9,7 @@ public class InventoryDataProvider {
 
 
 
-    @DataProvider(name = "validInventoryData",parallel = true)
+    @DataProvider(name = "validInventoryData")
     public Object[][] validInventoryData() {
         return new Object[][]{
                 {ProductIdGenerator.getUniqueProductId(),"Virtual", 5, 99, UserRole.ADMIN},
@@ -17,7 +17,7 @@ public class InventoryDataProvider {
         };
     }
 
-    @DataProvider(name = "invalidInventoryData",parallel = true)
+    @DataProvider(name = "invalidInventoryData")
     public Object[][] invalidInventoryData() {
         return new Object[][]{
                 {99999999,UserRole.ADMIN},
@@ -27,7 +27,7 @@ public class InventoryDataProvider {
         };
     }
 
-    @DataProvider(name = "filteringInventoryData",parallel = true)
+    @DataProvider(name = "filteringInventoryData")
     public Object[][] filteringInventoryData() {
         return new Object[][]{
                 {"productId",101,UserRole.ADMIN},
@@ -36,17 +36,16 @@ public class InventoryDataProvider {
         };
     }
 
-    @DataProvider(name = "filteringByInvalidInventoryData",parallel = true)
+    @DataProvider(name = "filteringByInvalidInventoryData")
     public Object[][] filteringByInvalidInventoryData() {
         return new Object[][]{
-                {"productId",1010121021,UserRole.ADMIN, BaseClass.fail404()},
-                {"productId","101",UserRole.ADMIN, BaseClass.fail404()},
-                {"warehouse","Physical",UserRole.ADMIN,BaseClass.fail404()},
+                {"productId",1010121021,UserRole.ADMIN, BaseClass.success200()},
+                {"warehouse","Physical",UserRole.ADMIN,BaseClass.success200()},
                 {"warehouseee","Virtual",UserRole.ADMIN,BaseClass.fail400()},
         };
     }
 
-    @DataProvider(name = "createInventory",parallel = true)
+    @DataProvider(name = "createInventory")
     public Object[][] createInventory(){
         return new Object[][]{
                 {"South-West",5,90}

@@ -111,7 +111,7 @@ public class InventoryTest extends BaseClass {
         groups = {"negative", "inventory"},
         priority = 7
       )
-    public void getInventoryByFilteringWithInvalidValue(String paramKey , String value, UserRole role, ResponseSpecification responseStatus){
+    public void getInventoryByFilteringWithInvalidValue(String paramKey , Object value, UserRole role, ResponseSpecification responseStatus){
 
         Inventory.getInventoryByFiltering(paramKey,value,role)
                 .then()
@@ -169,6 +169,8 @@ public class InventoryTest extends BaseClass {
 
             if(resp.statusCode()==409){
                 isPass = true;
+            }else{
+                inventoryId = resp.then().extract().jsonPath().getInt("id");
             }
 
             resp.then().spec(fail409());
@@ -189,7 +191,7 @@ public class InventoryTest extends BaseClass {
         groups = {"negative", "inventory"},
         priority = 10
       )
-    public void inventoryCreationWithNonExistingProductId(int stock, String warehouse, int threshold, int quantity){
+    public void inventoryCreationWithNonExistingProductId(String warehouse, int threshold, int quantity){
 
         boolean isPass = false;
         int inventoryId = 0;

@@ -10,7 +10,7 @@ public class AuthDataProvider {
     ResponseSpecification badRequest = BaseClass.fail400();
     ResponseSpecification unauthorizedRequest = BaseClass.fail401();
 
-    @DataProvider(name = "invalidLoginPayloads",parallel = true)
+    @DataProvider(name = "invalidLoginPayloads")
     public Object[][] invalidLoginPayloads() {
 
         return new Object[][]{
@@ -26,7 +26,7 @@ public class AuthDataProvider {
         };
     }
 
-    @DataProvider(name = "securityPayloads",parallel = true)
+    @DataProvider(name = "securityPayloads")
     public Object[][] securityPayloads() {
 
         return new Object[][]{

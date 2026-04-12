@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 public class OrderItemPOJO {
 
-    private int productId;
-    private int quantity;
+    private Integer  productId;
+    private Integer  quantity;
 
 }

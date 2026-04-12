@@ -178,7 +178,7 @@ public class UsersTest extends BaseClass {
 
         Users.createUser(createUserPOJO,UserRole.ADMIN)
                 .then()
-                .spec(fail400());
+                .spec(fail409());
         }finally{
                 UserHelper.deleteUserIfExists(id);
         }
@@ -192,16 +192,16 @@ public class UsersTest extends BaseClass {
         groups = {"negative", "users"},
         priority = 8
     )
-    public void createUserWithMissingEmail(String firstname, String lastname,String username , String password){
+    public void createUserWithMissingEmail(String firstname, String lastname,String username , String password, UserRole role, ResponseSpecification resp){
 
 
         UserDetailsPOJO userDetailsPOJO = UserTestDataFactory.userDetailPayload(firstname , lastname);
 
         UserPOJO userPOJO = UserTestDataFactory.updateCreateUserWithoutEmail(userDetailsPOJO,username,password);
 
-        Users.createUser(userPOJO,UserRole.ADMIN)
+        Users.createUser(userPOJO,role)
                 .then()
-                .spec(fail400());
+                .spec(resp);
 
 
     }
@@ -235,7 +235,7 @@ public class UsersTest extends BaseClass {
 
         Users.updateUser(userId+ 100000, updateUser, UserRole.ADMIN)
                 .then()
-                .spec(fail400());
+                .spec(fail404());
         }finally{
                  UserHelper.deleteUserIfExists(userId);
         }

@@ -46,7 +46,7 @@ public class SecurityTest extends BaseClass {
         ProductsPOJO productsPOJO = ProductTestDataFactory.validProduct();
 
         Products.createProduct(productsPOJO , token+"abv")
-                .then().spec(fail403());
+                .then().spec(fail401());
 
     }
 

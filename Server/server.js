@@ -63,12 +63,27 @@
         return res.status(400).json({ error: "Password must be at least 6 characters" });
       }
 
-      if (!["admin", "user"].includes(role)) {
-        return res.status(400).json({ error: "Role must be admin or user" });
+//      if (!["admin", "user"].includes(role)) {
+//        return res.status(400).json({ error: "Role must be admin or user" });
+//      }
+
+      // ✅ Allow missing or 0 ID (server will generate)
+      if (id !== undefined && id !== 0) {
+        if (!Number.isInteger(id) || id <= 0) {
+          return res.status(400).json({ error: "ID must be positive" });
+        }
       }
 
-      if (!Number.isInteger(id) || id <= 0) {
-        return res.status(400).json({ error: "ID must be positive" });
+      next();
+    }
+
+    function validateRole(req, res, next) {
+      const { role } = req.body;
+
+      if (role && !["admin", "user"].includes(role)) {
+        return res.status(400).json({
+          error: "Role must be admin or user"
+        });
       }
 
       next();
@@ -336,25 +351,58 @@
 
     // ── Secure user creation ─────────────────────────────────────────────
     server.post("/users", (req, res, next) => {
+
       const role = getCallerRole(req);
 
-
-      // Block public
+      // 🔒 Block public
       if (role === "public") {
         return res.status(401).json({ error: "Authentication required" });
       }
 
-      // Only admin can assign admin role
-      if (role !== "admin") {
-        req.body.role = "user";
-      }
-
-      // Default role
+      // ─────────────────────────────
+      // ✅ 1. DEFAULT ROLE FIRST
+      // ─────────────────────────────
       if (!req.body.role) {
         req.body.role = "user";
       }
 
-      next();
+      // ─────────────────────────────
+      // ✅ 2. ROLE AUTHORIZATION
+      // ─────────────────────────────
+      if (req.body.role === "admin" && role !== "admin") {
+        return res.status(403).json({
+          error: "Only admin can assign admin role"
+        });
+      }
+
+      // ─────────────────────────────
+      // ✅ 3. NOW VALIDATE
+      // ─────────────────────────────
+      validateUser(req, res, function (err) {
+        if (err) return next(err);
+
+        validateRole(req, res, function (err) {
+          if (err) return next(err);
+
+          // 🔥 ADD THIS BLOCK (duplicate email check)
+          const db = router.db;
+          const users = db.get("users").value();
+
+          const emailExists = users.some(
+            u => u.email && req.body.email &&
+                 u.email.toLowerCase() === req.body.email.toLowerCase()
+          );
+
+          if (emailExists) {
+            return res.status(409).json({
+              error: "Email already exists"
+            });
+          }
+
+          next(); // continue to json-server
+        });
+      });
+
     });
 
     // ── Prevent role updates ─────────────────────────────────────────────
@@ -529,71 +577,199 @@
     });
 
     // ── Order Creation Business Logic ─────────────────────────────────────
-    server.post("/orders", (req, res, next) => {
+//    server.post("/orders", (req, res, next) => {
+//
+//      const db = router.db;
+//
+//      const { userId, items } = req.body;
+//
+//      if (!items || !Array.isArray(items) || items.length === 0) {
+//        return res.status(400).json({ error: "Products array required" });
+//      }
+//
+//      const allProducts = db.get("products").value();
+//      const inventory = db.get("inventory");
+//
+//      let totalPrice = 0;
+//
+//      for (const item of items) {
+//
+//        if (!Number.isInteger(item.quantity) || item.quantity <= 0) {
+//            return res.status(400).json({
+//              error: `Invalid quantity for product ${item.productId}`
+//            });
+//          }
+//
+//        const product = allProducts.find(p => p.id === item.productId);
+//
+//        if (!product) {
+//          return res.status(400).json({
+//            error: `Product ${item.productId} not found`
+//          });
+//        }
+//
+//        const stockItem = inventory
+//          .find({ productId: item.productId })
+//          .value();
+//
+//        if (!stockItem || stockItem.quantity < item.quantity) {
+//          return res.status(400).json({
+//            error: `Insufficient inventory for product ${item.productId}`
+//          });
+//        }
+//
+//        totalPrice += product.price * item.quantity;
+//      }
+//
+//      // Reduce inventory
+//      for (const item of items) {
+//
+//        const stockItem = inventory
+//          .find({ productId: item.productId })
+//          .value();
+//
+//        inventory
+//          .find({ productId: item.productId })
+//          .assign({
+//            quantity: stockItem.quantity - item.quantity
+//          })
+//          .write();
+//      }
+//
+//      // Clear cart
+//      db.get("carts")
+//        .remove({ userId: userId })
+//        .write();
+//
+//      // Add calculated fields
+//      req.body.totalPrice = totalPrice;
+//      req.body.status = "PENDING";
+//      req.body.createdAt = new Date().toISOString();
+//
+//      next();
+//    });
 
-      const db = router.db;
 
-      const { userId, items } = req.body;
+server.post("/orders", (req, res, next) => {
 
-      if (!items || !Array.isArray(items) || items.length === 0) {
-        return res.status(400).json({ error: "Products array required" });
-      }
+  const db = router.db;
 
-      const allProducts = db.get("products").value();
-      const inventory = db.get("inventory");
+  const { userId, items } = req.body;
 
-      let totalPrice = 0;
+  const allProducts = db.get("products").value();
+  const allUsers = db.get("users").value();
+  const inventory = db.get("inventory");
 
-      for (const item of items) {
+  // ─────────────────────────────────────────────
+  // ✅ 1. REQUEST STRUCTURE VALIDATION
+  // ─────────────────────────────────────────────
 
-        const product = allProducts.find(p => p.id === item.productId);
-
-        if (!product) {
-          return res.status(400).json({
-            error: `Product ${item.productId} not found`
-          });
-        }
-
-        const stockItem = inventory
-          .find({ productId: item.productId })
-          .value();
-
-        if (!stockItem || stockItem.quantity < item.quantity) {
-          return res.status(400).json({
-            error: `Insufficient inventory for product ${item.productId}`
-          });
-        }
-
-        totalPrice += product.price * item.quantity;
-      }
-
-      // Reduce inventory
-      for (const item of items) {
-
-        const stockItem = inventory
-          .find({ productId: item.productId })
-          .value();
-
-        inventory
-          .find({ productId: item.productId })
-          .assign({
-            quantity: stockItem.quantity - item.quantity
-          })
-          .write();
-      }
-
-      // Clear cart
-      db.get("carts")
-        .remove({ userId: userId })
-        .write();
-
-      // Add calculated fields
-      req.body.totalPrice = totalPrice;
-      req.body.status = "PENDING";
-      req.body.createdAt = new Date().toISOString();
-
-      next();
+  if (!Number.isInteger(userId) || userId <= 0) {
+    return res.status(400).json({
+      error: "Valid userId is required"
     });
+  }
+
+  if (!items || !Array.isArray(items) || items.length === 0) {
+    return res.status(400).json({
+      error: "Items array is required"
+    });
+  }
+
+  // ─────────────────────────────────────────────
+  // ✅ 2. USER VALIDATION
+  // ─────────────────────────────────────────────
+
+  const userExists = allUsers.some(u => u.id === userId);
+
+  if (!userExists) {
+    return res.status(400).json({
+      error: `User ${userId} does not exist`
+    });
+  }
+
+  // ─────────────────────────────────────────────
+  // ✅ 3. ITEMS VALIDATION
+  // ─────────────────────────────────────────────
+
+  let totalPrice = 0;
+
+  for (const item of items) {
+
+    // 🔥 productId validation
+    if (!Number.isInteger(item.productId)) {
+      return res.status(400).json({
+        error: "Invalid productId"
+      });
+    }
+
+    // 🔥 quantity validation (MOST IMPORTANT)
+    if (!Number.isInteger(item.quantity) || item.quantity <= 0) {
+      return res.status(400).json({
+        error: `Invalid quantity for product ${item.productId}`
+      });
+    }
+
+    // 🔥 product existence
+    const product = allProducts.find(p => p.id === item.productId);
+
+    if (!product) {
+      return res.status(400).json({
+        error: `Product ${item.productId} not found`
+      });
+    }
+
+    // 🔥 inventory existence
+    const stockItem = inventory
+      .find({ productId: item.productId })
+      .value();
+
+    if (!stockItem) {
+      return res.status(400).json({
+        error: `Inventory not found for product ${item.productId}`
+      });
+    }
+
+    // 🔥 stock check
+    if (stockItem.quantity < item.quantity) {
+      return res.status(400).json({
+        error: `Insufficient inventory for product ${item.productId}`
+      });
+    }
+
+    totalPrice += product.price * item.quantity;
+  }
+
+  // ─────────────────────────────────────────────
+  // ✅ 4. BUSINESS LOGIC (ONLY AFTER VALIDATION)
+  // ─────────────────────────────────────────────
+
+  for (const item of items) {
+
+    const stockItem = inventory
+      .find({ productId: item.productId })
+      .value();
+
+    inventory
+      .find({ productId: item.productId })
+      .assign({
+        quantity: stockItem.quantity - item.quantity
+      })
+      .write();
+  }
+
+  // Clear cart
+  db.get("carts")
+    .remove({ userId: userId })
+    .write();
+
+  // Final order fields
+  req.body.totalPrice = totalPrice;
+  req.body.status = "PENDING";
+  req.body.createdAt = new Date().toISOString();
+
+  next();
+});
 
     server.use("/products", (req, res, next) => {
 
@@ -604,101 +780,75 @@
       next();
     });
 
+server.use("/inventory", (req, res, next) => {
 
-//    server.use("/inventory", (req, res, next) => {
-//
-//      if (["POST", "PUT", "PATCH"].includes(req.method)) {
-//
-//        const db = router.db;
-//
-//        const products = db.get("products").value();
-//        const inventory = db.get("inventory").value();
-//
-//        const { productId, quantity, minThreshold, warehouse } = req.body;
-//
-//            // Validate product exists
-//            const productExists = products.some(p => p.id === productId);
-//
-//            if (!productExists) {
-//              return res.status(400).json({
-//                error: `Product ${productId} does not exist. Create product first.`
-//              });
-//            }
-//
-//            // Quantity validation
-//            if (!Number.isInteger(quantity) || quantity < 0) {
-//              return res.status(400).json({
-//                error: "Quantity must be a non-negative integer"
-//              });
-//            }
-//
-//            // minThreshold validation
-//            if (!Number.isInteger(minThreshold) || minThreshold < 0) {
-//              return res.status(400).json({
-//                error: "minThreshold must be a non-negative integer"
-//              });
-//            }
-//
-//            // Warehouse validation
-//            if (!warehouse || typeof warehouse !== "string") {
-//              return res.status(400).json({
-//                error: "Warehouse is required"
-//              });
-//            }
-//          } // ✅ THIS WAS MISSING
-//
-//
-//      next();
-//    });
+  if (["POST", "PUT", "PATCH"].includes(req.method)) {
 
-    server.use("/inventory", (req, res, next) => {
+    const db = router.db;
+    const products = db.get("products").value();
+    const inventory = db.get("inventory").value();
 
-      if (["POST", "PUT", "PATCH"].includes(req.method)) {
+    const { productId, quantity, minThreshold, warehouse } = req.body;
 
-        const db = router.db;
-        const products = db.get("products").value();
+    // ── ✅ Validate product exists ─────────────────────────────
+    if (productId !== undefined) {
+      const productExists = products.some(p => p.id === productId);
 
-        const { productId, quantity, minThreshold, warehouse } = req.body;
-
-        // ✅ Only validate if field is present
-        if (productId !== undefined) {
-          const productExists = products.some(p => p.id === productId);
-
-          if (!productExists) {
-            return res.status(400).json({
-              error: `Product ${productId} does not exist`
-            });
-          }
-        }
-
-        if (quantity !== undefined) {
-          if (!Number.isInteger(quantity) || quantity < 0) {
-            return res.status(400).json({
-              error: "Quantity must be non-negative integer"
-            });
-          }
-        }
-
-        if (minThreshold !== undefined) {
-          if (!Number.isInteger(minThreshold) || minThreshold < 0) {
-            return res.status(400).json({
-              error: "minThreshold must be non-negative integer"
-            });
-          }
-        }
-
-        if (warehouse !== undefined) {
-          if (typeof warehouse !== "string") {
-            return res.status(400).json({
-              error: "Warehouse must be string"
-            });
-          }
-        }
+      if (!productExists) {
+        return res.status(400).json({
+          error: `Product ${productId} does not exist`
+        });
       }
+    }
 
-      next();
-    });
+    // ── ✅ Quantity validation ─────────────────────────────
+    if (quantity !== undefined) {
+      if (!Number.isInteger(quantity) || quantity < 0) {
+        return res.status(400).json({
+          error: "Quantity must be a non-negative integer"
+        });
+      }
+    }
 
+    // ── ✅ minThreshold validation ─────────────────────────────
+    if (minThreshold !== undefined) {
+      if (!Number.isInteger(minThreshold) || minThreshold < 0) {
+        return res.status(400).json({
+          error: "minThreshold must be a non-negative integer"
+        });
+      }
+    }
+
+    // ── ✅ Warehouse validation ─────────────────────────────
+    if (warehouse !== undefined) {
+      if (!warehouse || typeof warehouse !== "string") {
+        return res.status(400).json({
+          error: "Warehouse must be a valid string"
+        });
+      }
+    }
+
+    // ── 🔥 Duplicate check (productId must be UNIQUE) ─────────
+    if (productId !== undefined) {
+
+      // Extract ID for PUT/PATCH (if exists)
+      const currentId = req.path.split("/")[1];
+
+      const duplicate = inventory.find(item =>
+        item.productId === productId &&
+        item.id != currentId // ignore same record during update
+      );
+
+      if (duplicate) {
+        return res.status(409).json({
+          error: `Inventory already exists for productId ${productId}`
+        });
+      }
+    }
+  }
+
+  next();
+});
 
 server.delete("/products/:id", (req, res, next) => {
 
@@ -763,6 +913,53 @@ server.delete("/products/:id", (req, res, next) => {
         });
 
         next();
+      });
+
+      server.use("/categories", (req, res, next) => {
+
+        if (req.method === "POST") {
+
+          const db = router.db;
+          const categories = db.get("categories").value();
+
+          const { name } = req.body;
+
+          if (!name || typeof name !== "string") {
+            return res.status(400).json({
+              error: "Category name is required"
+            });
+          }
+
+          const exists = categories.some(
+            c => c.name.toLowerCase() === name.toLowerCase()
+          );
+
+          if (exists) {
+            return res.status(409).json({
+              error: "Category already exists"
+            });
+          }
+        }
+
+        next();
+      });
+
+      server.use("/inventory", (req, res, next) => {
+        const allowedParams = ["productId", "warehouse", "quantity", "minThreshold"];
+
+        const queryKeys = Object.keys(req.query);
+
+        const invalidKeys = queryKeys.filter(k => !allowedParams.includes(k));
+
+        if (invalidKeys.length > 0) {
+          return res.status(400).json({
+            error: `Invalid query params: ${invalidKeys.join(", ")}`
+          });
+        }
+
+        next();
+
+
       });
 
 

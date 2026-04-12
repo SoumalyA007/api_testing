@@ -115,7 +115,7 @@ public class OrdersTest extends BaseClass {
     // ================= CREATE ORDER =================
     @Test(groups = {"crud", "integration", "orders", "smoke"}, priority = 10)
     public void userShouldCreateOrder() {
-        List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
+        List<OrderItemPOJO> items = OrderHelper.checkAvailabilityOfCartProducts(UserRole.USER);
         int userId = TokenManager.getUserId(UserRole.USER);
         OrderPOJO order = OrderTestDataFactory.validOrder(userId, items);
         OrderResponsePOJO response = Orders.createOrder(order, UserRole.USER)
@@ -140,7 +140,7 @@ public class OrdersTest extends BaseClass {
         int orderId = 0;
         int statusCode = 0;
         try{
-            List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
+            List<OrderItemPOJO> items = OrderHelper.checkAvailabilityOfCartProducts(UserRole.USER);
             int userId = TokenManager.getUserId(UserRole.USER);
             OrderPOJO order = OrderTestDataFactory.validOrder(userId - 1, items);
             Response response = Orders.createOrder(order, UserRole.USER);
@@ -158,7 +158,7 @@ public class OrdersTest extends BaseClass {
     public void adminShouldCreateOrder() {
         int orderId = 0;
         try{
-                List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
+                List<OrderItemPOJO> items = OrderHelper.checkAvailabilityOfCartProducts(UserRole.USER);
                 int userId = TokenManager.getUserId(UserRole.USER);
         
                 OrderPOJO order = OrderTestDataFactory.validOrder(userId, items);
@@ -177,17 +177,10 @@ public class OrdersTest extends BaseClass {
     public void createOrderWithoutUserId() {
         int orderId = 0;
         try {
-            List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
+            List<OrderItemPOJO> items = OrderHelper.checkAvailabilityOfCartProducts(UserRole.USER);
             OrderPOJO order = OrderTestDataFactory.orderWithoutUserId(items);
             Response response = Orders.createOrder(order, UserRole.ADMIN);
-            OrderResponsePOJO orderResponsePOJO = response.then().extract().as(OrderResponsePOJO.class);
-            // 🔥 Extract FIRST (safe)
-            orderId = response.jsonPath().get("id");
-            // 🔥 Then assert
-            response.then().statusCode(201);
-            Assert.assertNotNull(orderResponsePOJO.getId());
-            Assert.assertEquals(orderResponsePOJO.getStatus(), "PENDING");
-            Assert.assertEquals(orderResponsePOJO.getOrderDate(), LocalDate.now().toString());
+            response.then().spec(fail400());
         } finally {
             OrderHelper.deleteOrderIfExists(orderId);
         }
@@ -197,7 +190,7 @@ public class OrdersTest extends BaseClass {
     public void createOrderWithoutLogin() {
         int orderId = 0 ;
         try{
-            List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
+            List<OrderItemPOJO> items = OrderHelper.checkAvailabilityOfCartProducts(UserRole.USER);
             int userId = TokenManager.getUserId(UserRole.USER);
             OrderPOJO order = OrderTestDataFactory.validOrder(userId, items);
             Response response = Orders.createOrder(order, null);
@@ -215,13 +208,16 @@ public class OrdersTest extends BaseClass {
         groups = {"negative", "orders"},
         priority = 15
     )
-    public void createOrderWithInvalidPayload(String scenario, OrderPOJO order, ResponseSpecification spec) {
+    public void createOrderWithInvalidPayload(String scenario, Integer userId, Integer productId, Integer quantity, ResponseSpecification spec) {
         int orderId = 0;
         try{
             System.out.println("Scenario: " + scenario);
-            Response response =Orders.createOrder(order, UserRole.USER);
-            response.then().spec(spec);
-            orderId = response.then().extract().jsonPath().getInt("id");
+
+            Response resp = OrderHelper.createTestOrder(userId,productId,quantity);
+            resp.then().spec(spec);
+            if(resp.statusCode()==200){
+                orderId = resp.then().extract().jsonPath().getInt("id");
+            }
         }finally{
             OrderHelper.deleteOrderIfExists(orderId);
         }
@@ -232,7 +228,7 @@ public class OrdersTest extends BaseClass {
     public void userShouldNotUpdateOrder() {
         int orderId = 0;
         try{
-            List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
+            List<OrderItemPOJO> items = OrderHelper.checkAvailabilityOfCartProducts(UserRole.USER);
             int userId = TokenManager.getUserId(UserRole.USER);
             OrderPOJO order = OrderTestDataFactory.validOrder(userId, items);
             orderId = Orders.createOrder(order, UserRole.USER).then()
@@ -249,7 +245,7 @@ public class OrdersTest extends BaseClass {
     public void adminShouldUpdateOrderStatus() {
         int orderId = 0;
         try{
-            List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
+            List<OrderItemPOJO> items = OrderHelper.checkAvailabilityOfCartProducts(UserRole.USER);
             int userId = TokenManager.getUserId(UserRole.USER);
             OrderPOJO order = OrderTestDataFactory.validOrder(userId, items);
             orderId = Orders.createOrder(order, UserRole.USER).then()
@@ -270,7 +266,7 @@ public class OrdersTest extends BaseClass {
     public void adminUpdateWithExpiredToken() {
         int orderId = 0;
         try{
-            List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
+            List<OrderItemPOJO> items = OrderHelper.checkAvailabilityOfCartProducts(UserRole.USER);
             int userId = TokenManager.getUserId(UserRole.USER);
             OrderPOJO order = OrderTestDataFactory.validOrder(userId, items);
             orderId = Orders.createOrder(order, UserRole.USER).then()
@@ -291,16 +287,19 @@ public class OrdersTest extends BaseClass {
     public void invalidStatusUpdateShouldFail() {
         int orderId = 0;
         try{
-            List<OrderItemPOJO> items = OrderHelper.getCartProducts(UserRole.USER);
+            List<OrderItemPOJO> items = OrderHelper.checkAvailabilityOfCartProducts(UserRole.USER);
             int userId = TokenManager.getUserId(UserRole.USER);
             OrderPOJO order = OrderTestDataFactory.validOrder(userId, items);
-            orderId = Orders.createOrder(order, UserRole.USER).then()
-                    .extract().jsonPath().getInt("id");
+            Response resp = Orders.createOrder(order, UserRole.USER);
+            if(resp.statusCode()==200){
+                orderId = resp.then().extract().jsonPath().getInt("orders[0].id");
+            }
+
             String body = """
-        {
+            {
             "status": "INVALID_STATUS"
-        }
-        """;
+            }
+            """;
             Orders.updateOrderWithString(orderId, body, UserRole.ADMIN)
                     .then()
                     .spec(fail400());
